@@ -1,0 +1,17 @@
+{
+  "name": "Api1",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "body-parser": "~1.9.2",
+    "express": "~4.9.8",
+    "jwt-simple": "^0.3.1",
+    "kerberos": "0.0.21",
+    "mongod": "^1.3.0",
+    "mongodb": "^2.2.11",
+    "mongoose": "~4.2.4",
+    "morgan": "~1.5.0",
+    "passport": "^0.3.0",
+    "passport-jwt": "^1.2.1"
+  }
+}

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<comments>
+  <row Id="13" PostId="23" Score="0" Text="Using /opt helps me keep track of the applications I've installed myself." CreationDate="2010-07-28T19:36:59.773" UserId="10" />
+  <row Id="15" PostId="18" Score="0" Text="but popping in a live cd I already have isn't going to work huh?" CreationDate="2010-07-28T19:38:39.723" UserId="10" />
+  <row Id="17" PostId="27" Score="0" Text="That will revert the splash screen as well as the login? I almost did that, but grew hesitant." CreationDate="2010-07-28T19:39:05.823" UserId="50" />
+  <row Id="21" PostId="31" Score="0" Text="I think you meant &quot;Software Sources&quot;, not &quot;Update Manager&quot;" CreationDate="2010-07-28T19:41:23.820" UserId="12" />
+  <row Id="22" PostId="18" Score="0" Text="@DLH apparently not... :(" CreationDate="2010-07-28T19:41:28.907" UserId="63" />
+  <row Id="31" PostId="12" Score="2" Text="&quot;ssh -X &lt;server&gt; &lt;program&gt;&quot; should set up everything (I've never needed to touch xauth myself, though it does need to be installed in order for the -X option on ssh to work)." CreationDate="2010-07-28T19:46:14.027" UserId="96" />
+  <row Id="33" PostId="12" Score="0" Text="@Suppressingfire: Oh thanks. I guess I should have included the command myself." CreationDate="2010-07-28T19:48:23.257" UserId="10" />
+  <row Id="34" PostId="50" Score="0" Text="Can you please rephrase the question as &quot;How do I change how long notifications are displayed?&quot;; &quot;Notification Display Time&quot; is pretty confusing, and not phrased as a question." CreationDate="2010-07-28T19:48:27.343" UserId="56" />
+  </comments>
