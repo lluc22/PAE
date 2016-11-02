@@ -7,6 +7,7 @@ var mongoose    = require('mongoose');
 var passport	= require('passport');
 var config      = require('./config/database'); // get db config file
 var User        = require('./app/models/user'); // get the mongoose model
+var Post        = require('./app/models/post'); // get the mongoose model
 var port        = process.env.PORT || 8080;
 var jwt         = require('jwt-simple');
 
@@ -51,7 +52,7 @@ apiRoutes.post('/signup', function(req, res) {
     // save the user
     newUser.save(function(err) {
       if (err) {
-        return res.json({success: 301, msg: 'Username, email or ueeNumber already exists.'});
+        return res.json({success: 301, msg: 'Username, email already exists.'});
       }
       res.json({success: 200, msg: 'Successful created new user.'});
     });
@@ -106,6 +107,8 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
   }
 });
 
+
+
 getToken = function (headers) {
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
@@ -118,3 +121,109 @@ getToken = function (headers) {
     return null;
   }
 };
+
+var myCallback = function(data) {
+  /*Post.insert({
+    id: data['id'],
+    creationDate: data['creationDate'],
+    body: data['body'],
+    ownerUserId: data['ownerUserId'],
+    closedDate: data['closedDate'],
+    title: data['title'],
+    tags: data['tags']
+  });*/
+  var newPost = new Post({
+    id: data['id'],
+    creationDate: data['creationDate'],
+    body: data['body'],
+    ownerUserId: data['ownerUserId'],
+    closedDate: data['closedDate'],
+    title: data['title'],
+    tags: data['tags']
+  });
+  // save the user
+  newPost.save(function(err) {
+    if (err) {
+      //console.log('Error when save new Post');
+    }
+  });
+};
+
+var myCallback2 = function(data) {
+  Post.findOne({id: data['ParentId']}, function(err, post) {
+    var postMap = {};
+    if(post == null) {
+      //console.log('No parent id Found: ');
+    }
+    else {
+      if (post['acceptedAnswerId'] == data['id']){
+        post.bestAnswer = {
+          body: data['body'],
+          ownerId: data['ownerUserId']
+        };
+        post.save();
+      }
+      else {
+        post.answers.push({
+          body: data['body'],
+          ownerId: data['ownerUserId']
+        });
+        post.save();
+      }
+    }
+  });
+  //console.log(data);
+
+  //console.log('=========================');
+};
+
+// route to a restricted info (GET http://localhost:8080/api/memberinfo)
+apiRoutes.get('/fillindatabase', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+      if (err) throw err;
+
+      if (!user) {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      } else {
+        var parse = require('./app/services/parse');
+        console.log('/fillindatabase before parse');
+        parse.parse(myCallback, myCallback2);
+        console.log('/fillindatabase after parse');
+        res.json({success: 200, msg: {"message": "Database will be update"}});
+      }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
+//tiquets
+apiRoutes.get('/tickets', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+      if (err) throw err;
+
+      if (!user) {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      } else {
+        Post.find({
+          acceptedAnswerId: { $exists: false}
+        }, function(err, posts) {
+          if (err) throw err;
+          res.json({success: 200, msg: {"data": posts}});
+        }).limit(15);
+      }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
