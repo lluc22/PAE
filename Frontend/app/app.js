@@ -1,43 +1,41 @@
+// create the module and name it scotchApp
+var app = angular.module('myApp', ['ngRoute']);
 
-
-// Declare app level module which depends on views, and components
-var myApplication = angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
-]);
-
-
-myApplication.config(function( $routeProvider) {
+// configure our routes
+app.config(function($routeProvider) {
     $routeProvider
+
+    // route for the home page
         .when('/', {
             templateUrl : 'views/home.html',
             controller  : 'mainController'
         })
+
+        // route for the about page
         .when('/filter', {
             templateUrl : 'views/filter.html',
-            controller  : 'FilterController'
+            controller  : 'filterController'
         })
 
         // route for the contact page
         .when('/topics', {
             templateUrl : 'views/topics.html',
-            controller  : 'TopicsController'
+            controller  : 'topicController'
         });
-
-  // $routeProvider.otherwise({redirectTo: '/view1'});
 });
 
-myApplication.controller('mainController', function($scope) {
+// create the controller and inject Angular's $scope
+app.controller('mainController', function($scope) {
     // create a message to display in our view
-    $scope.message = 'Open tickets list';
+    $scope.message = 'Lists of opened tickets';
+
+    $scope.tickets = ["Ticket1", "Ticket2", "Ticket3", "Ticket4", "Ticket5", "Ticket6", "Ticket7", "Ticket8" ]
 });
 
-myApplication.controller('FilterController', function($scope) {
+app.controller('filterController', function($scope) {
     $scope.message = 'Not implemented yet!';
 });
 
-myApplication.controller('TopicsController', function($scope) {
+app.controller('topicController', function($scope) {
     $scope.message = 'Not implemented yet!';
 });
