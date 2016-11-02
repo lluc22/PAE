@@ -26,8 +26,6 @@ app.config(function($routeProvider) {
   // $routeProvider.otherwise({redirectTo: '/view1'});
 });
 
-
-
 // create the controller and inject Angular's $scope
 app.controller('mainController', function($scope) {
     // create a message to display in our view
@@ -41,6 +39,5 @@ app.controller('filterController', function($scope) {
 });
 
 app.controller('topicController', function($scope) {
->>>>>>> 51fc98aa0895ae73df61bb952977878316d8f33e
     $scope.message = 'Not implemented yet!';
 });
