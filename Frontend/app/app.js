@@ -1,14 +1,43 @@
-'use strict';
+
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
+var myApplication = angular.module('myApp', [
   'ngRoute',
   'myApp.view1',
   'myApp.view2',
   'myApp.version'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
+]);
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+
+myApplication.config(function( $routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl : 'views/home.html',
+            controller  : 'mainController'
+        })
+        .when('/filter', {
+            templateUrl : 'views/filter.html',
+            controller  : 'FilterController'
+        })
+
+        // route for the contact page
+        .when('/topics', {
+            templateUrl : 'views/topics.html',
+            controller  : 'TopicsController'
+        });
+
+  // $routeProvider.otherwise({redirectTo: '/view1'});
+});
+
+myApplication.controller('mainController', function($scope) {
+    // create a message to display in our view
+    $scope.message = 'Open tickets list';
+});
+
+myApplication.controller('FilterController', function($scope) {
+    $scope.message = 'Not implemented yet!';
+});
+
+myApplication.controller('TopicsController', function($scope) {
+    $scope.message = 'Not implemented yet!';
+});
