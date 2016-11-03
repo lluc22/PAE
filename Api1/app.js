@@ -58,7 +58,11 @@ apiRoutes.post('/signup', function(req, res) {
     });
   }
 });
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 // connect the api routes under /api/*
 app.use('/api', apiRoutes);
 
@@ -203,9 +207,9 @@ apiRoutes.get('/fillindatabase', passport.authenticate('jwt', { session: false})
 });
 
 //tiquets
-apiRoutes.get('/tickets', passport.authenticate('jwt', { session: false}), function(req, res) {
-  var token = getToken(req.headers);
-  if (token) {
+apiRoutes.get('/tickets'/*, passport.authenticate('jwt', { session: false})*/, function(req, res) {
+  /*var token = getToken(req.headers);
+  //if (token) {
     var decoded = jwt.decode(token, config.secret);
     User.findOne({
       name: decoded.name
@@ -214,16 +218,16 @@ apiRoutes.get('/tickets', passport.authenticate('jwt', { session: false}), funct
 
       if (!user) {
         return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-      } else {
+      } else {*/
         Post.find({
           acceptedAnswerId: { $exists: false}
         }, function(err, posts) {
           if (err) throw err;
           res.json({success: 200, msg: {"data": posts}});
         }).limit(15);
-      }
+      /*}
     });
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
-  }
+  }*/
 });
