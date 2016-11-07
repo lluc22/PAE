@@ -59,7 +59,7 @@
     <ul class="sidebar-nav">
         <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
         <li class="sidebar-brand">
-            <a href="#dashboard" onclick=$("#menu-close").click();>Dashboard</a>
+            <a href="#" onclick=$("#menu-close").click();>Dashboard</a>
         </li>
         <li>
             <a href="#opentickets" onclick=$("#menu-close").click();>Open tickets</a>
@@ -67,14 +67,10 @@
         <li>
             <a href="#filter" onclick=$("#menu-close").click();>Filter</a>
         </li>
-        <li>
-            <a href="#topics" onclick=$("#menu-close").click();>Topics</a>
-        </li>
-
     </ul>
 </nav>
 
-<div ng-view></div>
+<div ng-view> </div>
 
 <!-- jQuery -->
 <script src="components/jquery.js"></script>
