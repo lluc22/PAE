@@ -1,27 +1,22 @@
 
 // create the module and name it scotchApp
-var app = angular.module('myApp', ['ngRoute']);
+var app = angular.module('myApp', ['ngRoute', 'nvd3']);
 
 // configure our routes
 app.config(function($routeProvider) {
     $routeProvider
-
-    // route for the home page
-        .when('/', {
-            templateUrl : 'views/home.html',
+        .when('/opentickets', {
+            templateUrl : "views/home.html",
             controller  : 'mainController'
         })
-        // route for the about page
         .when('/filter', {
             templateUrl : 'views/filter.html',
             controller  : 'filterController'
 
         })
-
-        // route for the contact page
         .when('/topics', {
             templateUrl : 'views/topics.html',
-            controller  : 'TopicsController'
+            controller  : 'topicsController'
         });
   // $routeProvider.otherwise({redirectTo: '/view1'});
 });
@@ -47,10 +42,11 @@ app.controller('mainController', function($scope, $http) {
 });
 
 app.controller('filterController', function($scope) {
+    console.log("HOOOOOOOOOOOOOOOO");
     $scope.message = 'Not implemented yet!';
 });
 
-app.controller('topicController', function($scope) {
+app.controller('topicsController', function($scope) {
     $scope.message = 'Not implemented yet!';
 });
 
