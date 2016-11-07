@@ -12,7 +12,6 @@ app.config(function($routeProvider) {
         .when('/filter', {
             templateUrl : 'views/filter.html',
             controller  : 'filterController'
-
         })
         .when('/', {
             templateUrl : 'views/topics.html',
@@ -114,6 +113,10 @@ app.controller('topicsController2', function($scope) {
                     bottom: 5,
                     left: 0
                 }
+            },
+            legendPosition: 'right',
+            valueFormat: function(d) {
+                return d + " words";
             }
         }
     };
