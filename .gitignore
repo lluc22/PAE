@@ -65,3 +65,5 @@ mongod
 *.ntvs*
 *.njsproj
 *.sln
+Posts.xml
+Users.xml

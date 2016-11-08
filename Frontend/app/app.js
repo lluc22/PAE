@@ -33,7 +33,7 @@ app.controller('mainController', function($scope, $http) {
     $scope.tickets = [];
     $http.get('http://localhost:8080/api/tickets').then(function successCallback(response) {
         //var values = response['data']['msg'][0];
-        alert(response);
+        //alert(response);
        angular.forEach(response['data']['msg']['data'], function(value) {
            //alert(value['title']);
            $scope.tickets.push(value['title'])
@@ -83,7 +83,7 @@ function makeCorsRequest() {
 
     var xhr = createCORSRequest('GET', url);
     if (!xhr) {
-        alert('CORS not supported');
+       // alert('CORS not supported');
         return;
     }
 
@@ -91,11 +91,11 @@ function makeCorsRequest() {
     xhr.onload = function() {
         var text = xhr.responseText;
         var title = getTitle(text);
-        alert('Response from CORS request to ' + url + ': ' + title);
+        //alert('Response from CORS request to ' + url + ': ' + title);
     };
 
     xhr.onerror = function() {
-        alert('Woops, there was an error making the request.');
+        //alert('Woops, there was an error making the request.');
     };
 
     xhr.send();
