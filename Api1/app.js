@@ -182,7 +182,7 @@ var myCallback2 = function(data) {
 };
 
 // route to a restricted info (GET http://localhost:8080/api/memberinfo)
-apiRoutes.get('/fillindatabase', passport.authenticate('jwt', { session: false}), function(req, res) {
+apiRoutes.get('/fillingdatabase', passport.authenticate('jwt', { session: false}), function(req, res) {
   var token = getToken(req.headers);
   if (token) {
     var decoded = jwt.decode(token, config.secret);

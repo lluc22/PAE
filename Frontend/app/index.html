@@ -5,7 +5,7 @@
 
 <head>
 
-    <meta charset="utf-8">
+    <meta charset="utf-8"> <!-- it's important for d3.js -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -38,8 +38,18 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
     <script src="app.js"></script>
-</head>
 
+    <!-- Angular nvd3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.9/angular-nvd3.min.js"></script>
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/build/nv.d3.js"></script> <!-- or use another assembly -->
+    <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
+
+
+</head>
 
 <body>
 
@@ -49,23 +59,18 @@
     <ul class="sidebar-nav">
         <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
         <li class="sidebar-brand">
-            <a href="#top" onclick=$("#menu-close").click();>Start Bootstrap</a>
+            <a href="#" onclick=$("#menu-close").click();>Dashboard</a>
         </li>
         <li>
-            <a href="views/home.html" onclick=$("#menu-close").click();>Open tickets</a>
+            <a href="#opentickets" onclick=$("#menu-close").click();>Open tickets</a>
+        </li>
+        <li>
+            <a href="#filter" onclick=$("#menu-close").click();>Filter</a>
         </li>
     </ul>
 </nav>
 
-<!-- Header -->
-<header id="top" class="header">
-    <div class="text-vertical-center">
-        <h1>Start Bootstrap</h1>
-        <h3>Free Bootstrap Themes &amp; Templates</h3>
-        <br>
-    </div>
-</header>
-
+<div ng-view> </div>
 
 <!-- jQuery -->
 <script src="components/jquery.js"></script>
