@@ -248,3 +248,12 @@ apiRoutes.get('/ticket', function(req, res) {
     res.json({success: 200, msg: {"data": posts}});
   }).limit(15);
 });
+
+apiRoutes.get('/user', function(req, res) {
+  UserPost.find({
+    id: req.headers.id
+  }, function(err, user) {
+    if (err) throw err;
+    res.json({success: 200, msg: {"data": user}});
+  }).limit(15);
+});
