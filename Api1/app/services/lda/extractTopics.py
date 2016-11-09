@@ -4,12 +4,11 @@
 
 import sys
 import os.path
-from gensim import corpora, models
-import gensim 
+from gensim import corpora, models, parsing
 
-pathLDAModel = "LDAModel.lda"
-T = 5			# Number Of Topics
-lda = None		# LDA model variable
+pathLDAModel = "LDAModel.lda"	# The LDA Model to save or load
+T = 5							# Number Of Topics to extract
+lda = None						# LDA model Global variable
 
 command = sys.argv[1]
 if command == 'update':
@@ -18,7 +17,7 @@ if command == 'update':
 	# Get the documents to update the model as array of Strings
 	documents = sys.argv[2:]
 	# Preprocess the documents, stemming, stopwords, etc ..
-	docs = gensim.parsing.preprocessing.preprocess_documents(documents)
+	docs = parsing.preprocessing.preprocess_documents(documents)
 	# Create the dictionary of docs
 	dictionary = corpora.Dictionary(docs)
 	# Create the corpus of docs
@@ -26,27 +25,38 @@ if command == 'update':
 
 	# Check if the model exists, for create or update
 	if not os.path.isfile(pathLDAModel) :
-		#lda = gensim.models.ldamulticore.LdaMulticore(num_topics=T)
-		lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=5)
+		# Multi Core
+		lda = models.ldamulticore.LdaMulticore(corpus=corpus, id2word=dictionary, num_topics=T)
+		# Single Core
+		#lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=T)
 	else:
 		lda = models.ldamodel.LdaModel.load(pathLDAModel)
 		lda.update(corpus)
-		#gensim.models.ldamodel.LdaModel.load("model.lda"
 
 	# Save the Model with the new data
 	lda.save(pathLDAModel)
-	print "... Done"
+	print "Done"
+
 
 elif command == 'delete':
-	# Delete the existing Model and create one empty
-	print "TODOs"
-
+	# Delete the existing Model 
+	if os.path.isfile(pathLDAModel) :
+		os.remove(pathLDAModel)
+	if os.path.isfile(pathLDAModel + ".state") :
+		os.remove(pathLDAModel + ".state")
+	print "Done"
 
 	
 elif command == 'getTopics':
 	# Return the topics of the LDA Model
-	print "TODO"
 
+	# Check if the LDA Model exists
+	if not os.path.isfile(pathLDAModel) :
+		print "NoExistingModel"
+		exit()
+
+
+	print "TODO"
 
 	
 elif command == 'topicsOf':
