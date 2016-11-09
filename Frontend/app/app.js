@@ -167,7 +167,7 @@ function getTitle(text) {
 // Make the actual CORS request.
 function makeCorsRequest() {
     // This is a sample server that supports CORS.
-    var url = 'http://localhost:8080/api/tickets';
+    var url = 'http://84.88.81.126:8080/api/tickets';
 
     var xhr = createCORSRequest('GET', url);
     if (!xhr) {

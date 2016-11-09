@@ -221,7 +221,7 @@ apiRoutes.get('/tickets'/*, passport.authenticate('jwt', { session: false})*/, f
       } else {*/
         Post.find({
           acceptedAnswerId: { $exists: false}
-        }, function(err, posts) {
+        }, {id: 1, title: 1}, function(err, posts) {
           if (err) throw err;
           var result = [];
             posts.forEach(function (item) {
