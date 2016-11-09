@@ -27,7 +27,7 @@ app.controller('mainController', function($scope, $http) {
     $scope.tickets = [];
     //84.88.81.126
     //localhost:8080/api/tickets
-    $http.get('http://localhost:8080/api/tickets').then(function successCallback(response) {
+    $http.get('http://84.88.81.126:8080/api/tickets').then(function successCallback(response) {
         //var values = response['data']['msg'][0];
         //alert(response);
        angular.forEach(response['data']['msg']['data'], function(value) {

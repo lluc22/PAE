@@ -231,13 +231,6 @@ apiRoutes.get('/tickets', function(req, res) {
           acceptedAnswerId: { $exists: false}
         }, {id: 1, title: 1}, function(err, posts) {
           if (err) throw err;
-          /*
-          var result = [];
-            posts.forEach(function (item) {
-                result.push({id : item['id'], title: item['title']});
-            })
-            //console.log(result);
-            */
           res.json({success: 200, msg: {"data": posts}});
         }).limit(req.params.limit).skip(req.params.skip);
 });
