@@ -223,6 +223,7 @@ apiRoutes.get('/tickets'/*, passport.authenticate('jwt', { session: false})*/, f
           acceptedAnswerId: { $exists: false}
         }, {id: 1, title: 1}, function(err, posts) {
           if (err) throw err;
+          
           var result = [];
             posts.forEach(function (item) {
                 result.push({id : item['id'], title: item['title']});
