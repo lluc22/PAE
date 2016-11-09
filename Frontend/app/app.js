@@ -25,7 +25,7 @@ app.controller('mainController', function($scope, $http) {
     // create a message to display in our view
     $scope.message = 'Lists of opened tickets';
     $scope.tickets = [];
-    $http.get('http://localhost:8080/api/tickets').then(function successCallback(response) {
+    $http.get('http://84.88.81.126:8080/api/tickets').then(function successCallback(response) {
         //var values = response['data']['msg'][0];
         //alert(response);
        angular.forEach(response['data']['msg']['data'], function(value) {
@@ -160,7 +160,7 @@ function getTitle(text) {
 // Make the actual CORS request.
 function makeCorsRequest() {
     // This is a sample server that supports CORS.
-    var url = 'http://localhost:8080/api/tickets';
+    var url = 'http://84.88.81.126:8080/api/tickets';
 
     var xhr = createCORSRequest('GET', url);
     if (!xhr) {
