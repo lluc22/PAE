@@ -232,7 +232,7 @@ apiRoutes.get('/tickets', function(req, res) {
         }, {id: 1, title: 1}, function(err, posts) {
           if (err) throw err;
           res.json({success: 200, msg: {"data": posts}});
-        }).limit(req.params.limit).skip(req.params.skip);
+        }).limit(req.headers.limit).skip(req.headers.skip);
 });
 
 apiRoutes.get('/ticket/:id', function(req, res) {
@@ -241,7 +241,7 @@ apiRoutes.get('/ticket/:id', function(req, res) {
   }, function(err, posts) {
     if (err) throw err;
     res.json({success: 200, msg: {"data": posts}});
-  }).limit(15);
+  });
 });
 
 apiRoutes.get('/user/:id', function(req, res) {
@@ -250,5 +250,5 @@ apiRoutes.get('/user/:id', function(req, res) {
   }, function(err, user) {
     if (err) throw err;
     res.json({success: 200, msg: {"data": user}});
-  }).limit(15);
+  });
 });
