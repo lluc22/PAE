@@ -237,21 +237,21 @@ apiRoutes.get('/tickets', function(req, res) {
             })
             //console.log(result);
           res.json({success: 200, msg: {"data": result}});
-        }).limit(15);
+        }).limit(req.params.limit).skip(req.params.skip);
 });
 
-apiRoutes.get('/ticket', function(req, res) {
+apiRoutes.get('/ticket/:id', function(req, res) {
   Post.find({
-    id: req.headers.id
+    id: req.params.id
   }, function(err, posts) {
     if (err) throw err;
     res.json({success: 200, msg: {"data": posts}});
   }).limit(15);
 });
 
-apiRoutes.get('/user', function(req, res) {
+apiRoutes.get('/user/:id', function(req, res) {
   UserPost.find({
-    id: req.headers.id
+    id: req.params.id
   }, function(err, user) {
     if (err) throw err;
     res.json({success: 200, msg: {"data": user}});
