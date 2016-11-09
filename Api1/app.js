@@ -178,10 +178,8 @@ var myCallback3 = function(data) {
   });
 };
 
-
-// route to a restricted info (GET http://localhost:8080/api/memberinfo)
-apiRoutes.get('/fillingdatabase', passport.authenticate('jwt', { session: false}), function(req, res) {
-  var token = getToken(req.headers);
+apiRoutes.get('/fillingdatabase', /*passport.authenticate('jwt', { session: false}), */ function(req, res) {
+  /*var token = getToken(req.headers);
   if (token) {
     var decoded = jwt.decode(token, config.secret);
     User.findOne({
@@ -191,17 +189,18 @@ apiRoutes.get('/fillingdatabase', passport.authenticate('jwt', { session: false}
 
       if (!user) {
         return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-      } else {
+      } else { */
         var parse = require('./app/services/parse');
-        console.log('/fillindatabase before parse');
+        console.log('/fillingdatabase before parse');
         parse.parse(myCallback, myCallback2);
-        console.log('/fillindatabase after parse');
+        console.log('/fillingdatabase after parse');
         res.json({success: 200, msg: {"message": "Database will be update"}});
-      }
+      /*}
     });
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
+  */
 });
 
 apiRoutes.get('/fillingusers'/*, passport.authenticate('jwt', { session: false})*/, function(req, res) {
@@ -232,7 +231,12 @@ apiRoutes.get('/tickets', function(req, res) {
           acceptedAnswerId: { $exists: false}
         }, {id: 1, title: 1}, function(err, posts) {
           if (err) throw err;
-          res.json({success: 200, msg: {"data": posts}});
+          var result = [];
+            posts.forEach(function (item) {
+                result.push({id : item['id'], title: item['title']});
+            })
+            //console.log(result);
+          res.json({success: 200, msg: {"data": result}});
         }).limit(15);
 });
 
