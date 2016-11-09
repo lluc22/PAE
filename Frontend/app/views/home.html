@@ -1,4 +1,6 @@
+
 <div class="list-group" ng-controller="mainController" id = "ticketList" >
-    <div ng-repeat="x in tickets" class="list-group-item" id="listElement"> {{x}} </div>
+    <div ng-repeat=" x in tickets" id="listElement">
+        <button class = "list-group-item" ng:click="selectTicket(x)"> {{x.title}} </button> </div>
 </div>
 

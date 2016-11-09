@@ -25,16 +25,23 @@ app.controller('mainController', function($scope, $http) {
     // create a message to display in our view
     $scope.message = 'Lists of opened tickets';
     $scope.tickets = [];
+    //84.88.81.126
+    //localhost:8080/api/tickets
     $http.get('http://localhost:8080/api/tickets').then(function successCallback(response) {
         //var values = response['data']['msg'][0];
         //alert(response);
        angular.forEach(response['data']['msg']['data'], function(value) {
            //alert(value['title']);
-           $scope.tickets.push(value['title'])
+           //console.log(value);
+           $scope.tickets.push(value);
        })
     }, function errorCallback(response) {
 
     });
+    $scope.selectTicket = function (ticket) {
+        var id = ticket['id'];
+        console.log(id);
+    }
     //var xhl = makeCorsRequest();
 
     //$scope.tickets = ["Ticket1", "Ticket2", "Ticket3", "Ticket4", "Ticket5", "Ticket6", "Ticket7", "Ticket8" ]
