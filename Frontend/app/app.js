@@ -16,7 +16,7 @@ app.config(function($routeProvider) {
         .when('/', {
             templateUrl : 'views/topics.html',
             controller  : 'topicsController'
-        });
+        })
 });
 
 
@@ -27,7 +27,9 @@ app.controller('mainController', function($scope, $http) {
     $scope.tickets = [];
     //84.88.81.126
     //localhost:8080/api/tickets
-    $http.get('http://84.88.81.126:8080/api/tickets').then(function successCallback(response) {
+    /*
+    $http.get('http://84.88.81.126:8080/api/tickets', {headers : {'limit' : 15, 'skip' : 0}})
+        .then(function successCallback(response) {
         //var values = response['data']['msg'][0];
         //alert(response);
        angular.forEach(response['data']['msg']['data'], function(value) {
@@ -37,12 +39,19 @@ app.controller('mainController', function($scope, $http) {
        })
     }, function errorCallback(response) {
 
-    });
+    });*/
     $scope.selectTicket = function (ticket) {
         var id = ticket['id'];
         console.log(id);
-    }
-    //var xhl = makeCorsRequest();
+    };
+    var xhl = makeCorsRequest();
+    console.log(xhl);
+
+    angular.forEach(xhl, function(value) {
+        //alert(value['title']);
+        //console.log(value);
+        $scope.tickets.push(value);
+    })
 
     //$scope.tickets = ["Ticket1", "Ticket2", "Ticket3", "Ticket4", "Ticket5", "Ticket6", "Ticket7", "Ticket8" ]
 });
@@ -156,12 +165,10 @@ function createCORSRequest(method, url) {
         // CORS not supported.
         xhr = null;
     }
-    return xhr;
-}
 
-// Helper method to parse the title tag from the response.
-function getTitle(text) {
-    return text.match('<title>(.*)?</title>')[1];
+    xhr.setRequestHeader('limit', 15);
+    xhr.setRequestHeader('skip', 0);
+    return xhr;
 }
 
 // Make the actual CORS request.
@@ -178,7 +185,6 @@ function makeCorsRequest() {
     // Response handlers.
     xhr.onload = function() {
         var text = xhr.responseText;
-        var title = getTitle(text);
         //alert('Response from CORS request to ' + url + ': ' + title);
     };
 
@@ -187,4 +193,6 @@ function makeCorsRequest() {
     };
 
     xhr.send();
+    return xhr.responseText;
+
 }
