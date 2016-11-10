@@ -20,15 +20,46 @@ app.config(['$locationProvider', '$routeProvider', function($locationProvider, $
         })
         .when('/ticket/:id' , {
             templateUrl : "views/ticket.html",
-            controller  : 'mainController'
+            controller  : 'ticketController'
         })
 }]);
 
+app.service('getTicket', function ($http) {
+    this.getTicketContent = function (id) {
+        return $http.get('http://84.88.81.126:8080/api/ticket/'+id)
+            .then(function successCallback(response) {
+                //var values = response['data']['msg'][0];
+                //alert(response);
+                //console.log(response['data']['msg']['data'][0]);
+                //callbackTicketContent(response)
+                //console.log(response['data']['msg']['data'][0]);
+                return response['data']['msg']['data'][0];
+
+
+            }, function errorCallback(response) {
+
+            });
+    };
+    return this;
+});
+
+
+app.controller('ticketController', function ($scope, $http, getTicket) {
+    //console.log(window.location.href);
+    var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
+    var id = string.split('/');
+    id = id[id.length-1];
+    getTicket.getTicketContent(id).then(function (resp) {
+        $scope.title = resp.title;
+        //$scope.body = resp.body;
+        document.getElementById('question').innerHTML = resp.body;
+        console.log(resp);
+    });
+});
 
 // create the controller and inject Angular's $scope
 app.controller('mainController', function($scope, $http, $location) {
     // create a message to display in our view
-    $scope.message = 'Lists of opened tickets';
     $scope.tickets = [];
     //84.88.81.126
     //localhost:8080/api/tickets
@@ -45,19 +76,23 @@ app.controller('mainController', function($scope, $http, $location) {
     }, function errorCallback(response) {
 
     });*/
+
+    /*
+    var callbackTicketContent = function (response) {
+        var json = response['data']['msg']['data'];
+        $scope.title = json[0].title;
+        $scope.$apply();
+        console.log($scope.title);
+    };
+    */
+
     $scope.selectTicket = function (ticket) {
         var id = ticket['id'];
         //console.log(id);
-        $http.get('http://84.88.81.126:8080/api/ticket/'+id)
-            .then(function successCallback(response) {
-                //var values = response['data']['msg'][0];
-                //alert(response);
-               console.log(response);
-            }, function errorCallback(response) {
-
-            });
         $location.path('ticket/'+id);
+
     };
+
     var callback = function(result) {
         var json = JSON.parse(result);
         //console.log(json['msg']['data']);
@@ -222,6 +257,7 @@ function makeCorsRequest(callback) {
 
     var xhr = createCORSRequest('GET', url, callback);
     //console.log('makeCorsRequest---> ' + xhr);
+    /*
     if (!xhr) {
        // alert('CORS not supported');
         return;
@@ -239,4 +275,5 @@ function makeCorsRequest(callback) {
     };
 
     xhr.send();
+    */
 }

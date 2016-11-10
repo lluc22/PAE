@@ -29,5 +29,10 @@
   margin-top: 2%;
 }
 
-#listElement {
+#question-header {
+  clear: both;
+  padding: 5px 0;
+  border-bottom: 1px solid #e4e6e8;
+  margin-bottom: 1em;
+
 }
