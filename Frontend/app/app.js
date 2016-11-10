@@ -3,7 +3,8 @@
 var app = angular.module('myApp', ['ngRoute', 'nvd3']);
 
 // configure our routes
-app.config(function($routeProvider) {
+app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+
     $routeProvider
         .when('/opentickets', {
             templateUrl : "views/home.html",
@@ -17,11 +18,15 @@ app.config(function($routeProvider) {
             templateUrl : 'views/topics.html',
             controller  : 'topicsController'
         })
-});
+        .when('/ticket/:id' , {
+            templateUrl : "views/ticket.html",
+            controller  : 'mainController'
+        })
+}]);
 
 
 // create the controller and inject Angular's $scope
-app.controller('mainController', function($scope, $http) {
+app.controller('mainController', function($scope, $http, $location) {
     // create a message to display in our view
     $scope.message = 'Lists of opened tickets';
     $scope.tickets = [];
@@ -51,6 +56,7 @@ app.controller('mainController', function($scope, $http) {
             }, function errorCallback(response) {
 
             });
+        $location.path('ticket/'+id);
     };
     var callback = function(result) {
         var json = JSON.parse(result);
