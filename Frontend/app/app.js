@@ -28,7 +28,7 @@ app.controller('mainController', function($scope, $http) {
     //84.88.81.126
     //localhost:8080/api/tickets
     /*
-    $http.get('http://84.88.81.126:8080/api/tickets', {headers : {'limit' : 15, 'skip' : 0}})
+    $http.get('http://84.88.81.126:8080/api/tickets')
         .then(function successCallback(response) {
         //var values = response['data']['msg'][0];
         //alert(response);
@@ -42,16 +42,32 @@ app.controller('mainController', function($scope, $http) {
     });*/
     $scope.selectTicket = function (ticket) {
         var id = ticket['id'];
-        console.log(id);
-    };
-    var xhl = makeCorsRequest();
-    console.log(xhl);
+        //console.log(id);
+        $http.get('http://84.88.81.126:8080/api/ticket/'+id)
+            .then(function successCallback(response) {
+                //var values = response['data']['msg'][0];
+                //alert(response);
+               console.log(response);
+            }, function errorCallback(response) {
 
-    angular.forEach(xhl, function(value) {
-        //alert(value['title']);
-        //console.log(value);
-        $scope.tickets.push(value);
-    })
+            });
+    };
+    var callback = function(result) {
+        var json = JSON.parse(result);
+        //console.log(json['msg']['data']);
+        angular.forEach(json['msg']['data'], function(value) {
+            //alert(value['title']);
+            //console.log(value);
+            $scope.tickets.push(value);
+            $scope.$apply();
+        })
+
+    }
+    var xhl = makeCorsRequest(callback);
+    //console.log('AQUI---> ' + xhl);
+
+
+
 
     //$scope.tickets = ["Ticket1", "Ticket2", "Ticket3", "Ticket4", "Ticket5", "Ticket6", "Ticket7", "Ticket8" ]
 });
@@ -150,10 +166,33 @@ app.controller('topicsController2', function($scope) {
 });
 
 
-
-
-function createCORSRequest(method, url) {
+function createCORSRequest(method, url, callback) {
     var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr) {
+        // XHR for Chrome/Firefox/Opera/Safari.
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest != "undefined") {
+        // XDomainRequest for IE.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        // CORS not supported.
+        xhr = null;
+    };
+    xhr.setRequestHeader('limit', 15);
+    xhr.setRequestHeader('skip', 0);
+    xhr.onreadystatechange = function () {
+        if (this.status == 200 && this.readyState == 4) {
+            var result = this.responseText;
+            //console.log('response: ' + result);
+            callback(result);
+            //return JSON.parse(result);
+        }
+    };
+    xhr.send();
+
+
+    /*
     if ("withCredentials" in xhr) {
         // XHR for Chrome/Firefox/Opera/Safari.
         xhr.open(method, url, true);
@@ -166,25 +205,26 @@ function createCORSRequest(method, url) {
         xhr = null;
     }
 
-    xhr.setRequestHeader('limit', 15);
-    xhr.setRequestHeader('skip', 0);
     return xhr;
+    */
 }
 
 // Make the actual CORS request.
-function makeCorsRequest() {
+function makeCorsRequest(callback) {
     // This is a sample server that supports CORS.
     var url = 'http://84.88.81.126:8080/api/tickets';
 
-    var xhr = createCORSRequest('GET', url);
+    var xhr = createCORSRequest('GET', url, callback);
+    //console.log('makeCorsRequest---> ' + xhr);
     if (!xhr) {
        // alert('CORS not supported');
         return;
     }
 
+    var text;
     // Response handlers.
     xhr.onload = function() {
-        var text = xhr.responseText;
+        text = xhr.responseText;
         //alert('Response from CORS request to ' + url + ': ' + title);
     };
 
@@ -193,6 +233,4 @@ function makeCorsRequest() {
     };
 
     xhr.send();
-    return xhr.responseText;
-
 }
