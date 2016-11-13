@@ -61,6 +61,7 @@ app.controller('ticketController', function ($scope, $http, getTicket) {
 app.controller('mainController', function($scope, $http, $location) {
     // create a message to display in our view
     $scope.tickets = [];
+    var clicks = 0;
     //84.88.81.126
     //localhost:8080/api/tickets
     /*
@@ -101,12 +102,30 @@ app.controller('mainController', function($scope, $http, $location) {
             //console.log(value);
             $scope.tickets.push(value);
             $scope.$apply();
+
         })
 
-    }
-    var xhl = makeCorsRequest(callback);
+    };
+    var xhl = makeCorsRequest(callback, 20, 0);
     //console.log('AQUI---> ' + xhl);
 
+    $scope.moreTickets = function () {
+        ++clicks;
+        console.log(clicks);
+        makeCorsRequest(callback2, 20, clicks*20);
+    };
+
+    var callback2 = function(result) {
+        var json = JSON.parse(result);
+        //console.log(json['msg']['data']);
+        angular.forEach(json['msg']['data'], function(value) {
+            $scope.tickets.push(value);
+            console.log(value.title);
+            $scope.$apply();
+
+        })
+
+    };
 
 
 
@@ -124,15 +143,15 @@ app.controller('topicsController', function($scope) {
             height: 450,
             margin : {
                 top: 100,
-                right: 20,
+                right: 0,
                 bottom: 50,
-                left: 350
+                left: 0
             },
             x: function(d){return d.label;},
             y: function(d){return d.value;},
             showValues: true,
             valueFormat: function(d){
-                return d3.format(',.4f')(d);
+                return d3.format(',')(d); //'.4f' 4 decimales
             },
             duration: 500,
             xAxis: {
@@ -141,7 +160,8 @@ app.controller('topicsController', function($scope) {
             yAxis: {
                 axisLabel: 'Quantity',
                 axisLabelDistance: -10
-            }
+            },
+            showAxis: true
         }
     };
 
@@ -158,7 +178,6 @@ app.controller('topicsController', function($scope) {
             { "label" : "Ruby" , "value" : 5 }
         ]
     }];
-
 });
 
 
@@ -169,7 +188,7 @@ app.controller('topicsController2', function($scope) {
             height: 500,
             margin: {
                 top: 100,
-                right: 20,
+                right: 0,
                 bottom: 50,
                 left: 0
             },
@@ -207,7 +226,7 @@ app.controller('topicsController2', function($scope) {
 });
 
 
-function createCORSRequest(method, url, callback) {
+function createCORSRequest(method, url, callback, limit, skip) {
     var xhr = new XMLHttpRequest();
     if ("withCredentials" in xhr) {
         // XHR for Chrome/Firefox/Opera/Safari.
@@ -220,8 +239,8 @@ function createCORSRequest(method, url, callback) {
         // CORS not supported.
         xhr = null;
     };
-    xhr.setRequestHeader('limit', 15);
-    xhr.setRequestHeader('skip', 0);
+    xhr.setRequestHeader('limit', limit);
+    xhr.setRequestHeader('skip', skip);
     xhr.onreadystatechange = function () {
         if (this.status == 200 && this.readyState == 4) {
             var result = this.responseText;
@@ -251,11 +270,11 @@ function createCORSRequest(method, url, callback) {
 }
 
 // Make the actual CORS request.
-function makeCorsRequest(callback) {
+function makeCorsRequest(callback, limit, skip) {
     // This is a sample server that supports CORS.
     var url = 'http://84.88.81.126:8080/api/tickets';
 
-    var xhr = createCORSRequest('GET', url, callback);
+    var xhr = createCORSRequest('GET', url, callback, limit, skip);
     //console.log('makeCorsRequest---> ' + xhr);
     /*
     if (!xhr) {

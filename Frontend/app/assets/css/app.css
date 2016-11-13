@@ -24,15 +24,9 @@
   padding-right: 0.3em;
 }
 
-#ticketList {
-  margin-left: 5%;
-  margin-top: 2%;
-}
-
-#question-header {
-  clear: both;
-  padding: 5px 0;
-  border-bottom: 1px solid #e4e6e8;
-  margin-bottom: 1em;
-
+.customContainer {
+  margin-top: 5%;
+  margin-left: 2%;
+  margin-right: 2%;
+  magin-bot: 3%;
 }
