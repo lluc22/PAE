@@ -108,9 +108,22 @@ def main():
                 print(json.dumps({"command":"load_model","ok":True}))
         if command =="get_vector":
             postId = data['id']
-            vector = list(global_model.docvecs['POST_%s' % postId])
+            vector = list(global_model.docvecs[postId])
             vector = [float(i) for i in vector]
-            print(json.dumps({"command":"get_vector","vector":vector}))
+            doct = global_model.docvecs.index_to_doctag(postId)
+            doct = int(doct.split('_')[1])
+            if postId < len(global_model.docvecs):
+                print(json.dumps({"command":"get_vector","vector":vector,"id":doct}))
+            else:
+                print(json.dumps({"command":"get_vector","vector":vector,"id":doct,"finish":True}))
+
+        if command =="topn":
+            postId = data['id']
+            n = data['n']
+            topids = global_model.docvecs.most_similar(positive=["POST_%s"%postId],topn=n)
+            topids = map(lambda post: int(post[0].split('_')[1]),topids)
+            print(json.dumps({"command":"topn","n":n,"ids":list(topids)}))
+
         data = json.loads(input())
         command = data['command']
 

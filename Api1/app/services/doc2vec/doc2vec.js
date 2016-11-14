@@ -7,10 +7,11 @@ var chunkSize = 10000
 var chunks = 1
 var c = 0
 var model_path = ""
-
+var size = 239932
+var busy = false
 //pyshell.send({command:"build_vocab"})
 pyshell.on('message', function (message) {
-  console.log(message)
+  //console.log(message)
   command = message['command']
   switch (command) {
     case "build_vocab":
@@ -51,11 +52,12 @@ pyshell.on('message', function (message) {
       else{
         model_path = message['model_path']
         console.log(model_path)
-        pyshell.send({command:'finish'})
+        busy = false
       }
       break;
     case "load_model":
       if(!message['ok']) console.log(message['err'])
+      busy = false
     default:
 
   }
@@ -65,21 +67,44 @@ pyshell.on('message', function (message) {
 
 module.exports = {
   train: function(){
-    pyshell.send({command:"build_vocab"})
+    if(!busy){
+      busy = true
+      pyshell.send({command:"build_vocab"})
+    }
   },
   load_model: function(path){
-    pyshell.send({command:"load_model",path:path})
-  },
-  vectors: function(id){
-
-    pyshell.on('message',function(message){
-    command = message['command']
-    if(command == "get-vector"){
-      return message['vector']
+    if(!busy){
+      busy = true
+      pyshell.send({command:"load_model",path:path})
     }
-    });
-    pyshell.send({command:"get-vector",id:id})
+  },
+  vectors: function(fillVectorCallback){
+    if(!busy){
+      busy = true
+      pyshell.on('message',function(message){
+        command = message['command']
+        if(command == "get_vector"){
+          fillVectorCallback({id:message['id'],vector:message['vector']})
+          if(message['finish']) busy = false
+        }
+      });
+      for(i = 0; i < size; i++) pyshell.send({command:"get_vector",id:i});
+    }
+  },
+
+  topn_similar: function(id,topn,fillIdCallback){
+    if(!busy){
+      busy = true
+      pyshell.on('message',function(message){
+        command = message['command']
+        if(command == "topn"){
+          fillIdCallback(message['ids'])
+        }
+      });
+      pyshell.send({command:"topn",n:topn,id:id})
+    }
   }
+
 }
 
 /*
