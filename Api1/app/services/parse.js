@@ -8,7 +8,7 @@ var XmlStream = require('xml-stream');
  */
 module.exports = {
     parse: function(callback, callback2) {
-        var stream=fs.createReadStream('../DataSet/Posts.xml');
+        var stream=fs.createReadStream('./app/services/DataSet/Posts.xml');
         var xml = new XmlStream(stream);
         var jsonArray = [];
         xml.on('endElement: row', function(item) {
