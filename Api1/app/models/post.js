@@ -45,9 +45,9 @@ var PostSchema = new Schema({
         ownerId: String,
         body: String
     }],
-    vector: {
-        type: String
-    }
+    vector: [{
+        numbe: String
+    }]
 });
 
 module.exports = mongoose.model('Post', PostSchema);
