@@ -30,3 +30,26 @@
   margin-right: 2%;
   magin-bot: 3%;
 }
+
+#answers-content {
+    clear: both;
+    padding-top: 10px;
+    width: 728px;
+    border-bottom: 1px solid #e4e6e8;
+    margin-left: 4%;
+}
+
+#answers-header {
+    margin-top: 10px;
+    width: 728px;
+    margin-top:5%;
+}
+
+.user {
+    vertical-align: center;
+    padding-right: 15px;
+}
+
+.answercell {
+    vertical-align: top;
+}

@@ -43,8 +43,27 @@ app.service('getTicket', function ($http) {
     return this;
 });
 
+app.service('getUser', function ($http) {
+    this.getUserInfo = function (id) {
+        return $http.get('http://84.88.81.126:8080/api/user/'+id)
+            .then(function successCallback(response) {
+                //var values = response['data']['msg'][0];
+                //alert(response);
+                //console.log(response['data']['msg']['data'][0]);
+                //callbackTicketContent(response)
+                //console.log(response['data']['msg']['data'][0]);
+                return response['data']['msg']['data'][0];
 
-app.controller('ticketController', function ($scope, $http, getTicket) {
+
+            }, function errorCallback(response) {
+
+            });
+    };
+    return this;
+});
+
+
+app.controller('ticketController', function ($scope, $http, getTicket, getUser) {
     //console.log(window.location.href);
     var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
     var id = string.split('/');
@@ -53,7 +72,27 @@ app.controller('ticketController', function ($scope, $http, getTicket) {
         $scope.title = resp.title;
         //$scope.body = resp.body;
         document.getElementById('question').innerHTML = resp.body;
-        console.log(resp);
+        document.getElementById('answers-header').innerHTML = "<h4>" + resp.answers.length + " Answers </h4>";
+        if (resp.answers.length>0) {
+            for (var i=0; i< resp.answers.length; ++i) {
+                getUser.getUserInfo(resp.answers[i].ownerId).then(function (resp2) {
+                    document.getElementById('answers-content').innerHTML +=
+                        "<table><tbody><tr><td class='user'>" + resp2.displayName +"</td><td class='answercell'>" + resp.answers[i].body +
+                        "</td></tr></tbody></table>";
+                });
+
+                /*
+                document.getElementById('answers-content').innerHTML +=
+                    "<table><tbody><tr><td class='user'>" + resp.answers[i].ownerId +"</td><td class='answercell'>" + resp.answers[i].body +
+                    "</td></tr></tbody></table>";
+
+                    */
+
+            }
+
+        }
+
+        //console.log(resp);
     });
 });
 
@@ -111,7 +150,7 @@ app.controller('mainController', function($scope, $http, $location) {
 
     $scope.moreTickets = function () {
         ++clicks;
-        console.log(clicks);
+        //console.log(clicks);
         makeCorsRequest(callback2, 20, clicks*20);
     };
 
@@ -120,7 +159,7 @@ app.controller('mainController', function($scope, $http, $location) {
         //console.log(json['msg']['data']);
         angular.forEach(json['msg']['data'], function(value) {
             $scope.tickets.push(value);
-            console.log(value.title);
+            //console.log(value.title);
             $scope.$apply();
 
         })
