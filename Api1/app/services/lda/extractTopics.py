@@ -2,8 +2,10 @@
 #import logging
 #logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
+import time
 import sys
 import os.path
+import json
 from gensim import corpora, models, parsing
 
 pathLDAModel = "LDAModel.lda"	# The LDA Model to save or load
@@ -12,10 +14,13 @@ lda = None						# LDA model Global variable
 
 command = sys.argv[1]
 if command == 'update':
-	# Update the LDA Model with the documents passed as argument	
-	
+	# Update the LDA Model with the documents passed as argument		
+	start_time = time.time()
 	# Get the documents to update the model as array of Strings
-	documents = sys.argv[2:]
+	dataIn = raw_input()
+	dataJson = json.loads(dataIn)
+	documents = dataJson['posts']
+	print '{"recived" : "' + str(len(documents)) + '" }'
 	# Preprocess the documents, stemming, stopwords, etc ..
 	docs = parsing.preprocessing.preprocess_documents(documents)
 	# Create the dictionary of docs
@@ -35,7 +40,8 @@ if command == 'update':
 
 	# Save the Model with the new data
 	lda.save(pathLDAModel)
-	print "Done"
+	elapsed_time = time.time() - start_time
+	print '{"status":"OK" , "elapsedTime" : "' + str(elapsed_time)+ '"}'
 
 
 elif command == 'delete':
@@ -44,7 +50,7 @@ elif command == 'delete':
 		os.remove(pathLDAModel)
 	if os.path.isfile(pathLDAModel + ".state") :
 		os.remove(pathLDAModel + ".state")
-	print "Done"
+	print '{"status":"OK"}'
 
 	
 elif command == 'getTopics':
@@ -52,18 +58,24 @@ elif command == 'getTopics':
 
 	# Check if the LDA Model exists
 	if not os.path.isfile(pathLDAModel) :
-		print "NoExistingModel"
+		print '{"status":"NoExistingModel"}'
 		exit()
 
 
-	print "TODO"
+	print '{"status":"OK"}'
 
 	
 elif command == 'topicsOf':
 	# Return the topic of document
-	print "TODO"
+
+	# Check if the LDA Model exists
+	if not os.path.isfile(pathLDAModel) :
+		print '{"status":"NoExistingModel"}'
+		exit()
+
+	print '{"status":"OK"}'
 
 
 else:
 	# Error command or syntaxis in the first argument
-	print "Error Argument Command Syntax : " + command
+	print '{"status":"Error Argument Command Syntax = ' + command +'"}'
