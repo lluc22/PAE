@@ -38,8 +38,5 @@ module.exports = {
                 callback2(json);
             }
         });
-        xml.on('end',function(msg){
-          callback('end')
-        })
     }
 }
