@@ -16,9 +16,9 @@ var count = 0;
 
 var myCallback = function(data) {
 
-    if (count < 10000) {
+    if (count < 1000) {
         documentos.posts.push(data['body']);
-        if (documentos.posts.length % 1000 == 0) {
+        if (documentos.posts.length % 100 == 0) {
             console.log('doccument ' + count );
         }
         count++;
@@ -30,25 +30,38 @@ setTimeout(updateModel, 5000);
 
 
 // update the model
-function updateModel(docs) {
+function updateModel() {
 
-    var docs = documentos;
+    /*var docs = documentos;
     console.log('SIZEOFDOCS ' + docs.posts.length);
+    var n = documentos.length;
+    console.log('SIZE_OF_DOCS ' + n);
 
+    var SIZE_CHUNKS = 100;
+    var ITERS = (n / SIZE_CHUNKS) + 1;
+
+    var chunk = 0;
     var shell = new PythonShell(PythonName, { mode: 'json', args:['update']});
-    shell.send(docs);
+
+    shell.send({command:'run', posts:docs.posts.slice(0, SIZE_CHUNKS)});
 
     shell.on('message', function (message) {
-        // received a message sent from the Python script (a simple "print" statement)
+        console.log('MESSAGE = ');
         console.log(message);
+        var start = chunk * SIZE_CHUNKS;
+        var end = start + SIZE_CHUNKS;
+        if (end > docs.posts.length)
+            end = docs.posts.length;
+        if (chunk < ITERS) {
+            shell.send({command:'run', posts:docs.posts.slice(start, end)});
+        }
+        chunk++;
+
     });
 
-    shell.end(function (err) {
-        if (err) throw err;
-        console.log('finished Python');
-    });
 
-    console.log('end');
+
+    console.log('end');*/
 
 }
 

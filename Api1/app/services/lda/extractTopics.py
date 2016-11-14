@@ -9,7 +9,7 @@ import json
 from gensim import corpora, models, parsing
 
 pathLDAModel = "LDAModel.lda"	# The LDA Model to save or load
-T = 5							# Number Of Topics to extract
+T = 10							# Number Of Topics to extract
 lda = None						# LDA model Global variable
 
 command = sys.argv[1]
@@ -17,26 +17,26 @@ if command == 'update':
 	# Update the LDA Model with the documents passed as argument		
 	start_time = time.time()
 	# Get the documents to update the model as array of Strings
-	dataIn = raw_input()
-	dataJson = json.loads(dataIn)
-	documents = dataJson['posts']
-	print '{"recived" : "' + str(len(documents)) + '" }'
-	# Preprocess the documents, stemming, stopwords, etc ..
-	docs = parsing.preprocessing.preprocess_documents(documents)
-	# Create the dictionary of docs
-	dictionary = corpora.Dictionary(docs)
-	# Create the corpus of docs
-	corpus = [dictionary.doc2bow(d) for d in docs]
+	dictionary = corpora.Dictionary()
 
-	# Check if the model exists, for create or update
-	if not os.path.isfile(pathLDAModel) :
-		# Multi Core
-		lda = models.ldamulticore.LdaMulticore(corpus=corpus, id2word=dictionary, num_topics=T)
-		# Single Core
-		#lda = models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=T)
-	else:
-		lda = models.ldamodel.LdaModel.load(pathLDAModel)
-		lda.update(corpus)
+	numChunks = 0
+	dataJson = json.loads(input())
+	command = dataJson['command']
+	while command != 'finish':
+		documents = dataJson['posts']
+		docs = parsing.preprocessing.preprocess_documents(documents)
+		dictionary.add_documents(docs)
+		corpus = [dictionary.doc2bow(d) for d in docs]
+		corpora.MmCorpus.serialize('corpus/c' + str(numChunks), corpus)  # store to disk, for later use
+		print '{"status":"OK"}'
+
+	corpus = gensim.corpora.MmCorpus('corpus/c' + numChunks)
+	lda = models.ldamulticore.LdaMulticore(corpus=corpus, id2word=dictionary, num_topics=T)
+	
+	for ci in range(numChunks):
+		print '{"chunk":"'+ str(ci) +'"}'
+		corpus = gensim.corpora.MmCorpus('corpus/c' + ci)
+ 		lda.update(corpus)
 
 	# Save the Model with the new data
 	lda.save(pathLDAModel)
