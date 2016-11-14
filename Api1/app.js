@@ -140,9 +140,11 @@ getToken = function (headers) {
   }
 };
 
+
 var myCallback = function(data) {
   var newPost = new Post({
     id: data['id'],
+    acceptedAnswerId: data['acceptedAnswerId'],
     creationDate: data['creationDate'],
     body: data['body'],
     ownerUserId: data['ownerUserId'],
@@ -180,6 +182,7 @@ var myCallback2 = function(data) {
   });
 };
 
+
 var myCallback3 = function(data) {
   var newUser = new UserPost({
     id: data['id'],
@@ -191,51 +194,26 @@ var myCallback3 = function(data) {
   });
 };
 
-apiRoutes.get('/fillingdatabase', /*passport.authenticate('jwt', { session: false}), */ function(req, res) {
-  /*var token = getToken(req.headers);
-  if (token) {
-    var decoded = jwt.decode(token, config.secret);
-    User.findOne({
-      name: decoded.name
-    }, function(err, user) {
-      if (err) throw err;
-
-      if (!user) {
-        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-      } else { */
+apiRoutes.get('/fillingdatabase',  function(req, res) {
         var parse = require('./app/services/parse');
         console.log('/fillingdatabase before parse');
         parse.parse(myCallback, myCallback2);
         console.log('/fillingdatabase after parse');
         res.json({success: 200, msg: {"message": "Database will be update"}});
-      /*}
-    });
-  } else {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }
-  */
 });
 
-apiRoutes.get('/fillingusers'/*, passport.authenticate('jwt', { session: false})*/, function(req, res) {
-  /*var token = getToken(req.headers);
-  if (token) {
-    var decoded = jwt.decode(token, config.secret);
-    User.findOne({
-      name: decoded.name
-    }, function(err, user) {
-      if (err) throw err;
+apiRoutes.get('/testfillingdatabase', function(req, res) {
+  var parse2 = require('./testing/parseTest');
+  console.log('/fillingdatabase before parse');
+  parse2.parse(myCallback, myCallback2);
+  console.log('/fillingdatabase after parse');
+  res.json({success: 200, msg: {"message": "Database will be update"}});
+});
 
-      if (!user) {
-        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-      } else {*/
+apiRoutes.get('/fillingusers', function(req, res) {
         var parse = require('./app/services/parseUsers');
         parse.parse(myCallback3);
         res.json({success: 200, msg: {"message": "Database will be update"}});
-      /*}
-    });
-  } else {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }*/
 });
 
 //tiquets
