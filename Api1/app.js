@@ -195,25 +195,25 @@ var myCallback3 = function(data) {
 };
 
 apiRoutes.get('/fillingposts',  function(req, res) {
-        var parse = require('./app/services/parse');
+        /*var parse = require('./app/services/parse');
         console.log('/fillingdatabase before parse');
         parse.parse(myCallback, myCallback2);
         console.log('/fillingdatabase after parse');
-        res.json({success: 200, msg: {"message": "Database will be update"}});
+        res.json({success: 200, msg: {"message": "Database will be update"}});*/
 });
 
 apiRoutes.get('/testfillingdatabase', function(req, res) {
-  var parse2 = require('./testing/parseTest');
+  /*var parse2 = require('./testing/parseTest');
   console.log('/fillingdatabase before parse');
   parse2.parse(myCallback, myCallback2);
   console.log('/fillingdatabase after parse');
-  res.json({success: 200, msg: {"message": "Database will be update"}});
+  res.json({success: 200, msg: {"message": "Database will be update"}});*/
 });
 
 apiRoutes.get('/fillingusers', function(req, res) {
-        var parse = require('./app/services/parseUsers');
+        /*var parse = require('./app/services/parseUsers');
         parse.parse(myCallback3);
-        res.json({success: 200, msg: {"message": "Database will be update"}});
+        res.json({success: 200, msg: {"message": "Database will be update"}});*/
 });
 
 //tiquets
