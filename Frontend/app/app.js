@@ -44,15 +44,17 @@ app.service('getTicket', function ($http) {
 });
 
 app.service('getUser', function ($http) {
-    this.getUserInfo = function (id) {
+    this.getUserInfo = function (id, vec) {
         return $http.get('http://localhost:8080/api/user/'+id)
             .then(function successCallback(response) {
                 //var values = response['data']['msg'][0];
                 //alert(response);
                 //console.log(response['data']['msg']['data'][0]);
                 //callbackTicketContent(response)
-                //console.log(response['data']['msg']['data'][0]);
+                //console.log(response);
+
                 return response['data']['msg']['data'][0];
+
 
 
             }, function errorCallback(response) {
@@ -60,6 +62,7 @@ app.service('getUser', function ($http) {
             });
     };
     return this;
+
 });
 
 
@@ -67,33 +70,60 @@ app.controller('ticketController', function ($scope, $http, getTicket, getUser) 
     //console.log(window.location.href);
     var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
     var id = string.split('/');
-    id = id[id.length-1];
+    var a =  [];
+    id = id[id.length - 1];
+    //var namesId = [];
+    var vec = function () {
+        //console.log("length-->" +a.length);
+        if(a.length == answers){
+
+            for(var i =0; i<a.length;++i)
+                document.getElementsByClassName('user')[i].innerHTML = a[i];
+        }
+    };
+    var answers;
     getTicket.getTicketContent(id).then(function (resp) {
+        answers = resp.answers.length;
         $scope.title = resp.title;
         //$scope.body = resp.body;
         document.getElementById('question').innerHTML = resp.body;
         document.getElementById('answers-header').innerHTML = "<h4>" + resp.answers.length + " Answers </h4>";
-        if (resp.answers.length>0) {
-            for (var i=0; i< resp.answers.length; ++i) {
-                getUser.getUserInfo(resp.answers[i].ownerId).then(function (resp2) {
-                    document.getElementById('answers-content').innerHTML +=
-                        "<table><tbody><tr><td class='user'>" + resp2.displayName +"</td><td class='answercell'>" + resp.answers[i].body +
-                        "</td></tr></tbody></table>";
-                });
+        if (resp.answers.length > 0) {
+            for (var i = 0; i < resp.answers.length; ++i) {
+                document.getElementById('answers-content').innerHTML +=
+                    "<table><tbody><tr><td class='user'></td><td class='answercell'>" +
+                    "</td></tr></tbody></table>";
+                document.getElementsByClassName('answercell')[i].innerHTML = resp.answers[i].body;
+                //document.getElementsByClassName('user')[i].innerHTML = resp.answers[i].ownerId;
+                //namesId.push(resp.answers[i].owenerId);
+
+                 getUser.getUserInfo(resp.answers[i].ownerId,vec).then(function (resp2) {
+                     a.push(resp2.displayName);
+                     vec();
+                    console.log(resp2.displayName);
+                 //console.log(names);
+
+
+                 });
+
+
+
 
                 /*
-                document.getElementById('answers-content').innerHTML +=
-                    "<table><tbody><tr><td class='user'>" + resp.answers[i].ownerId +"</td><td class='answercell'>" + resp.answers[i].body +
-                    "</td></tr></tbody></table>";
+                 document.getElementById('answers-content').innerHTML +=
+                 "<table><tbody><tr><td class='user'>" + resp.answers[i].ownerId +"</td><td class='answercell'>" + resp.answers[i].body +
+                 "</td></tr></tbody></table>";
 
-                    */
+                 */
 
             }
 
         }
-
-        //console.log(resp);
     });
+
+    /*
+    }*/
+
 });
 
 // create the controller and inject Angular's $scope
@@ -145,7 +175,7 @@ app.controller('mainController', function($scope, $http, $location) {
         })
 
     };
-    var xhl = makeCorsRequest(callback, 20, 0);
+    makeCorsRequest(callback, 20, 0);
     //console.log('AQUI---> ' + xhl);
 
     $scope.moreTickets = function () {
