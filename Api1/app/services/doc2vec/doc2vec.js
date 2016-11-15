@@ -1,6 +1,6 @@
 var PythonShell = require('python-shell');
 var Parser = require('../parse.js')
-var pyshell = new PythonShell('doc2vec.py',{ mode: 'json', pythonPath:'/usr/bin/python3'});
+var pyshell = new PythonShell('./app/services/doc2vec/doc2vec.py',{ mode: 'json', pythonPath:'/usr/local/bin/python3'});
 var fs = require('fs');
 // sends a message to the Python script via stdin
 var chunkSize = 10000
@@ -109,6 +109,7 @@ module.exports = {
       pyshell.on('message',function(message){
         command = message['command']
         if(command == "topn"){
+          console.log("doc2vec.Resp" + message['ids']);
           fillIdCallback(message['ids'])
         }
       });

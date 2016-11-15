@@ -94,7 +94,7 @@ class LabeledSentence(object):
                 yield LabeledSentence(words= text, labels=['POST_%s' % postId])
 
 def save_model(model):
-    dirname = 'models/'
+    dirname = './app/services/doc2vec/models/'
     soft_name = str(uuid4())
     model_name = soft_name + '.d2v'
     mPath = os.path.join(dirname,soft_name,model_name)
@@ -113,7 +113,7 @@ def train_model(model,sentences):
             model.train(sentences.random_iter())
             alpha -= alpha_delta
 def main():
-    global_model = Doc2Vec.load('models/default/default.d2v')
+    global_model = Doc2Vec.load('./app/services/doc2vec/models/default/default.d2v')
     data =  json.loads(input())
     command = data['command']
     while command != "finished":
