@@ -194,7 +194,7 @@ var myCallback3 = function(data) {
   });
 };
 
-apiRoutes.get('/fillingdatabase',  function(req, res) {
+apiRoutes.get('/fillingposts',  function(req, res) {
         var parse = require('./app/services/parse');
         console.log('/fillingdatabase before parse');
         parse.parse(myCallback, myCallback2);
@@ -235,6 +235,31 @@ apiRoutes.get('/ticket/:id', function(req, res) {
   });
 });
 
+
+var doc2vecCallback = function(data) {
+  var newPost = new Post({
+    id: data['id'],
+    acceptedAnswerId: data['acceptedAnswerId'],
+    creationDate: data['creationDate'],
+    body: data['body'],
+    ownerUserId: data['ownerUserId'],
+    closedDate: data['closedDate'],
+    title: data['title'],
+    tags: data['tags']
+  });
+
+};
+
+
+apiRoutes.get('/ticket/:id/related', function(req, res) {
+  var doc2vecCallback = function(data) {
+    res.json({success: 200, msg: {"data": data['ids']}});
+  };
+  var doc2vec = require('./app/services/doc2vec/doc2vec');
+  doc2vec.topn_similar(req.params.id, 20, doc2vecCallback);
+});
+
+//users
 apiRoutes.get('/user/:id', function(req, res) {
   UserPost.find({
     id: req.params.id
@@ -243,3 +268,4 @@ apiRoutes.get('/user/:id', function(req, res) {
     res.json({success: 200, msg: {"data": user}});
   });
 });
+

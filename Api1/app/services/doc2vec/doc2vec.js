@@ -1,6 +1,6 @@
 var PythonShell = require('python-shell');
 var Parser = require('../parse.js')
-var pyshell = new PythonShell('doc2vec.py',{ mode: 'json'});
+var pyshell = new PythonShell('./app/services/doc2vec/doc2vec.py',{ mode: 'json'});
 var fs = require('fs');
 // sends a message to the Python script via stdin
 var chunkSize = 10000
