@@ -16,18 +16,19 @@ var count = 0;
 
 var myCallback = function(data) {
 
-    if (count < 10000) {
-        documentos.posts.push(data['body']);
-        if (documentos.posts.length % 1000 == 0) {
-            console.log('doccument ' + count );
-        }
-        count++;
+    documentos.posts.push(data['body']);
+    count++;
+
+    if (documentos.posts.length % 1000 == 0) {
+        console.log('doccument ' + count );
     }
+
 };
 var myCallback2 = function(data) {};
-parse.parse(myCallback, myCallback2);
-setTimeout(updateModel, 5000);
-
+//parse.parse(myCallback, myCallback2);
+//setTimeout(updateModel, 35000);
+getTopics();
+//deleteModel();
 
 // update the model
 function updateModel() {
@@ -36,11 +37,11 @@ function updateModel() {
     var n = docs.posts.length;
     console.log('SIZE_OF_DOCS ' + n);
 
-    var SIZE_CHUNKS = 1000;
+    var SIZE_CHUNKS = 10000;
     var ITERS = (n / SIZE_CHUNKS) + 1;
 
     var chunk = 0;
-    var shell = new PythonShell(PythonName, { mode: 'json', args:['update']});
+    var shell = new PythonShell(PythonName, { mode: 'json', args:['create']});
 
     shell.send({op:'run', posts:docs.posts.slice(0, SIZE_CHUNKS)});
 
@@ -62,21 +63,21 @@ function updateModel() {
             }
             chunk++;
         }
-
     });
+}
 
-    console.log('end');
-
+function getTopics() {
+    PythonShell.run(PythonName, { mode: 'json', args:['getTopics']} ,  function (err, results) {
+        if (err) throw err;
+        // results is an array consisting of messages collected during execution
+        console.log(results);
+    });
 }
 
 function deleteModel() {
-
-    var arguments = ['getTopics'];
-
-    PythonShell.run(PythonName, {args: arguments}, function (err, results) {
+    PythonShell.run(PythonName, {  args:['delete']} ,  function (err, results) {
         if (err) throw err;
         // results is an array consisting of messages collected during execution
-        console.log('results: %j', results);
+        console.log(results);
     });
-
 }
