@@ -4,7 +4,7 @@ var pyshell = new PythonShell('doc2vec.py',{ mode: 'json', pythonPath:'/usr/bin/
 var fs = require('fs');
 // sends a message to the Python script via stdin
 var chunkSize = 10000
-var chunks = 23
+var chunks = 24
 var c = 0
 var model_path = ""
 var size = 239932
