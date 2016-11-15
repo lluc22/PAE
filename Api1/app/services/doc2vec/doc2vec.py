@@ -2,6 +2,7 @@ import gensim
 import json
 import os.path
 import sys
+from bs4 import BeautifulSoup
 import random
 import datetime
 from gensim.models import Doc2Vec
@@ -19,6 +20,31 @@ cur_version = sys.version_info
 if cur_version < req_version:
     raise Exception("Python version requiered " + str(req_version))
 
+def normalize(text):
+    parser = BeautifulSoup(text,'html.parser')
+
+    # #Replace any code with "A_CODE"
+    # if not parser.code is None:
+    #     if not parser.code.string is None:
+    #         parser.code.string.replace_with("A_CODE")
+
+    #Replace any link with "A_LINK"
+    if not parser.a is None:
+        if not parser.a.string is None:
+            parser.a.string.replace_with("A_LINK")
+
+    text = parser.get_text()
+
+    norm_text = text.lower()
+
+    # Replace breaks with spaces
+    norm_text = norm_text.replace('<br />', ' ')
+
+    # Pad punctuation with spaces on both sides
+    for char in ['.', '"', ',', '(', ')', '!', '?', ';', ':']:
+        norm_text = norm_text.replace(char, ' ' + char + ' ')
+
+    return norm_text
 
 
 class LabeledSentence(object):
@@ -42,7 +68,7 @@ class LabeledSentence(object):
             self.chunks += 1
             for i,post in enumerate(posts):
                 self.total_posts += 1
-                text = list(gensim.utils.tokenize(post["body"]))
+                text = list(gensim.utils.tokenize(normalize(post["body"])))
                 postId = post["id"]
                 yield LabeledSentence(words= text, labels=['POST_%s' % postId])
             print(json.dumps(anws))
@@ -63,7 +89,7 @@ class LabeledSentence(object):
             random.shuffle(indexList)
             for i in indexList:
                 post = posts[i]
-                text = list(gensim.utils.tokenize(post["body"]))
+                text = list(gensim.utils.tokenize(normalize(post["body"])))
                 postId = post["id"]
                 yield LabeledSentence(words= text, labels=['POST_%s' % postId])
 
@@ -95,7 +121,7 @@ def main():
             sentences = LabeledSentence()
             model = Doc2Vec(dm=1, dm_mean=1, size=100, window=10, negative=5, hs=0, min_count=2, workers=cores)
             model.build_vocab(sentences)
-            #train_model(model,sentences)
+            train_model(model,sentences)
             path = save_model(model)
             print(json.dumps({"command":"train","finished":True,"model_path":path}))
         if command =="load_model":
