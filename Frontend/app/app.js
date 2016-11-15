@@ -26,7 +26,7 @@ app.config(['$locationProvider', '$routeProvider', function($locationProvider, $
 
 app.service('getTicket', function ($http) {
     this.getTicketContent = function (id) {
-        return $http.get('http://84.88.81.126:8080/api/ticket/'+id)
+        return $http.get('http://localhost:8080/api/ticket/'+id)
             .then(function successCallback(response) {
                 //var values = response['data']['msg'][0];
                 //alert(response);
@@ -43,18 +43,87 @@ app.service('getTicket', function ($http) {
     return this;
 });
 
+app.service('getUser', function ($http) {
+    this.getUserInfo = function (id, vec) {
+        return $http.get('http://localhost:8080/api/user/'+id)
+            .then(function successCallback(response) {
+                //var values = response['data']['msg'][0];
+                //alert(response);
+                //console.log(response['data']['msg']['data'][0]);
+                //callbackTicketContent(response)
+                //console.log(response);
 
-app.controller('ticketController', function ($scope, $http, getTicket) {
+                return response['data']['msg']['data'][0];
+
+
+
+            }, function errorCallback(response) {
+
+            });
+    };
+    return this;
+
+});
+
+
+app.controller('ticketController', function ($scope, $http, getTicket, getUser) {
     //console.log(window.location.href);
     var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
     var id = string.split('/');
-    id = id[id.length-1];
+    var a =  [];
+    id = id[id.length - 1];
+    //var namesId = [];
+    var vec = function () {
+        //console.log("length-->" +a.length);
+        if(a.length == answers){
+
+            for(var i =0; i<a.length;++i)
+                document.getElementsByClassName('user')[i].innerHTML = a[i];
+        }
+    };
+    var answers;
     getTicket.getTicketContent(id).then(function (resp) {
+        answers = resp.answers.length;
         $scope.title = resp.title;
         //$scope.body = resp.body;
         document.getElementById('question').innerHTML = resp.body;
-        console.log(resp);
+        document.getElementById('answers-header').innerHTML = "<h4>" + resp.answers.length + " Answers </h4>";
+        if (resp.answers.length > 0) {
+            for (var i = 0; i < resp.answers.length; ++i) {
+                document.getElementById('answers-content').innerHTML +=
+                    "<table><tbody><tr><td class='user'></td><td class='answercell'>" +
+                    "</td></tr></tbody></table>";
+                document.getElementsByClassName('answercell')[i].innerHTML = resp.answers[i].body;
+                //document.getElementsByClassName('user')[i].innerHTML = resp.answers[i].ownerId;
+                //namesId.push(resp.answers[i].owenerId);
+
+                 getUser.getUserInfo(resp.answers[i].ownerId,vec).then(function (resp2) {
+                     a.push(resp2.displayName);
+                     vec();
+                    console.log(resp2.displayName);
+                 //console.log(names);
+
+
+                 });
+
+
+
+
+                /*
+                 document.getElementById('answers-content').innerHTML +=
+                 "<table><tbody><tr><td class='user'>" + resp.answers[i].ownerId +"</td><td class='answercell'>" + resp.answers[i].body +
+                 "</td></tr></tbody></table>";
+
+                 */
+
+            }
+
+        }
     });
+
+    /*
+    }*/
+
 });
 
 // create the controller and inject Angular's $scope
@@ -106,12 +175,12 @@ app.controller('mainController', function($scope, $http, $location) {
         })
 
     };
-    var xhl = makeCorsRequest(callback, 20, 0);
+    makeCorsRequest(callback, 20, 0);
     //console.log('AQUI---> ' + xhl);
 
     $scope.moreTickets = function () {
         ++clicks;
-        console.log(clicks);
+        //console.log(clicks);
         makeCorsRequest(callback2, 20, clicks*20);
     };
 
@@ -120,7 +189,7 @@ app.controller('mainController', function($scope, $http, $location) {
         //console.log(json['msg']['data']);
         angular.forEach(json['msg']['data'], function(value) {
             $scope.tickets.push(value);
-            console.log(value.title);
+            //console.log(value.title);
             $scope.$apply();
 
         })
@@ -272,8 +341,9 @@ function createCORSRequest(method, url, callback, limit, skip) {
 // Make the actual CORS request.
 function makeCorsRequest(callback, limit, skip) {
     // This is a sample server that supports CORS.
-    var url = 'http://84.88.81.126:8080/api/tickets';
+    //var url = 'http://84.88.81.126:8080/api/tickets';
 
+    var url = 'http://localhost:8080/api/tickets';
     var xhr = createCORSRequest('GET', url, callback, limit, skip);
     //console.log('makeCorsRequest---> ' + xhr);
     /*

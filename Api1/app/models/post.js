@@ -46,7 +46,7 @@ var PostSchema = new Schema({
         body: String
     }],
     vector: [{
-        numbe: String
+        number: String
     }]
 });
 

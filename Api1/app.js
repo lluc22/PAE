@@ -223,7 +223,7 @@ apiRoutes.get('/tickets', function(req, res) {
         }, {id: 1, title: 1}, function(err, posts) {
           if (err) throw err;
           res.json({success: 200, msg: {"data": posts}});
-        }).limit(req.headers.limit).skip(req.headers.skip);
+        }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
 });
 
 apiRoutes.get('/ticket/:id', function(req, res) {
