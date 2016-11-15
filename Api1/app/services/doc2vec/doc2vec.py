@@ -95,7 +95,7 @@ def main():
             sentences = LabeledSentence()
             model = Doc2Vec(dm=1, dm_mean=1, size=100, window=10, negative=5, hs=0, min_count=2, workers=cores)
             model.build_vocab(sentences)
-            #train_model(model,sentences)
+            train_model(model,sentences)
             path = save_model(model)
             print(json.dumps({"command":"train","finished":True,"model_path":path}))
         if command =="load_model":

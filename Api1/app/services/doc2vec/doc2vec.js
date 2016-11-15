@@ -4,14 +4,14 @@ var pyshell = new PythonShell('doc2vec.py',{ mode: 'json'});
 var fs = require('fs');
 // sends a message to the Python script via stdin
 var chunkSize = 10000
-var chunks = 1
+var chunks = 23
 var c = 0
 var model_path = ""
 var size = 239932
 var busy = false
 //pyshell.send({command:"build_vocab"})
 pyshell.on('message', function (message) {
-  //console.log(message)
+  console.log(message)
   command = message['command']
   switch (command) {
     case "build_vocab":
@@ -49,15 +49,9 @@ pyshell.on('message', function (message) {
           pyshell.send({command:"train",posts:posts})
         });
       }
-      else{
-        model_path = message['model_path']
-        console.log(model_path)
-        busy = false
-      }
+
       break;
-    case "load_model":
-      if(!message['ok']) console.log(message['err'])
-      busy = false
+
     default:
 
   }
@@ -66,16 +60,33 @@ pyshell.on('message', function (message) {
 
 
 module.exports = {
-  train: function(){
+  train: function(givePathCallback){
     if(!busy){
       busy = true
       pyshell.send({command:"build_vocab"})
+      pyshell.on('message', function(message){
+        if(message['command'] == 'train'){
+            if(message['finished']){
+            model_path = message['model_path']
+            givePathCallback(model_path)
+            busy = false
+            }
+        }
+      });
     }
   },
-  load_model: function(path){
+  load_model: function(path,okCallBack){
     if(!busy){
       busy = true
       pyshell.send({command:"load_model",path:path})
+      pyshell.on('message',function(message){
+          if(message['command'] == 'load_model'){
+              if(!message['ok']) console.log(message['err'])
+              busy = false
+              console.log("model loaded")
+              okCallBack()
+            }
+      });
     }
   },
   vectors: function(fillVectorCallback){
