@@ -30,22 +30,39 @@ setTimeout(updateModel, 5000);
 
 
 // update the model
-function updateModel(docs) {
+function updateModel() {
 
     var docs = documentos;
-    console.log('SIZEOFDOCS ' + docs.posts.length);
+    var n = docs.posts.length;
+    console.log('SIZE_OF_DOCS ' + n);
 
+    var SIZE_CHUNKS = 1000;
+    var ITERS = (n / SIZE_CHUNKS) + 1;
+
+    var chunk = 0;
     var shell = new PythonShell(PythonName, { mode: 'json', args:['update']});
-    shell.send(docs);
+
+    shell.send({op:'run', posts:docs.posts.slice(0, SIZE_CHUNKS)});
+
+    var complete = false;
 
     shell.on('message', function (message) {
-        // received a message sent from the Python script (a simple "print" statement)
+        console.log('MESSAGE = ');
         console.log(message);
-    });
+        if (! complete) {
+            var start = chunk * SIZE_CHUNKS;
+            var end = start + SIZE_CHUNKS;
+            if (end > docs.posts.length)
+                end = docs.posts.length;
+            if (chunk < ITERS) {
+                shell.send({op:'run', posts:docs.posts.slice(start, end)});
+            } else {
+                shell.send({op:'finish'});
+                complete = true;
+            }
+            chunk++;
+        }
 
-    shell.end(function (err) {
-        if (err) throw err;
-        console.log('finished Python');
     });
 
     console.log('end');
