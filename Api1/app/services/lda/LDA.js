@@ -16,17 +16,22 @@ var count = 0;
 
 var myCallback = function(data) {
 
-    documentos.posts.push(data['body']);
-    count++;
+    if (count < 15){
+        documentos.posts.push(data['body']);
+        count++;
 
-    if (documentos.posts.length % 1000 == 0) {
-        console.log('doccument ' + count );
+        if (documentos.posts.length % 1000 == 0) {
+            console.log('doccument ' + count );
+        }
     }
+
 
 };
 var myCallback2 = function(data) {};
-//parse.parse(myCallback, myCallback2);
+parse.parse(myCallback, myCallback2);
 //setTimeout(updateModel, 35000);
+//setTimeout(topicsOf, 1000);
+
 getTopics();
 //deleteModel();
 
@@ -79,5 +84,39 @@ function deleteModel() {
         if (err) throw err;
         // results is an array consisting of messages collected during execution
         console.log(results);
+    });
+}
+
+function topicsOf() {
+    var docs = documentos;
+    var n = docs.posts.length;
+    console.log('SIZE_OF_DOCS ' + n);
+
+    var SIZE_CHUNKS = 3;
+    var ITERS = (n / SIZE_CHUNKS) + 1;
+
+    var chunk = 0;
+    var shell = new PythonShell(PythonName, { mode: 'json', args:['topicsOf']});
+
+    shell.send({op:'run', posts:docs.posts.slice(0, SIZE_CHUNKS)});
+
+    var complete = false;
+
+    shell.on('message', function (message) {
+        console.log('MESSAGE = ');
+        console.log(message);
+        if (! complete) {
+            var start = chunk * SIZE_CHUNKS;
+            var end = start + SIZE_CHUNKS;
+            if (end > docs.posts.length)
+                end = docs.posts.length;
+            if (chunk < ITERS) {
+                shell.send({op:'run', posts:docs.posts.slice(start, end)});
+            } else {
+                shell.send({op:'finish'});
+                complete = true;
+            }
+            chunk++;
+        }
     });
 }

@@ -108,9 +108,29 @@ elif command == 'topicsOf':
 		# Check if the LDA Model exists
 		print ('{"status":"NoExistingModel"}')
 	else :
-		# TODO
-		print ('{"status":"TODO"}')
-
+		# Loads the LDA model
+		lda = models.ldamodel.LdaModel.load(pathLDAModel, mmap='r')
+		# Loads the dictionary
+		dictionary = corpora.Dictionary.load(pathDictionary)
+		# Read the first chunk in json
+		dataJson = json.loads(raw_input())
+		op = dataJson['op']
+		# Loop each chunk of documents
+		while op != 'finish':
+			# Get and preprocess the documents
+			documents = dataJson['posts']
+			docs = parsing.preprocessing.preprocess_documents(documents)
+			output = []
+			# for each document get the topics probabilities
+			for doc in docs:
+				topics = lda[dictionary.doc2bow(doc)]
+				output.append(topics)
+			# Output the topics of the documents
+			print('{"status":"OK" , "posts" :"'+ str(output) +'"}')
+			sys.stdout.flush()
+			# Read new chunk of documents and operation
+			dataJson = json.loads(raw_input())
+			op = dataJson['op']
 
 else:
 	# Error command or syntaxis in the first argument
