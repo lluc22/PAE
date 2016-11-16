@@ -26,7 +26,7 @@
 
 .customContainer {
   margin-top: 5%;
-  margin-left: 2%;
+  margin-left: -2%;
   margin-right: 2%;
   magin-bot: 3%;
 }
@@ -36,7 +36,7 @@
     padding-top: 10px;
     width: 728px;
     border-bottom: 1px solid #e4e6e8;
-    margin-left: 4%;
+    margin-left: 1%;
 }
 
 #answers-header {
@@ -52,4 +52,19 @@
 
 .answercell {
     vertical-align: top;
+}
+
+#question-info {
+    vertical-align: top;
+}
+
+#relatedTickets {
+    width: auto;
+}
+
+.relatedTiquets {
+    clear: both;
+    width: 728px;
+    border-left: 1px solid #e4e6e8;
+    margin-left: 2%;
 }

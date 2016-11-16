@@ -1,16 +1,33 @@
 
 <body>
-    <div id="question-header">
-        <h1> {{title}}</h1>
-    </div>
-    <div id="question" >
-        <!-- se añade dinamicamente el body -->
-    </div>
-    <div id="answers">
-        <div id="answers-header"></div>
-        <div id="answers-content">
+    <table>
+        <tbody>
+            <tr>
+                <td id="question-info">
+                    <div id="question-header">
+                        <h1> {{title}}</h1>
+                    </div>
+                    <div id="question" >
+                        <!-- se añade dinamicamente el body -->
+                    </div>
+                    <div id="answers">
+                        <div id="answers-header"></div>
+                        <div id="answers-content">
 
-        </div>
-    </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="relatedTiquets">
+                    <h2 align="center"> Related tickets</h2>
+                    <div class="list-group" ng-controller="ticketController">
+                        <div ng-repeat=" x in relateds">
+                            <button class = "list-group-item"> <!--ng:click="selectTicket(x)"-->{{x}} </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 </html>
