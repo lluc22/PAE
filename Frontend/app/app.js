@@ -271,7 +271,7 @@ app.controller('topicsController2', function($scope) {
     $scope.options2 = {
         chart: {
             type: 'pieChart',
-            height: 500,
+            height: 450,
             margin: {
                 top: 100,
                 right: 0,
