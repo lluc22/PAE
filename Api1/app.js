@@ -252,10 +252,18 @@ var doc2vecCallback = function(data) {
 apiRoutes.get('/ticket/:id/related', function(req, res) {
   var doc2vecCallback = function(data) {
     console.log("doc2vec.Resp" + data);
-    res.json({success: 200, msg: {"data": data}});
+    var json = {};
+    data.forEach(function(item){
+      Post.find({
+        id: item
+      }, {id: 1, title: 1}, function(err, posts) {
+        if (err) throw err;
+        json.push(posts);
+      });
+    });
+    res.json({success: 200, msg: {"data": json}});
   };
   var doc2vec = require('./app/services/doc2vec/doc2vec');
-  //res.json({success: 200, msg: {"data": "hola"}});
   doc2vec.topn_similar(req.params.id, 20, doc2vecCallback);
 });
 
