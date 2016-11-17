@@ -52,7 +52,7 @@
 
 .answercell {
     vertical-align: top;
-}
+}   
 
 #question-info {
     vertical-align: top;
@@ -63,6 +63,7 @@
 }
 
 .relatedTiquets {
+    vertical-align: top;
     clear: both;
     width: 728px;
     border-left: 1px solid #e4e6e8;
