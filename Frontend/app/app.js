@@ -26,8 +26,8 @@ app.config(['$locationProvider', '$routeProvider', function($locationProvider, $
 
 app.service('getTicket', function ($http) {
     this.getTicketContent = function (id) {
-        //return $http.get('http://localhost:8080/api/ticket/'+id)
-        return $http.get('http://84.88.81.126:8080/api/ticket/'+id)
+        return $http.get('http://localhost:8080/api/ticket/'+id)
+        //return $http.get('http://84.88.81.126:8080/api/ticket/'+id)
             .then(function successCallback(response) {
                 //var values = response['data']['msg'][0];
                 //alert(response);
@@ -42,7 +42,8 @@ app.service('getTicket', function ($http) {
             });
     };
     this.getTicketRelateds = function (id) {
-        return $http.get('http://84.88.81.126:8080/api/ticket/'+id+'/related')
+        return $http.get('http://localhost:8080/api/ticket/'+id+'/related')
+        //return $http.get('http://84.88.81.126:8080/api/ticket/'+id+'/related')
             .then(function successCallback(response) {
                 console.log(response['data']['msg']['data'][0]);
                 return response['data']['msg']['data'][0];
@@ -55,8 +56,8 @@ app.service('getTicket', function ($http) {
 
 app.service('getUser', function ($http) {
     this.getUserInfo = function (id) {
-        //return $http.get('http://localhost:8080/api/user/'+id)
-        return $http.get('http://84.88.81.126:8080/api/user/'+id)
+        return $http.get('http://localhost:8080/api/user/'+id)
+        //return $http.get('http://84.88.81.126:8080/api/user/'+id)
             .then(function successCallback(response) {
                 //var values = response['data']['msg'][0];
                 //alert(response);
@@ -130,14 +131,21 @@ app.controller('ticketController', function ($scope, $http, getTicket, getUser) 
 
         }
     });
-    /*
+
     getTicket.getTicketRelateds(id).then(function (resp) {
-       console.log('This is the resp');
+       console.log('IDs of related--->' + resp);
+        getTicket.getTicketContent(resp.id).then(function (resp2) {
+            console.log("Content of related-->" + resp2);
+            $scope.relateds.push(resp2.title);
+            $scope.$apply();
+        })
     });
-    */
+
+    /*
     for (var i = 0; i<20; ++i) {
         $scope.relateds.push("Ticket"+(i+1));
     }
+    */
 
 
 });
@@ -340,8 +348,8 @@ function createCORSRequest(method, url, callback, limit, skip) {
 // Make the actual CORS request.
 function makeCorsRequest(callback, limit, skip) {
     // This is a sample server that supports CORS.
-    var url = 'http://84.88.81.126:8080/api/tickets';
-    //var url = 'http://localhost:8080/api/tickets';
+    //var url = 'http://84.88.81.126:8080/api/tickets';
+    var url = 'http://localhost:8080/api/tickets';
 
     var xhr = createCORSRequest('GET', url, callback, limit, skip);
     //console.log('makeCorsRequest---> ' + xhr);
