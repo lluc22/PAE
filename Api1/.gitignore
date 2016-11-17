@@ -67,3 +67,4 @@ mongod
 *.sln
 app/services/DataSet/Posts.xml
 app/services/DataSet/Users.xml
+default.*
