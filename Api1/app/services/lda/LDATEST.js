@@ -30,9 +30,9 @@ var myCallback = function(data) {
 var myCallback2 = function(data) {};
 parse.parse(myCallback, myCallback2);
 //setTimeout(updateModel, 35000);
-//setTimeout(topicsOf, 1000);
+setTimeout(topicsOf, 1000);
 
-getTopics();
+//getTopics();
 //deleteModel();
 
 // update the model
@@ -42,7 +42,7 @@ function updateModel() {
     var n = docs.posts.length;
     console.log('SIZE_OF_DOCS ' + n);
 
-    var SIZE_CHUNKS = 10000;
+    var SIZE_CHUNKS = 3;
     var ITERS = (n / SIZE_CHUNKS) + 1;
 
     var chunk = 0;
@@ -95,28 +95,31 @@ function topicsOf() {
     var SIZE_CHUNKS = 3;
     var ITERS = (n / SIZE_CHUNKS) + 1;
 
-    var chunk = 0;
-    var shell = new PythonShell(PythonName, { mode: 'json', args:['topicsOf']});
 
-    shell.send({op:'run', posts:docs.posts.slice(0, SIZE_CHUNKS)});
+    var lda = require('./lda');
 
-    var complete = false;
 
-    shell.on('message', function (message) {
-        console.log('MESSAGE = ');
-        console.log(message);
-        if (! complete) {
-            var start = chunk * SIZE_CHUNKS;
-            var end = start + SIZE_CHUNKS;
-            if (end > docs.posts.length)
-                end = docs.posts.length;
-            if (chunk < ITERS) {
-                shell.send({op:'run', posts:docs.posts.slice(start, end)});
-            } else {
-                shell.send({op:'finish'});
-                complete = true;
-            }
-            chunk++;
+    var callback = function (data) {
+        var chunk = data['chunk'];
+        var start = chunk * SIZE_CHUNKS;
+        var end = start + SIZE_CHUNKS;
+        if (end > docs.posts.length)
+            end = docs.posts.length;
+        if (chunk < ITERS) {
+            lda.topicsOfDocs({op:'run', posts:docs.posts.slice(start, end)}, callback);
+        } else {
+            lda.topicsOfDocs({op:'finish'}, function (data) {
+                console.log('end : ');
+                console.log(data);
+            });
         }
-    });
+    };
+
+    var mess = {op:'run', posts:docs.posts.slice(0, SIZE_CHUNKS)};
+
+    lda.topicsOfDocs(mess, callback)
 }
+
+
+
+
