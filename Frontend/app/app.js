@@ -26,8 +26,8 @@ app.config(['$locationProvider', '$routeProvider', function($locationProvider, $
 
 app.service('getTicket', function ($http) {
     this.getTicketContent = function (id) {
-        //return $http.get('http://localhost:8080/api/ticket/'+id)
-        return $http.get('http://84.88.81.126:8080/api/ticket/'+id)
+        return $http.get('http://localhost:8080/api/ticket/'+id)
+        //return $http.get('http://84.88.81.126:8080/api/ticket/'+id)
             .then(function successCallback(response) {
                 //var values = response['data']['msg'][0];
                 //alert(response);
@@ -42,8 +42,8 @@ app.service('getTicket', function ($http) {
             });
     };
     this.getTicketRelateds = function (id) {
-        //return $http.get('http://localhost:8080/api/ticket/'+id+'/related')
-        return $http.get('http://84.88.81.126:8080/api/ticket/'+id+'/related')
+        return $http.get('http://localhost:8080/api/ticket/'+id+'/related')
+        //return $http.get('http://84.88.81.126:8080/api/ticket/'+id+'/related')
             .then(function successCallback(response) {
                 console.log(response['data']['msg']['data'][0]);
                 return response['data']['msg']['data'][0];
@@ -271,7 +271,7 @@ app.controller('topicsController2', function($scope) {
     $scope.options2 = {
         chart: {
             type: 'pieChart',
-            height: 500,
+            height: 450,
             margin: {
                 top: 100,
                 right: 0,
@@ -287,12 +287,12 @@ app.controller('topicsController2', function($scope) {
             legend: {
                 margin: {
                     top: 5,
-                    right: 35,
+                    right: 0,
                     bottom: 5,
                     left: 0
                 }
             },
-            legendPosition: 'right',
+            legendPosition: 'top',
             valueFormat: function(d) {
                 return d + " words";
             }
@@ -341,8 +341,8 @@ function createCORSRequest(method, url, callback, limit, skip) {
 // Make the actual CORS request.
 function makeCorsRequest(callback, limit, skip) {
     // This is a sample server that supports CORS.
-    var url = 'http://84.88.81.126:8080/api/tickets';
-    //var url = 'http://localhost:8080/api/tickets';
+    //var url = 'http://84.88.81.126:8080/api/tickets';
+    var url = 'http://localhost:8080/api/tickets';
 
     var xhr = createCORSRequest('GET', url, callback, limit, skip);
     //console.log('makeCorsRequest---> ' + xhr);

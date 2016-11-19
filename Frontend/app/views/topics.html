@@ -1,10 +1,29 @@
 <div>
-    <div ng-controller="topicsController">
-        <nvd3 options="options" data="data"></nvd3>
-    </div>
-    <div ng-controller="topicsController2">
-        <nvd3 options="options2" data="data2"></nvd3>
-    </div>
+    <table class="mainTable">
+        <tbod>
+            <tr>
+                <td width="50%" height="0px">
+                    <div ng-controller="topicsController" >
+                        <h3> Last month topics </h3>
+                        <nvd3 options="options" data="data"></nvd3>
+                    </div>
+                </td>
+
+                <td width="50%" height="0px">
+                    <div ng-controller="topicsController2">
+                        <h3> Topics history </h3>
+                        <nvd3 options="options2" data="data2"></nvd3>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+            </tr>
+        </tbod>
+    </table>
+
+
 </div>
 
 
