@@ -2,7 +2,6 @@
  * Created by Home on 19/11/2016.
  */
 
-
 angular.module('myApp')
     .controller('openTicketsController', ['$scope', '$location', '$stateParams', '$state', 'getOpenTickets', function ($scope, $location, $stateParams, $state, getOpenTickets) {
         //console.log("Initial -> " + $stateParams.page);
@@ -19,7 +18,6 @@ angular.module('myApp')
             $location.path('ticket/'+id);
 
         };
-
 
         getOpenTickets.makeCorsRequest(20, this.page - 1).then(function (result) {
             angular.forEach(result, function(value) {
