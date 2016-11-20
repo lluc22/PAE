@@ -3,29 +3,14 @@
  */
 
 angular.module('myApp')
-    .service('getTicket', getTicket);
+    .service('getTicket', ['restService' , function (restService) {
+        this.getTicketContent = function(id) {
+            return restService.get('/ticket/' + id);
+        }
+        return this;
+    }]);
 
-function getTicket($http) {
-    return {
-        getTicketContent: getTicketContent
-    };
 
-    function getTicketContent(id) {
-        return $http.get('http://84.88.81.126:8080/api/ticket/' + id)
-            .then(function successCallback(response) {
-                //var values = response['data']['msg'][0];
-                //alert(response);
-                //console.log(response['data']['msg']['data'][0]);
-                //callbackTicketContent(response)
-                //console.log(response['data']['msg']['data'][0]);
-                return response['data']['msg']['data'][0];
-
-            }, function errorCallback(response) {
-
-            });
-    }
-
-}
     /*
     .service('getTicket', function ($http) {
         this.getTicketContent = function (id) {
