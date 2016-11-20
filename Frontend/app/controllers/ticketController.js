@@ -3,7 +3,7 @@
  */
 
 angular.module('myApp')
-    .controller('ticketController', ['$scope', '$http', 'getTicket', 'getUser', function ($scope, $http, getTicket, getUser) {
+    .controller('ticketController', ['$scope', 'getTicket', 'getUser', function ($scope, getTicket, getUser) {
         var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
         var id = string.split('/');
         var answer_users =  [];
