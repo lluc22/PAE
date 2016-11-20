@@ -6,8 +6,10 @@
 angular.module('myApp')
     .controller('openTicketsController', openTicketsController);
 
-function openTicketsController($scope, $location) {
-    // create a message to display in our view
+function openTicketsController($scope, $location, $stateParams, $state) {
+    console.log("Initial -> " + $stateParams.page);
+    var self = this;
+    self.page = parseInt($stateParams.page);
     $scope.tickets = [];
     var clicks = 0;
     //84.88.81.126
@@ -30,29 +32,13 @@ function openTicketsController($scope, $location) {
             $scope.$apply();
 
         })
-
     };
-    makeCorsRequest(callback, 20, 0);
-    //console.log('AQUI---> ' + xhl);
+
+    makeCorsRequest(callback, 20, this.page - 1);
 
     $scope.moreTickets = function () {
-        ++clicks;
-        //console.log(clicks);
-        makeCorsRequest(callback2, 20, clicks*20);
+        $state.go('.', {page : self.page + 1});
     };
-
-    var callback2 = function(result) {
-        var json = JSON.parse(result);
-        //console.log(json['msg']['data']);
-        angular.forEach(json['msg']['data'], function(value) {
-            $scope.tickets.push(value);
-            //console.log(value.title);
-            $scope.$apply();
-
-        })
-
-    };
-
 
     function createCORSRequest(method, url, callback, limit, skip) {
         var xhr = new XMLHttpRequest();
@@ -80,7 +66,7 @@ function openTicketsController($scope, $location) {
         xhr.send();
     }
 
-// Make the actual CORS request.
+    // Make the actual CORS request.
     function makeCorsRequest(callback, limit, skip) {
         // This is a sample server that supports CORS.
         var url = 'http://84.88.81.126:8080/api/tickets';
