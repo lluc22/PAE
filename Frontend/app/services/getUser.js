@@ -5,7 +5,7 @@
 angular.module('myApp')
     .service('getUser', ['restService' , function (restService) {
         this.getUserInfo = function (id) {
-            return restService.get('/user/' + id);
+            return restService.get('/user/' + id, null);
         };
         return this;
     }]);

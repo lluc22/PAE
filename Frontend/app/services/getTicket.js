@@ -5,7 +5,7 @@
 angular.module('myApp')
     .service('getTicket', ['restService' , function (restService) {
         this.getTicketContent = function(id) {
-            return restService.get('/ticket/' + id);
+            return restService.get('/ticket/' + id, null);
         }
         return this;
     }]);

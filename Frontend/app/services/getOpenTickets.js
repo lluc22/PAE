@@ -4,8 +4,18 @@
 
 
 angular.module('myApp')
-    .service('getOpenTickets', getOpenTickets);
+    .service('getOpenTickets', ['restService' , function (restService) {
+        this.makeCorsRequest = function (limit, skip) {
+            var headers = {headers: {
+                'limit' : limit,
+                'skip' : skip
+            } };
+            return restService.get('/tickets', headers);
+        };
+        return this;
+    }]);
 
+/*
 getOpenTickets.$inject = ['$http'];
 
 function getOpenTickets(callback, limit, skip) {
@@ -48,3 +58,4 @@ function getOpenTickets(callback, limit, skip) {
         xhr.send();
     }
 }
+*/

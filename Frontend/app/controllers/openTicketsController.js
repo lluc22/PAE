@@ -20,19 +20,13 @@ angular.module('myApp')
 
         };
 
-        var callback = function(result) {
-            var json = JSON.parse(result);
-            //console.log(json['msg']['data']);
-            angular.forEach(json['msg']['data'], function(value) {
-                //alert(value['title']);
-                //console.log(value);
+
+        getOpenTickets.makeCorsRequest(20, this.page - 1).then(function (result) {
+            angular.forEach(result, function(value) {
                 $scope.tickets.push(value);
-                $scope.$apply();
-
             })
-        };
+        });
 
-        getOpenTickets.makeCorsRequest(callback, 20, this.page - 1);
 
         $scope.moreTickets = function () {
             $state.go('.', {page : self.page + 1});
