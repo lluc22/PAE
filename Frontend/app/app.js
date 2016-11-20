@@ -12,6 +12,7 @@ angular
 function config($stateProvider, $urlRouterProvider) {
     //['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
 
+    // HAY QUE INSTALAR BOWER COMPONENTS UI-ROUTER
     $urlRouterProvider.otherwise('/home');
 
     $stateProvider
@@ -40,24 +41,5 @@ function config($stateProvider, $urlRouterProvider) {
             controller  : 'ticketController'
         });
 
-    /*
-        $routeProvider
-            .when('/', {
-                templateUrl : 'views/topics.html',
-                controller  : 'topicsController'
-            })
-            .when('/opentickets', {
-                templateUrl : "views/openTickets.html",
-                controller  : 'openTicketsController'
-            })
-            .when('/filter', {
-                templateUrl : 'views/filter.html',
-                controller  : 'filterController'
-            })
-            .when('/ticket/:id' , {
-                templateUrl : "views/ticket.html",
-                controller  : 'ticketController'
-            });
-    */
 };
 
