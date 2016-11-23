@@ -257,6 +257,7 @@ apiRoutes.get('/ticket/:id/related', function(req, res) {
   doc2vec.topn_similar(req.params.id, 20, doc2vecCallback);
 });
 
+
 //users
 apiRoutes.get('/user/:id', function(req, res) {
   UserPost.find({
