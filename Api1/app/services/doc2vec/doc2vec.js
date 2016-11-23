@@ -9,9 +9,10 @@ var c = 0
 var model_path = ""
 var size = 239932
 var busy = false
+var firstTopN = true
 //pyshell.send({command:"build_vocab"})
 pyshell.on('message', function (message) {
-  console.log(message)
+  //console.log(message)
   command = message['command']
   switch (command) {
     case "build_vocab":
@@ -89,33 +90,40 @@ module.exports = {
       });
     }
   },
-  vectors: function(fillVectorCallback){
+  vectors: function(topn,fillVectorCallback){
     if(!busy){
       busy = true
       pyshell.on('message',function(message){
         command = message['command']
-        if(command == "get_vector"){
-          fillVectorCallback({id:message['id'],vector:message['vector']})
-          if(message['finish']) busy = false
+        if(command == "get_vectors"){
+          fillVectorCallback({id:message['id'],vector:message['vector'],topn:message['topn']})
+          if(message['finish']){
+             busy = false
+             console.log("I finnished")
+           }
         }
       });
-      for(i = 0; i < size; i++) pyshell.send({command:"get_vector",id:i});
+      pyshell.send({command:"get_vectors",topn:topn});
     }
   },
 
   topn_similar: function(id,topn,fillIdCallback){
     if(!busy){
       busy = true
-      pyshell.on('message',function(message){
-        command = message['command']
-        if(command == "topn"){
-          console.log("doc2vec.Resp" + message['ids']);
-          fillIdCallback(message['ids'])
-        }
-      });
+      if(firstTopN){
+        pyshell.on('message',function(message){
+          command = message['command']
+          if(command == "topn"){
+            busy = false
+            fillIdCallback(message['ids'])
+          }
+        });
+        firstTopN = false
+      }
       pyshell.send({command:"topn",n:topn,id:id})
     }
   }
+
 
 }
 

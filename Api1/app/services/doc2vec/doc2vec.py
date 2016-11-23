@@ -8,6 +8,7 @@ import datetime
 from gensim.models import Doc2Vec
 import gensim.models.doc2vec
 from collections import OrderedDict
+from gensim import utils, matutils
 import multiprocessing
 from uuid import uuid4
 
@@ -112,6 +113,7 @@ def train_model(model,sentences):
             model.alpha, model.min_alpha = alpha, alpha
             model.train(sentences.random_iter())
             alpha -= alpha_delta
+
 def main():
     global_model = Doc2Vec.load('./app/services/doc2vec/models/default/default.d2v')
     data =  json.loads(input())
@@ -132,22 +134,25 @@ def main():
                 print(json.dumps({"command":"load_model","ok":False,"err":str(e)}))
             else:
                 print(json.dumps({"command":"load_model","ok":True}))
-        if command =="get_vector":
-            postId = data['id']
-            vector = list(global_model.docvecs[postId])
-            vector = [float(i) for i in vector]
-            doct = global_model.docvecs.index_to_doctag(postId)
-            doct = int(doct.split('_')[1])
-            if postId < len(global_model.docvecs):
-                print(json.dumps({"command":"get_vector","vector":vector,"id":doct}))
-            else:
-                print(json.dumps({"command":"get_vector","vector":vector,"id":doct,"finish":True}))
+        if command =="get_vectors":
+            n = data['topn']
+            for i,v in enumerate(global_model.docvecs):
+                vector = [float(j) for j in v]
+                doctag = global_model.docvecs.index_to_doctag(i)
+                iDoc = int(doctag.split('_')[1])
+                topids = global_model.docvecs.most_similar(positive=[doctag], topn=n )
+                print(json.dumps({"command":"get_vectors","vector":vector,"id":iDoc,"topn":topids}))
+            print(json.dumps({"command":"get_vectors","finish":True}))
 
         if command =="topn":
             postId = data['id']
             n = data['n']
-            topids = global_model.docvecs.most_similar(positive=["POST_%s"%postId],topn=n)
-            topids = map(lambda post: int(post[0].split('_')[1]),topids)
+            try:
+                topids = global_model.docvecs.most_similar(positive=["POST_%s"%postId],topn=n)
+                topids = map(lambda post: int(post[0].split('_')[1]),topids)
+                pass
+            except Exception as e:
+                topids = []
             print(json.dumps({"command":"topn","n":n,"ids":list(topids)}))
 
         data = json.loads(input())
