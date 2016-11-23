@@ -109,7 +109,8 @@ module.exports = {
       pyshell.on('message',function(message){
         command = message['command']
         if(command == "topn"){
-          console.log("doc2vec.Resp" + message['ids']);
+          //console.log("doc2vec.Resp" + message['ids']);
+          busy = false;
           fillIdCallback(message['ids'])
         }
       });

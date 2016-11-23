@@ -31,6 +31,7 @@ app.get('/', function(req, res) {
 app.listen(port);
 console.log('There will be dragons: http://localhost:' + port);
 
+
 app.use(function (req, res, next) {
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -76,6 +77,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, skip, limit");
   next();
 });
+
 
 // connect the api routes under /api/*
 app.use('/api', apiRoutes);
@@ -235,7 +237,7 @@ apiRoutes.get('/ticket/:id', function(req, res) {
   });
 });
 
-var doc2vecCallback = function(data) {
+/*var doc2vecCallback = function(data) {
   var newPost = new Post({
     id: data['id'],
     acceptedAnswerId: data['acceptedAnswerId'],
@@ -247,11 +249,12 @@ var doc2vecCallback = function(data) {
     tags: data['tags']
   });
 
-};
+};*/
 
 apiRoutes.get('/ticket/:id/related', function(req, res) {
   var doc2vecCallback = function(data) {
     res.json({success: 200, msg: {"data": data }});
+    console.log(data);
   };
   var doc2vec = require('./app/services/doc2vec/doc2vec');
   doc2vec.topn_similar(req.params.id, 20, doc2vecCallback);
