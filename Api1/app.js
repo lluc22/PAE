@@ -32,6 +32,7 @@ app.listen(port);
 console.log('There will be dragons: http://localhost:' + port);
 
 
+
 app.use(function (req, res, next) {
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -252,9 +253,18 @@ apiRoutes.get('/ticket/:id', function(req, res) {
 };*/
 
 apiRoutes.get('/ticket/:id/related', function(req, res) {
+  var callbackCounter = 0;
   var doc2vecCallback = function(data) {
-    res.json({success: 200, msg: {"data": data }});
-    console.log(data);
+    //res.json({success: 200, msg: {"data": data }});
+    //res.json({success: 200, msg: {"data": data }});
+    callbackCounter++;
+    if (callbackCounter == 1) {
+      res.json({success: 200, msg: {"data": data }});
+    }
+    else {
+      res.end();
+    }
+    //console.log(data);
   };
   var doc2vec = require('./app/services/doc2vec/doc2vec');
   doc2vec.topn_similar(req.params.id, 20, doc2vecCallback);

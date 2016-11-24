@@ -1,16 +1,17 @@
 var PythonShell = require('python-shell');
-var Parser = require('../parse.js')
+var Parser = require('../parse.js');
 var pyshell = new PythonShell('./app/services/doc2vec/doc2vec.py',{ mode: 'json', pythonPath:'/usr/local/bin/python3'});
 var fs = require('fs');
 // sends a message to the Python script via stdin
-var chunkSize = 10000
-var chunks = 24
-var c = 0
-var model_path = ""
-var size = 239932
-var busy = false
-var firstTopN = true
+var chunkSize = 10000;
+var chunks = 24;
+var c = 0;
+var model_path = "";
+var size = 239932;
+var busy = false;
+var firstTopN = true;
 //pyshell.send({command:"build_vocab"})
+
 // pyshell.on('message', function (message) {
 //   command = mes      if(firstTopN){sage['command']
 //   switch (command) {
@@ -59,16 +60,17 @@ var firstTopN = true
 // });
 pyshell.on('error',function(err){console.log(err)})
 
+
 module.exports = {
   train: function(givePathCallback){
     if(!busy){
-      busy = true
-      pyshell.send({command:"build_vocab"})
+      busy = true;
+      pyshell.send({command:"build_vocab"});
       pyshell.on('message', function(message){
         if(message['command'] == 'train'){
             if(message['finished']){
-            model_path = message['model_path']
-            givePathCallback(model_path)
+            model_path = message['model_path'];
+            givePathCallback(model_path);
             busy = false
             }
         }
@@ -77,13 +79,13 @@ module.exports = {
   },
   load_model: function(path,okCallBack){
     if(!busy){
-      busy = true
-      pyshell.send({command:"load_model",path:path})
+      busy = true;
+      pyshell.send({command:"load_model",path:path});
       pyshell.on('message',function(message){
           if(message['command'] == 'load_model'){
-              if(!message['ok']) console.log(message['err'])
-              busy = false
-              console.log("model loaded")
+              if(!message['ok']) console.log(message['err']);
+              busy = false;
+              console.log("model loaded");
               okCallBack()
             }
       });
@@ -91,14 +93,14 @@ module.exports = {
   },
   vectors: function(topn,fillVectorCallback){
     if(!busy){
-      busy = true
+      busy = true;
       pyshell.on('message',function(message){
-        command = message['command']
+        command = message['command'];
         if(command == "get_vectors"){
-          fillVectorCallback({id:message['id'],vector:message['vector'],topn:message['topn']})
+          fillVectorCallback({id:message['id'],vector:message['vector'],topn:message['topn']});
           if(message['finish']){
-             busy = false
-             console.log("I finnished")
+             busy = false;
+             console.log("I finnished");
            }
         }
       });
@@ -120,6 +122,7 @@ module.exports = {
 
       pyshell.on('message',pyCallBack);
       pyshell.send({command:"topn",n:topn,id:id})
+
 
     }
   }
