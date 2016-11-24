@@ -11,53 +11,54 @@ var size = 239932;
 var busy = false;
 var firstTopN = true;
 //pyshell.send({command:"build_vocab"})
-pyshell.on('message', function (message) {
-  //console.log(message)
-  command = message['command'];
-  switch (command) {
-    case "build_vocab":
-      var posts = [];
-      if(c < chunks){
-        //We simulate DB reading from chunk files
-        fs.readFile('posts/'+c+'.txt', 'utf8', function (err,data) {
-          if (err) {
-            return console.log(err)
-          }
-          console.log(c);
-          posts = JSON.parse(data);
-          c++;
-          console.log("sending");
-          pyshell.send({command:"build_vocab",finished:false,posts:posts})
-        });
-      }
-      else {
-        pyshell.send({command:"build_vocab",finished:true,posts:[]})
-      }
-      break;
 
-    case "train":
-      var finished = message['finished'];
-      if(!finished){
-        var posts = [];
-        var chunk = message['chunk'];
-        console.log(chunk);
-        fs.readFile('posts/'+chunk+'.txt', 'utf8', function (err,data) {
-          if (err) {
-            return console.log(err)
-          }
-          posts = JSON.parse(data);
-          c++;
-          pyshell.send({command:"train",posts:posts})
-        });
-      }
-
-      break;
-
-    default:
-
-  }
-
-});
+// pyshell.on('message', function (message) {
+//   command = mes      if(firstTopN){sage['command']
+//   switch (command) {
+//     case "build_vocab":
+//       var posts = []
+//       if(c < chunks){
+//         //We simulate DB reading from chunk files
+//         fs.readFile('posts/'+c+'.txt', 'utf8', function (err,data) {
+//           if (err) {
+//             return console.log(err)
+//           }
+//           console.log(c)
+//           posts = JSON.parse(data)
+//           c++
+//           console.log("sending")
+//           pyshell.send({command:"build_vocab",finished:false,posts:posts})
+//         });
+//       }
+//       else {
+//         pyshell.send({command:"build_vocab",finished:true,posts:[]})
+//       }
+//       break;
+//
+//     case "train":
+//       var finished = message['finished']
+//       if(!finished){
+//         var posts = []
+//         var chunk = message['chunk']
+//         console.log(chunk)
+//         fs.readFile('posts/'+chunk+'.txt', 'utf8', function (err,data) {
+//           if (err) {
+//             return console.log(err)
+//           }
+//           posts = JSON.parse(data)
+//           c++
+//           pyshell.send({command:"train",posts:posts})
+//         });
+//       }
+//
+//       break;
+//
+//     default:
+//
+//   }
+//
+// });
+pyshell.on('error',function(err){console.log(err)})
 
 
 module.exports = {
@@ -109,18 +110,20 @@ module.exports = {
 
   topn_similar: function(id,topn,fillIdCallback){
     if(!busy){
-      busy = true;
-      if(firstTopN){
-        pyshell.on('message',function(message){
-          command = message['command'];
-          if(command == "topn"){
-            busy = false;
-            fillIdCallback(message['ids']);
-          }
-        });
-        firstTopN = false;
+      busy = true
+      var pyCallBack = function(message){
+        command = message['command']
+        if(command == "topn"){
+          busy = false
+          fillIdCallback(message['ids'])
+          pyshell.removeListener('message',pyCallBack)
+        }
       }
-      pyshell.send({command:"topn",n:topn,id:id});
+
+      pyshell.on('message',pyCallBack);
+      pyshell.send({command:"topn",n:topn,id:id})
+
+
     }
   }
 
