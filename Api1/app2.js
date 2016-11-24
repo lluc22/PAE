@@ -131,25 +131,29 @@ apiRoutes.get('/ticket/:id/related2', function(req, res, next) {
 });
 
 apiRoutes.get('/ticket/:id/related3', function(req, res) {
-    var count = 0;
+    var count.number = 0;
+
     var related = function(id,topn,fillIdCallback){
-        /*if(!busy){
+        if(!busy){
             busy = true;
             if(firstTopN){
                 pyshell.on('message',function(message){
                     command = message['command'];
                     if(command == "topn"){
                         fillIdCallback(false, message['ids']);
-                        //console.log(count);
+                        console.log(count);
                         count++;
                         busy = false;
                     }
                 });
                 firstTopN = false;
             }
+            //console.log(count);
+            //count++;
             pyshell.send({command:"topn",n:topn,id:id});
-        }*/
-        fillIdCallback(false, "hola");
+        }
+        //pyshell.send({command:"topn",n:topn,id:id});
+        //fillIdCallback(false, "hola");
     };
 
     async.parallel([
@@ -182,9 +186,9 @@ apiRoutes.get('/ticket/:id/related3', function(req, res) {
             },
         ],
         function(err, results) {
-            /*if(err) { console.log(err); res.send(500).body("Server Error"); return; }
-            res.send({api1:results[0], api2:results[1]});*/
-            console.log({api1:results[0], api2:results[1]});
+            if(err) { console.log(err); res.send(500).body("Server Error"); return; }
+            res.send({api1:results[0], api2:results[1]});
+            //console.log({api1:results[0], api2:results[1]});
         });
 });
 
