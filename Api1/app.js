@@ -270,7 +270,6 @@ apiRoutes.get('/ticket/:id/related', function(req, res) {
   doc2vec.topn_similar(req.params.id, 20, doc2vecCallback);
 });
 
-
 //users
 apiRoutes.get('/user/:id', function(req, res) {
   UserPost.find({
@@ -281,3 +280,24 @@ apiRoutes.get('/user/:id', function(req, res) {
   });
 });
 
+
+var actualitzaDB = function (DB) {
+  console.log(DB);
+};
+
+apiRoutes.get('ticket/topics', function (req, res) {
+   var chunkSize = 10;
+
+   var ldaCallback = function(chunk, resp){
+   Post.find({},{id:1, body: 1}, function(err, posts){
+     actualitzaDB(resp);
+   if(posts.length > 0) lda.send(posts, ldaCallback);
+   else lda.finish();
+   }).skip(chunk*chunkSize).limit(chunkSize);
+   };
+
+   Post.find({},{id:1, body: 1}, function(err, posts){
+   if(posts.length > 0) lda.send(posts, ldaCallback);
+   }).skip(0*chunkSize).limit(chunkSize);
+
+});
