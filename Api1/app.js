@@ -336,3 +336,16 @@ apiRoutes.get('/tickets/topics', function (req, res) {
     res.json({success: 200, msg: {"data": "ok"}});
 
 });
+
+apiRoutes.get('/tickets/deletetopics', function (req, res) {
+    var lda = require('./app/services/lda/lda');
+
+    var ldaCallback = function(resp){
+        // get topics data
+        console.log(resp);
+    };
+    lda.deleteModel(ldaCallback);
+    res.json({success: 200, msg: {"data": "ok"}});
+
+});
+

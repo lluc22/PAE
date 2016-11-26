@@ -52,6 +52,7 @@ module.exports = {
         switch (mState) {
             case ldaState.IDLE:
                 mState = ldaState.DELETE;
+                shell.on('message', onShellMessage);
                 shell.send({command:"delete"});
                 break;
             default:
