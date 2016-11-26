@@ -11,8 +11,13 @@ from gensim import corpora, models, parsing
 pathLDAModel = "./app/services/lda/LDAModel.lda"		# The LDA Model to save or load
 pathDictionary = "./app/services/lda/Dictionary.dict"	# The dictionary of the data
 pathCorpus = './app/services/lda/corpus'
+
+if not os.path.exists(pathCorpus):
+    os.makedirs(pathCorpus)
+    
 T = 10								# Number Of Topics to extract
 lda = None							# LDA model Global variable
+count = 0
 
 dataJson = json.loads(raw_input())
 command= dataJson['command']
@@ -65,7 +70,7 @@ while command != 'finish':
 		dictionary.save(pathDictionary)
 		# Return the elapsed time
 		elapsed_time = time.time() - start_time
-		print ('{"message":"LDA Model terminated" , "elapsedTime" : "' + str(elapsed_time)+ '" }')
+		print ('{"message":"finish" , "elapsedTime" : "' + str(elapsed_time)+ '" }')
 
 
 	elif command == 'delete':

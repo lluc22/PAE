@@ -286,7 +286,7 @@ var actualitzaDB = function (DB) {
 };
 
 apiRoutes.get('/tickets/doctopic', function (req, res) {
-   var chunkSize = 2;
+   var chunkSize = 1000;
    var lda = require('./app/services/lda/lda');
    var currentIds = [];
 
@@ -349,3 +349,32 @@ apiRoutes.get('/tickets/deletetopics', function (req, res) {
 
 });
 
+apiRoutes.get('/tickets/createtopics', function (req, res) {
+    var chunkSize = 10000;
+    var lda = require('./app/services/lda/lda');
+
+    var queryDB = function (chunk) {
+        Post.find({},{body:1}, function(err, posts){
+            // Fill data to send
+            var dataSend = {op:'run', posts:[]};
+            for (var i = 0; i < posts.length; i++)
+                dataSend.posts.push(posts[i]['body']);
+
+            // Check the result of the query
+            if(posts.length > 0)
+                lda.createModel(dataSend, ldaCallback);
+            else
+                lda.createModel({op:'finish'}, ldaCallback);
+        }).skip(chunk*chunkSize).limit(chunkSize);
+    };
+
+    var ldaCallback = function(resp){
+        // print response
+        console.log(resp);
+        // Send data of chunk
+        var chunk = resp['chunk'];
+        queryDB(chunk);
+    };
+    queryDB(0);
+    res.json({success: 200, msg: {"data": "ok"}});
+});

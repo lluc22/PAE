@@ -10,8 +10,8 @@ var shell = new PythonShell(PythonName, { mode: 'json'});
 
 function onShellMessage (message) {
     //console.log('MESSAGE = ');
-    //console.log(message);
     if (message['message'] == 'finish') {
+        console.log(message);
         mState = ldaState.IDLE;
         shell.removeListener("message", onShellMessage);
     } else {
@@ -38,12 +38,13 @@ module.exports = {
         switch (mState) {
             case ldaState.IDLE:
                 mState = ldaState.CREATE;
+                shell.on('message', onShellMessage);
                 shell.send({command:"create"});
             case ldaState.CREATE:
                 shell.send(data);
                 break;
             default:
-                APICallback({status:1 , message:"Busy"});
+                APICallback({message:"Busy"});
         }
     } ,
 
@@ -56,7 +57,7 @@ module.exports = {
                 shell.send({command:"delete"});
                 break;
             default:
-                APICallback({status:1 , message:"Busy"});
+                APICallback({message:"Busy"});
         }
     } ,
 
@@ -69,7 +70,7 @@ module.exports = {
                 shell.send({command:"getTopics"});
                 break;
             default:
-                APICallback({status:1 , message:"Busy"});
+                APICallback({message:"Busy"});
         }
     } ,
 
@@ -84,7 +85,7 @@ module.exports = {
                 shell.send(data);
                 break;
             default:
-                APICallback({status:1 , message:"Busy"});
+                APICallback({ message:"Busy"});
         }
     }
 }
