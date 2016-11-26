@@ -64,6 +64,7 @@ module.exports = {
         switch (mState) {
             case ldaState.IDLE:
                 mState = ldaState.GET_TOPICS;
+                shell.on('message', onShellMessage);
                 shell.send({command:"getTopics"});
                 break;
             default:

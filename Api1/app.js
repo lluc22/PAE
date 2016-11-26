@@ -323,3 +323,16 @@ apiRoutes.get('/tickets/doctopic', function (req, res) {
     queryDB(0);
     res.json({success: 200, msg: {"data": "ok"}});
 });
+
+
+apiRoutes.get('/tickets/topics', function (req, res) {
+    var lda = require('./app/services/lda/lda');
+
+    var ldaCallback = function(resp){
+        // get topics data
+        actualitzaDB(resp);
+    };
+    lda.getTopicsModel(ldaCallback);
+    res.json({success: 200, msg: {"data": "ok"}});
+
+});
