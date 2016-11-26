@@ -8,9 +8,9 @@ import os.path
 import json
 from gensim import corpora, models, parsing
 
-pathLDAModel = "LDAModel.lda"		# The LDA Model to save or load
-pathDictionary = "Dictionary.dict"	# The dictionary of the data
-pathCorpus = './corpus'
+pathLDAModel = "./app/services/lda/LDAModel.lda"		# The LDA Model to save or load
+pathDictionary = "./app/services/lda/Dictionary.dict"	# The dictionary of the data
+pathCorpus = './app/services/lda/corpus'
 T = 10								# Number Of Topics to extract
 lda = None							# LDA model Global variable
 
@@ -132,7 +132,8 @@ while command != 'finish':
 					topics = lda[dictionary.doc2bow(doc)]
 					output.append(topics)
 				# Output the topics of the documents
-				print('{"status":0 , "chunk":'+ str(numChunks+1) + ', "posts" :"'+ str(output) +'"}')
+				posts = str(output).replace('(', '[').replace(')', ']')
+				print('{"status":0 , "chunk":'+ str(numChunks+1) + ', "posts" :'+ posts +'}')
 				sys.stdout.flush()
 				# Read new chunk of documents and operation
 				dataJson = json.loads(raw_input())

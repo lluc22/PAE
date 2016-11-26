@@ -285,19 +285,41 @@ var actualitzaDB = function (DB) {
   console.log(DB);
 };
 
-apiRoutes.get('ticket/topics', function (req, res) {
-   var chunkSize = 10;
+apiRoutes.get('/tickets/doctopic', function (req, res) {
+   var chunkSize = 2;
+   var lda = require('./app/services/lda/lda');
+   var currentIds = [];
 
-   var ldaCallback = function(chunk, resp){
-   Post.find({},{id:1, body: 1}, function(err, posts){
-     actualitzaDB(resp);
-   if(posts.length > 0) lda.send(posts, ldaCallback);
-   else lda.finish();
-   }).skip(chunk*chunkSize).limit(chunkSize);
+   var queryDB = function (chunk) {
+       Post.find({},{id:1, body:1}, function(err, posts){
+           // Fill data to send
+           var dataSend = {op:'run', posts:[]};
+           for (var i = 0; i < posts.length; i++) {
+               dataSend.posts.push(posts[i]['body']);
+               currentIds.push(posts[i]['id'])
+           }
+
+           // Check the result of the query
+           if(posts.length > 0)
+               lda.topicsOfDocs(dataSend, ldaCallback);
+           else
+               lda.topicsOfDocs({op:'finish'}, ldaCallback);
+       }).skip(chunk*chunkSize).limit(chunkSize);
    };
 
-   Post.find({},{id:1, body: 1}, function(err, posts){
-   if(posts.length > 0) lda.send(posts, ldaCallback);
-   }).skip(0*chunkSize).limit(chunkSize);
+   var ldaCallback = function(resp){
+       // Update the data base
+       var dataToUpdate = [];
+       var topics = resp['posts'];
+       for (var i = 0; i < currentIds.length; i++)
+          dataToUpdate.push({id:currentIds[i] , topic:topics[i]});
+       actualitzaDB(dataToUpdate);
 
+       // Send data of chunk
+       var chunk = resp['chunk'];
+       currentIds = [];
+       queryDB(chunk);
+   };
+    queryDB(0);
+    res.json({success: 200, msg: {"data": "ok"}});
 });
