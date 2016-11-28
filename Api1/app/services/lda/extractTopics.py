@@ -8,11 +8,16 @@ import os.path
 import json
 from gensim import corpora, models, parsing
 
-pathLDAModel = "LDAModel.lda"		# The LDA Model to save or load
-pathDictionary = "Dictionary.dict"	# The dictionary of the data
-pathCorpus = './corpus'
+pathLDAModel = "./app/services/lda/LDAModel.lda"		# The LDA Model to save or load
+pathDictionary = "./app/services/lda/Dictionary.dict"	# The dictionary of the data
+pathCorpus = './app/services/lda/corpus'
+
+if not os.path.exists(pathCorpus):
+    os.makedirs(pathCorpus)
+    
 T = 10								# Number Of Topics to extract
 lda = None							# LDA model Global variable
+count = 0
 
 dataJson = json.loads(raw_input())
 command= dataJson['command']
@@ -41,7 +46,7 @@ while command != 'finish':
 			corpus = [dictionary.doc2bow(d) for d in docs]
 			corpora.MmCorpus.serialize(pathCorpus + '/c' + str(numChunks), corpus)  # store to disk, for later use
 			# print message to recieve next chunk of documents
-			print ('{"message":"Reading Docs" , "chunk":'+ str(numChunks+1) + ', "status":0}')
+			print ('{"message":"Reading Docs" , "chunk":'+ str(numChunks+1) + '}')
 			sys.stdout.flush()
 			# Read new chunk of documents and operation
 			dataJson = json.loads(raw_input())
@@ -55,7 +60,7 @@ while command != 'finish':
 		
 		# for each corpus chunk, update the LDA model
 		for ci in range(1, numChunks):
-			# print ('{ "message":"Updating Model" , "chunk":"'+ str(ci) +'", "status":0}')
+			# print ('{ "message":"Updating Model" , "chunk":"'+ str(ci) +'"}')
 			corpus = corpora.MmCorpus(pathCorpus + '/c' + str(ci))
 			lda.update(corpus)
 
@@ -65,7 +70,7 @@ while command != 'finish':
 		dictionary.save(pathDictionary)
 		# Return the elapsed time
 		elapsed_time = time.time() - start_time
-		print ('{"message":"Terminated" , "elapsedTime" : "' + str(elapsed_time)+ '" , "status":0}')
+		print ('{"message":"finish" , "elapsedTime" : "' + str(elapsed_time)+ '" }')
 
 
 	elif command == 'delete':
@@ -82,15 +87,15 @@ while command != 'finish':
 			file_path = os.path.join(pathCorpus, the_file)
 			if os.path.isfile(file_path):
 				os.remove(file_path)
-		# Print status
-		print ('{"status":0}')
+		# Print message
+		print ('{"message":"Model deleted"}')
 
 		
 	elif command == 'getTopics':
 		# Return the topics of the LDA Model
 		if not os.path.isfile(pathLDAModel) :
 			# Check if the LDA Model exists
-			print ('{"message":"NoExistingModel", "status":1}')
+			print ('{"message":"NoExistingModel"}')
 		else: 
 			# Loads the LDA model
 			lda = models.ldamulticore.LdaMulticore.load(pathLDAModel, mmap='r')
@@ -99,17 +104,17 @@ while command != 'finish':
 			for t in range(T):
 				topic = lda.show_topic(t)
 				topicString = str(topic).replace('(u', '[')
-				topicString = str(topicString).replace(')', ']')
-				output += ' "topic' + str(t) + '" : "' + topicString + '" ,'
+				topicString = str(topicString).replace(')', ']').replace('\'', '"')
+				output += ' "topic' + str(t) + '" : ' + topicString + ' ,'
 			# Print the topics in json format
-			print (output + ' "status":0}')
+			print (output + ' "message":"Topics of model"}')
 
 		
 	elif command == 'topicsOf':
 		# Return the topics of document
 		if not os.path.isfile(pathLDAModel) :
 			# Check if the LDA Model exists
-			print ('{"message":"NoExistingModel", "status":1}')
+			print ('{"message":"NoExistingModel" }')
 
 		else :
 			# Loads the LDA model
@@ -132,7 +137,8 @@ while command != 'finish':
 					topics = lda[dictionary.doc2bow(doc)]
 					output.append(topics)
 				# Output the topics of the documents
-				print('{"status":0 , "chunk":'+ str(numChunks+1) + ', "posts" :"'+ str(output) +'"}')
+				posts = str(output).replace('(', '[').replace(')', ']')
+				print('{ "chunk":'+ str(numChunks+1) + ', "posts" :'+ posts +'}')
 				sys.stdout.flush()
 				# Read new chunk of documents and operation
 				dataJson = json.loads(raw_input())
@@ -141,9 +147,9 @@ while command != 'finish':
 
 	else:
 		# Error command or syntaxis in the first argument
-		print ('{"message":"Error Argument Command Syntax = ' + command +'" , "status":1}')
+		print ('{"message":"Error Argument Command Syntax = ' + command +'"}')
 
-	print('{"status":0 , "message":"finish"}')
+	print('{ "message":"finish"}')
 	sys.stdout.flush()
 	dataJson = json.loads(raw_input())
 	command= dataJson['command']

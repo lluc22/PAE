@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 import gensim
 import json
 import os.path
@@ -20,6 +23,8 @@ cur_version = sys.version_info
 
 if cur_version < req_version:
     raise Exception("Python version requiered " + str(req_version))
+
+
 
 def normalize(text):
     parser = BeautifulSoup(text,'html.parser')
