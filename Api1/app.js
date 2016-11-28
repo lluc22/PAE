@@ -228,6 +228,15 @@ apiRoutes.get('/tickets', function(req, res) {
         }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
 });
 
+apiRoutes.get('/closedTickets', function(req, res) {
+  Post.find({
+    acceptedAnswerId: { $exists: true}
+  }, {id: 1, title: 1}, function(err, posts) {
+    if (err) throw err;
+    res.json({success: 200, msg: {"data": posts}});
+  }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
+});
+
 apiRoutes.get('/ticket/:id', function(req, res) {
   Post.find({
     id: req.params.id

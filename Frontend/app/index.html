@@ -39,10 +39,11 @@
     <script src="controllers/topicsController.js"></script>
     <script src="controllers/filterController.js"></script>
     <script src="controllers/openTicketsController.js"></script>
+    <script src="controllers/closedTicketsController.js"></script>
     <script src="controllers/ticketController.js"></script>
     <script src="services/getTicket.js"></script>
     <script src="services/getUser.js"></script>
-    <script src="services/getOpenTickets.js"></script>
+    <script src="services/getTickets.js"></script>
     <script src="services/restService.js"></script>
 
 
@@ -76,6 +77,9 @@
                 </li>
                 <li>
                     <a ui-sref="openTickets({ page : 1 })">Open tickets</a>
+                </li>
+                <li>
+                    <a ui-sref="closedTickets({ page : 1 })">Closed tickets</a>
                 </li>
                 <li>
                     <a ui-sref="filter">Filter</a>

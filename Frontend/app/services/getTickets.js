@@ -4,13 +4,16 @@
 
 
 angular.module('myApp')
-    .service('getOpenTickets', ['restService' , function (restService) {
-        this.makeCorsRequest = function (limit, skip) {
+    .service('getTickets', ['restService' , function (restService) {
+        this.makeCorsRequest = function (limit, skip, type) {
             var headers = {headers: {
                 'limit' : limit,
                 'skip' : skip
             } };
-            return restService.get('/tickets', headers);
+            if (type == "open") {
+                return restService.get('/tickets', headers);
+            }
+            else if (type == "closed") return restService.get('/closedTickets', headers);
         };
         return this;
     }]);

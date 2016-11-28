@@ -30,6 +30,11 @@ function config($stateProvider, $urlRouterProvider) {
             templateUrl : "views/openTickets.html",
             controller  : 'openTicketsController'
         })
+        .state('closedTickets', {
+            url : '/closedTickets?page',
+            templateUrl : "views/closedTickets.html",
+            controller  : 'closedTicketsController'
+        })
         .state('filter', {
             url : '/filter',
             templateUrl : 'views/filter.html',

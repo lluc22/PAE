@@ -61,7 +61,7 @@ angular.module('myApp')
         //   console.log('This is the resp');
         //});
 
-         for (var i = 0; i<20; ++i) {
+         for (var i = 0; i<10; ++i) {
          $scope.relateds.push("Ticket"+(i+1));
          };
     }]);

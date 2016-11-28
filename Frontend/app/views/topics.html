@@ -1,17 +1,17 @@
 <div>
-    <table class="mainTable">
+    <table class="table">
         <tbod>
             <tr>
                 <td width="50%" height="0px">
                     <div ng-controller="topicsController">
-                        <h3> Last month topics </h3>
+                        <h3 class="page-header"> Last month topics </h3>
                         <nvd3 options="options" data="data"></nvd3>
                     </div>
                 </td>
 
                 <td width="50%" height="0px">
                     <div ng-controller="topicsController">
-                        <h3> Topics history </h3>
+                        <h3 class="page-header"> Topics history </h3>
                         <nvd3 options="options2" data="data2"></nvd3>
                     </div>
                 </td>
@@ -22,8 +22,6 @@
             </tr>
         </tbod>
     </table>
-
-
 </div>
 
 
