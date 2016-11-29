@@ -114,7 +114,7 @@ while command != 'finish':
 		# Return the topics of document
 		if not os.path.isfile(pathLDAModel) :
 			# Check if the LDA Model exists
-			print ('{"message":"NoExistingModel" }')
+			print ('{"message":"finish", "info":"NoExistingModel" }')
 
 		else :
 			# Loads the LDA model
