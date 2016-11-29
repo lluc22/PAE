@@ -13,7 +13,7 @@ angular.module('myApp')
             if (type == "open") {
                 return restService.get('/tickets', headers);
             }
-            else if (type == "closed") return restService.get('/closedTickets', headers);
+            else if (type == "closed") return restService.get('/ticketsclosed', headers);
         };
         return this;
     }]);

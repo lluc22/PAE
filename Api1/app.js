@@ -231,7 +231,7 @@ apiRoutes.get('/tickets', function(req, res) {
     }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
 });
 
-apiRoutes.get('/closedTickets', function(req, res) {
+apiRoutes.get('/ticketsclosed', function(req, res) {
     Post.find({
         acceptedAnswerId: { $exists: true}
     }, {id: 1, title: 1, _id: 0}, function(err, posts) {

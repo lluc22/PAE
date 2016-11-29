@@ -5,7 +5,11 @@
 angular.module('myApp')
     .service('getRelateds', ['restService' , function (restService) {
         this.getRelateds = function (id) {
-            return restService.get('/ticket/' + id + '/related', null);
+            var headers = {headers: {
+                'limit' : 20,
+                'skip' : 0
+            } };
+            return restService.get('/ticket/' + id + '/related', headers);
         };
         return this;
     }]);

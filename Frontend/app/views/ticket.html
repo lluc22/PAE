@@ -21,7 +21,7 @@
                     <h1 class="page-header" align="center"> <small>Related tickets</small></h1>
                     <div class="list-group" ng-controller="ticketController">
                         <div ng-repeat=" x in relateds">
-                            <button class = "list-group-item"> <!--ng:click="selectTicket(x)"-->{{x}} </button>
+                            <button class = "list-group-item" ng:click="selectTicket(x)"> <!--"-->{{x.title}} </button>
                         </div>
                     </div>
                 </td>
