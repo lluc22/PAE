@@ -325,11 +325,13 @@ apiRoutes.get('/user/:id', function(req, res) {
 });
 
 var actualitzaDB = function (DB) {
-  console.log(DB);
+    DB.forEach(function(entry) {
+        console.log(entry);
+    });
 };
 
 apiRoutes.get('/tickets/doctopic', function (req, res) {
-   var chunkSize = 1000;
+   var chunkSize = 2;
    var lda = require('./app/services/lda/lda');
    var currentIds = [];
 
@@ -343,19 +345,23 @@ apiRoutes.get('/tickets/doctopic', function (req, res) {
            }
 
            // Check the result of the query
-           if(posts.length > 0)
+           if(posts.length > 0 && chunk < 1)
                lda.topicsOfDocs(dataSend, ldaCallback);
            else
                lda.topicsOfDocs({op:'finish'}, ldaCallback);
        }).skip(chunk*chunkSize).limit(chunkSize);
    };
 
-   var ldaCallback = function(resp){
+   var ldaCallback = function(resp) {
        // Update the data base
        var dataToUpdate = [];
        var topics = resp['posts'];
-       for (var i = 0; i < currentIds.length; i++)
-          dataToUpdate.push({id:currentIds[i] , topic:topics[i]});
+       for (var i = 0; i < currentIds.length; i++) {
+           var tmp = [];
+           for (var j = 0; j < topics[i].length; j++)
+                tmp.push({topicid:topics[i][j][0], topicvalue:topics[i][j][1]});
+           dataToUpdate.push({id: currentIds[i], topic: tmp});
+       }
        actualitzaDB(dataToUpdate);
 
        // Send data of chunk
