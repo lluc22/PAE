@@ -330,13 +330,20 @@ apiRoutes.get('/user/:id', function(req, res) {
 
 
 var actualitzaDB = function (DB) {
+    console.log(DB);
     DB.forEach(function(entry) {
-        console.log(entry);
+        Post.findOne({id: entry["id"]}, function(err, post) {
+            console.log(post);
+            if(post != null) {
+                post.set('topics', entry["topic"]);
+                post.save();
+            }
+        });
     });
 };
 
 apiRoutes.get('/tickets/doctopic', function (req, res) {
-   var chunkSize = 2;
+   var chunkSize = 1000;
    var lda = require('./app/services/lda/lda');
    var currentIds = [];
 
@@ -350,7 +357,7 @@ apiRoutes.get('/tickets/doctopic', function (req, res) {
            }
 
            // Check the result of the query
-           if(posts.length > 0 && chunk < 1)
+           if(posts.length > 0)
                lda.topicsOfDocs(dataSend, ldaCallback);
            else
                lda.topicsOfDocs({op:'finish'}, ldaCallback);
