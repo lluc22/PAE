@@ -216,9 +216,9 @@ apiRoutes.get('/testfillingdatabase', function(req, res) {
 });
 
 apiRoutes.get('/fillingusers', function(req, res) {
-        /*var parse = require('./app/services/parseUsers');
+        var parse = require('./app/services/parseUsers');
         parse.parse(myCallback3);
-        res.json({success: 200, msg: {"message": "Database will be update"}});*/
+        res.json({success: 200, msg: {"message": "Database will be update"}});
 });
 
 //tiquets
@@ -231,22 +231,13 @@ apiRoutes.get('/tickets', function(req, res) {
     }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
 });
 
-apiRoutes.get('/ticketsclosed', function(req, res) {
+apiRoutes.get('/closedTickets', function(req, res) {
     Post.find({
         acceptedAnswerId: { $exists: true}
     }, {id: 1, title: 1, _id: 0}, function(err, posts) {
         if (err) throw err;
         res.json({success: 200, msg: {"data": posts}});
     }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
-});
-
-apiRoutes.get('/closedTickets', function(req, res) {
-  Post.find({
-    acceptedAnswerId: { $exists: true}
-  }, {id: 1, title: 1}, function(err, posts) {
-    if (err) throw err;
-    res.json({success: 200, msg: {"data": posts}});
-  }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
 });
 
 apiRoutes.get('/ticket/:id', function(req, res) {
@@ -332,11 +323,6 @@ apiRoutes.get('/user/:id', function(req, res) {
     res.json({success: 200, msg: {"data": user}});
   });
 });
-
-
-
-
-
 
 var actualitzaDB = function (DB) {
   console.log(DB);

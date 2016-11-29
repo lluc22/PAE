@@ -3,7 +3,8 @@
  */
 
 angular.module('myApp')
-    .controller('ticketController', ['$scope', 'getTicket', 'getUser', function ($scope, getTicket, getUser) {
+    .controller('ticketController', ['$scope', 'getTicket', 'getUser', 'getRelateds',
+        function ($scope, getTicket, getUser, getRelateds) {
         var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
         var id = string.split('/');
         var answer_users =  [];
@@ -33,6 +34,9 @@ angular.module('myApp')
         getTicket.getTicketContent(id).then(function (resp) {
             answersCount = resp.answers.length;
             $scope.title = resp.title;
+            if (resp.bestAnswer != null) {
+                console.log("best answer -> " + resp.bestAnswer);
+            }
             document.getElementById('question').innerHTML = "<table><tbody><tr><td>" + resp.body + "</td></tr>" +
                 "<tr><td id='question-user'></td></tr>";
             getUser.getUserInfo(resp.ownerUserId).then(function (resp) {
@@ -61,7 +65,11 @@ angular.module('myApp')
         //   console.log('This is the resp');
         //});
 
+        getRelateds.getRelateds(id).then(function (resp) {
+            console.log(resp);
+        });
+
          for (var i = 0; i<10; ++i) {
-         $scope.relateds.push("Ticket"+(i+1));
+            $scope.relateds.push("Ticket"+(i+1));
          };
     }]);
