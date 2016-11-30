@@ -11,6 +11,5 @@ angular.module('myApp')
             } };
             return restService.get('/ticket/' + id + '/related', headers);
         };
-        return this;
     }]);
 

@@ -13,7 +13,6 @@ angular.module('myApp')
                     }
                     else {
                         return response['data']['msg']['data'][0];
-
                     }
 
                 }, function errorCallback(response) {

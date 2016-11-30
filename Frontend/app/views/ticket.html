@@ -23,17 +23,39 @@
                         </div>
                     </div>
                 </td>
-                <td class="relatedTiquets">
-                    <h1 class="page-header" align="center"> <small>Related tickets</small></h1>
-                    <div class="list-group" ng-controller="ticketController">
-                        <div ng-repeat=" x in relateds">
-                            <button class = "list-group-item" ng:click="selectTicket(x)">
-                                {{x.title}}
-                                <span class="badge"> Topic</span>
-                            </button>
-                        </div>
-                    </div>
+
+                <td>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td class="relatedTiquets">
+                                <h1 class="page-header" align="center"> <small>Related tickets</small></h1>
+                                <div class="list-group" ng-controller="ticketController">
+                                    <div ng-repeat="x in relateds">
+                                        <button class = "list-group-item" ng:click="selectTicket(x)">
+                                            {{x.title}}
+                                            <a ng-repeat="t1 in x.topics">
+                                                <span class="badge"> {{t1.topicid}}</span>
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="relatedTiquets">
+                                <h1 class="page-header" align="center"> <small>Best Users</small></h1>
+                                <div ng-repeat="u in bestUsers">
+                                    <li class = "list-group-item">
+                                        {{u.displayName}}
+                                    </li>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </td>
+
             </tr>
         </tbody>
     </table>

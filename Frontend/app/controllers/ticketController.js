@@ -3,27 +3,28 @@
  */
 
 angular.module('myApp')
-    .controller('ticketController', ['$scope', '$location', 'getTicket', 'getUser', 'getRelateds',
-        function ($scope, $location, getTicket, getUser, getRelateds) {
+    .controller('ticketController', ['$scope', '$location', 'getTicket', 'getUser', 'getRelateds', 'getBestUsers',
+        function ($scope, $location, getTicket, getUser, getRelateds, getBestUsers) {
         var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
         var lastUrlPart = string.split('/');
         var answer_users =  [];
-            var bestAnswerFromUser = [];
+        var bestAnswerFromUser = [];
         var question_user;
         var id = lastUrlPart[lastUrlPart.length-1].split('?');
         id = id[0];
         $scope.relateds = [];
+        $scope.bestUsers = [];
 
         var getAnswersUser = function () {
             //console.log("length-->" +a.length);
             if(answer_users.length == answersCount){
-
                 for(var i =0; i<answer_users.length;++i)
                     document.getElementsByClassName('user')[i].innerHTML =
                         "<p align='right'> <i> response by: " + answer_users[i] +
                         "</i></p>";
             }
         };
+
         var getBesAnswerUser = function () {
             document.getElementsByClassName('bestAnswerUser')[0].innerHTML =
                 "<p align='right'> <i> best response by: " + bestAnswerFromUser[0] +
@@ -85,17 +86,22 @@ angular.module('myApp')
                         getAnswersUser();
                     });
                 }
-
             }
         });
-        //getTicket.getTicketRelateds(id).then(function (resp) {
-        //   console.log('This is the resp');
-        //});
+
+
         getRelateds.getRelateds(id).then(function (resp) {
-            //console.log(resp);
             for (var i = 0; i<10; ++i) {
                 $scope.relateds.push(resp[i]);
-            };
+            }
+        });
+
+
+        getBestUsers.getRelatedsUsers(id).then(function (resp) {
+            console.log(resp);
+            for (var i = 0; i < resp.length; ++i) {
+                $scope.bestUsers.push(resp[i]);
+            }
         });
 
         $scope.selectTicket = function (ticket) {
