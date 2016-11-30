@@ -5,13 +5,19 @@
             <tr>
                 <td id="question-info">
                     <div id="question-header">
-                        <h1 class="page-header"> {{title}}</h1>
+                        <h1 class="page-header">
+                            {{title}}
+                            <a ng-repeat=" t in topics">
+                                <span class="badge"> {{t.topicid}}</span>
+                            </a>
+                        </h1>
                     </div>
                     <div id="question" >
                         <!-- se añade dinamicamente el body -->
                     </div>
                     <div id="answers">
                         <div id="answers-header"></div>
+                        <div id="bestAnswer"> </div>
                         <div id="answers-content">
 
                         </div>
@@ -21,7 +27,10 @@
                     <h1 class="page-header" align="center"> <small>Related tickets</small></h1>
                     <div class="list-group" ng-controller="ticketController">
                         <div ng-repeat=" x in relateds">
-                            <button class = "list-group-item" ng:click="selectTicket(x)"> <!--"-->{{x.title}} </button>
+                            <button class = "list-group-item" ng:click="selectTicket(x)">
+                                {{x.title}}
+                                <span class="badge"> Topic</span>
+                            </button>
                         </div>
                     </div>
                 </td>

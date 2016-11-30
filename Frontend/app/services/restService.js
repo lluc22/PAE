@@ -9,7 +9,6 @@ angular.module('myApp')
             return $http.get(MY_CONSTANTS.SERVER_IP + url, headers)
                 .then(function successCallback(response) {
                     if (headers != null) {
-
                         return response['data']['msg']['data'];
                     }
                     else {

@@ -10,8 +10,6 @@ angular.module('myApp')
         self.page = parseInt($stateParams.page);
         $scope.tickets = [];
         var clicks = 0;
-        //84.88.81.126
-        //localhost:8080/api/tickets
 
         $scope.selectTicket = function (ticket) {
             var id = ticket['id'];
