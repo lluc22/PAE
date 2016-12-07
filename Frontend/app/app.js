@@ -2,7 +2,7 @@
 
 // create the module and name it scotchApp
 angular
-    .module('myApp', ['ui.router', 'nvd3'])
+    .module('myApp', ['ui.router', 'nvd3', 'ngMaterial'])
     .constant('MY_CONSTANTS', {
         "SERVER_IP" : "http://84.88.81.126:8080/api",
         "LOCALHOST_IP" : 'http://localhost:8080/api'
