@@ -1,47 +1,74 @@
-<form class="form-inline">
-    <div class="form-group">
-        <label for="sel1">State</label>
-        <select class="form-control" id="sel1">
-            <option> </option>
-            <option>Open</option>
-            <option>Closed</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="sel2">Topic</label>
-        <select class="form-control" id="sel2">
-            <option> </option>
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-        </select>
+<div>
+    <div class="col-md-8">
+        <div class="list-group" ng-controller="openTicketsController" >
+            <div ng-repeat=" x in tickets">
+                <button class = "list-group-item" ng:click="selectTicket(x)"> {{x.title}} </button>
+            </div>
+        </div>
+
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-lg-offset-1 text-center">
+                        <a href="" ng-click="moreTickets()"> More tickets</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
     </div>
 
-    <!--
-    <div class="form-group" flex-gt-xs>
-        <label> StartDate </label>
-        <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
-    </div>
-    -->
-    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-        <span></span> <b class="caret"></b>
-    </div>
+    <div class="col-md-4">
+        <form class="form">
+            <div class="form-group">
+                <label for="sel1">State</label>
+                <select class="form-control" id="sel1">
+                    <option> </option>
+                    <option>Open</option>
+                    <option>Closed</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sel2">Topic</label>
+                <select class="form-control" id="sel2">
+                    <option> </option>
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                </select>
+            </div>
 
-    <div class="form-group">
-        <label for="usr">Username:</label>
-        <input type="text" class="form-control" id="usr">
-    </div>
+            <!--
+            <div class="form-group" flex-gt-xs>
+                <label> StartDate </label>
+                <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+            </div>
+            -->
 
-    <button type="submit" class="btn btn-default">Submit</button>
-</form>
+            <div class="form-group">
+                <label for="usr">Username:</label>
+                <input type="text" class="form-control" id="usr">
+            </div>
+
+            <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                <span></span> <b class="caret"></b>
+            </div>
+
+            <button id="boton" type="submit" class="btn btn-default">Submit</button>
+
+        </form>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     $(function() {
@@ -49,8 +76,9 @@
         var start = moment().subtract(29, 'days');
         var end = moment();
 
+
         function cb(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            $('#reportrange span').html(start.format('YYYY MMMM D') + ' - ' + end.format('YYYY MMMM D'));
         }
 
         $('#reportrange').daterangepicker({
