@@ -5,6 +5,10 @@
 angular.module('myApp')
     .controller('openTicketsController', ['$scope', '$location', '$stateParams', '$state', 'getTickets',
         function ($scope, $location, $stateParams, $state, getTickets) {
+
+
+            $scope.dates4 = { startDate: moment().subtract(1, 'day'), endDate: moment().subtract(1, 'day') };
+            //$scope.datePicker.date = {startDate: null, endDate: null};
         //console.log("Initial -> " + $stateParams.page);
         var self = this;
         self.page = parseInt($stateParams.page);
@@ -27,5 +31,24 @@ angular.module('myApp')
         $scope.moreTickets = function () {
             $state.go('.', {page : self.page + 1});
         };
+
+            $scope.myDate = new Date();
+
+            $scope.minDate = new Date(
+                $scope.myDate.getFullYear(),
+                $scope.myDate.getMonth() - 2,
+                $scope.myDate.getDate());
+
+            $scope.maxDate = new Date(
+                $scope.myDate.getFullYear(),
+                $scope.myDate.getMonth() + 2,
+                $scope.myDate.getDate());
+
+            $scope.onlyWeekendsPredicate = function(date) {
+                var day = date.getDay();
+                return day === 0 || day === 6;
+            };
+
+
     }]);
 

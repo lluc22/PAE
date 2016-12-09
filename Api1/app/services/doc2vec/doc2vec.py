@@ -18,11 +18,6 @@ from uuid import uuid4
 cores = multiprocessing.cpu_count()
 assert gensim.models.doc2vec.FAST_VERSION > -1, "this will be painfully slow otherwise"
 
-req_version = (3,5)
-cur_version = sys.version_info
-
-if cur_version < req_version:
-    raise Exception("Python version requiered " + str(req_version))
 
 
 
@@ -51,6 +46,10 @@ def normalize(text):
         norm_text = norm_text.replace(char, ' ' + char + ' ')
 
     return norm_text
+
+def infer_vector(body,model_path='./doc2vec/models/default/default.d2v'):
+    model = Doc2Vec.load(model_path)
+    return model.infer_vector(normalize(body))
 
 
 class LabeledSentence(object):
