@@ -223,13 +223,88 @@ apiRoutes.get('/fillingusers', function(req, res) {
 
 //tiquets
 apiRoutes.get('/tickets', function(req, res) {
-    Post.find({
-        acceptedAnswerId: { $exists: false}
-    }, {id: 1, title: 1, _id: 0}, function(err, posts) {
-        if (err) throw err;
+    //req.params.limit -
+    //req.params.skip -
+    //req.params.close -
+    //req.params.open -
+    //req.params.dateinit -
+    //req.params.dataend -
+    //req.params.topic -
+    //req.params.orderdate -
+    var errorMessage = "";
+    var orderdate = 1;
+    var open = false;
+    var close = true;
+    console.log("topicinit " + req.query.skip + " topicend");
+    if (req.query.orderdate == "-1") {
+        orderdate = parseInt("-1");
+    }
+    else if(req.query.orderdate != "1"){
+        errorMessage = "Invalid input format";
+    }
+    if(req.query.open == true) {
+        open = false;
+    }
+    else {
+        open = true;
+    }
+    if (req.query.close == true) {
+        close = true;
+    }
+    else{
+        close = false;
+    }
+
+    Post.aggregate([
+        {
+            $match: {
+                $or: [
+                    {
+                        acceptedAnswerId: {
+                            $exists: open
+                        }
+                    }, {
+                        acceptedAnswerId: {
+                            $exists: close
+                        }
+                    }
+                ],
+                creationDate: {
+                    $gte: req.query.dateinit,
+                    $lt: req.query.dataend
+                }
+            }
+        },
+        {
+            $unwind: '$topics'
+        },
+        {
+            $sort: {creationDate: orderdate}
+        },
+        { $group: {
+                _id: {
+                    id: "$id",
+                    title: "$title"
+                },
+                topics: { $push: "$topics" },
+                topicscount: {$sum: {$cond: [{$eq: ["$topics.topicid", parseInt(req.query.topicid)]},1,0]}}
+            }
+        },
+        {
+            $match: {
+                topicscount: {$gt: 0}
+            }
+        },
+        {
+            $project : { topics: 1 }
+        },
+        { $skip : parseInt(req.query.skip)},
+        { $limit : parseInt(req.query.limit) }
+        ], function(err, posts) {
         res.json({success: 200, msg: {"data": posts}});
-    }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
+    });
 });
+
 
 apiRoutes.get('/ticketsclosed', function(req, res) {
     Post.find({
