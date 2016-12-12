@@ -5,6 +5,8 @@
 angular.module('myApp')
     .controller('ticketController', ['$scope', '$location', 'getTicket', 'getUser', 'getRelateds', 'getBestUsers',
         function ($scope, $location, getTicket, getUser, getRelateds, getBestUsers) {
+            var colores = ['#999999', '#53C126' , '#FF5733', '#FFC300', '#FF1493',
+                '#40EED6', '#2067FF', '#7800FF', '#FF0000', '#00FF97'];
         var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
         var lastUrlPart = string.split('/');
         var answer_users =  [];
@@ -42,7 +44,13 @@ angular.module('myApp')
         getTicket.getTicketContent(id).then(function (resp) {
             //console.log(resp);
             answersCount = resp.answers.length;
-            $scope.topics = resp.topics;
+            var topics = resp.topics;
+            for (x in topics) {
+                var numTopic = topics[x].topicid;
+                document.getElementById('questionTopics').innerHTML += "<span class='badge' style='background-color:" +
+                    colores[numTopic] + "'>" +
+                    topics[x].topicid + "</span>";
+            }
             $scope.title = resp.title;
             document.getElementById('question').innerHTML = "<table><tbody><tr><td>" + resp.body + "</td></tr>" +
                 "<tr><td id='question-user'></td></tr>";
@@ -89,7 +97,7 @@ angular.module('myApp')
             }
         });
 
-
+        /*
         getRelateds.getRelateds(id).then(function (resp) {
             console.log(resp);
             for (var i = 0; i<10; ++i) {
@@ -97,12 +105,14 @@ angular.module('myApp')
             }
         });
 
+
         getBestUsers.getRelatedsUsers(id).then(function (resp) {
             console.log(resp);
             for (var i = 0; i < resp.length; ++i) {
                 $scope.bestUsers.push(resp[i]);
             }
         });
+        */
 
         $scope.selectTicket = function (ticket) {
             var id = ticket['id'];
