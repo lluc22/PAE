@@ -3,10 +3,9 @@
  */
 
 angular.module('myApp')
-    .controller('ticketController', ['$scope', '$location', 'getTicket', 'getUser', 'getRelateds', 'getBestUsers',
-        function ($scope, $location, getTicket, getUser, getRelateds, getBestUsers) {
-            var colores = ['#999999', '#53C126' , '#FF5733', '#FFC300', '#FF1493',
-                '#40EED6', '#2067FF', '#7800FF', '#FF0000', '#00FF97'];
+    .controller('ticketController', ['MY_CONSTANTS', '$scope', '$location', 'getTicket', 'getUser', 'getRelateds', 'getBestUsers',
+        function (MY_CONSTANTS, $scope, $location, getTicket, getUser, getRelateds, getBestUsers) {
+
         var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
         var lastUrlPart = string.split('/');
         var answer_users =  [];
@@ -48,7 +47,7 @@ angular.module('myApp')
             for (x in topics) {
                 var numTopic = topics[x].topicid;
                 document.getElementById('questionTopics').innerHTML += "<span class='badge' style='background-color:" +
-                    colores[numTopic] + "'>" +
+                    MY_CONSTANTS.colores[numTopic] + "'>" +
                     topics[x].topicid + "</span>";
             }
             $scope.title = resp.title;
