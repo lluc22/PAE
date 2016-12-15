@@ -10,6 +10,7 @@ var model_path = "";
 var size = 239932;
 var busy = false;
 var firstTopN = true;
+var http = require('http');
 //pyshell.send({command:"build_vocab"})
 
 // pyshell.on('message', function (message) {
@@ -92,7 +93,7 @@ module.exports = {
     }
   },
   vectors: function(topn,fillVectorCallback){
-    if(!busy){
+    /*if(!busy){
       busy = true;
       pyshell.on('message',function(message){
         command = message['command'];
@@ -105,11 +106,11 @@ module.exports = {
         }
       });
       pyshell.send({command:"get_vectors",topn:topn});
-    }
+    }*/
   },
 
   topn_similar: function(id,topn,fillIdCallback){
-    if(!busy){
+    /*if(!busy){
       busy = true
       var pyCallBack = function(message){
         command = message['command']
@@ -122,13 +123,27 @@ module.exports = {
 
       pyshell.on('message',pyCallBack);
       pyshell.send({command:"topn",n:topn,id:id})
-
-
-    }
+        */
+    http.get({
+        hostname: 'localhost',
+        port: 8000,
+        path: '/vectors/' + id,
+        agent: false  // create a new agent just for this one request
+    }, function(res) {
+        res.setEncoding('utf8');
+        var rawData = '';
+        res.on('data', function(chunk){ rawData += chunk});
+        res.on('end', function() {
+            try {
+                var parsedData = JSON.parse(rawData);
+                console.log(parsedData);
+        } catch (e) {
+                console.log(e.message);
+            }
+        });
+    });
   }
-
-
-}
+};
 
 /*
 Commands used:
