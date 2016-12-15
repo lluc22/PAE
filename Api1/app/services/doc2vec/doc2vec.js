@@ -10,6 +10,7 @@ var model_path = "";
 var size = 239932;
 var busy = false;
 var firstTopN = true;
+var http = require('http');
 //pyshell.send({command:"build_vocab"})
 
 // pyshell.on('message', function (message) {

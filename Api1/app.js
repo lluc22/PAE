@@ -300,7 +300,6 @@ apiRoutes.get('/tickets', function(req, res) {
                         }
                     }
                     ]
-
             }
         },
         {
