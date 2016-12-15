@@ -17,14 +17,14 @@ angular.module('myApp')
 
         $scope.selectTicket = function (ticket) {
             var id = ticket['id'];
-            //console.log(id);
+            console.log(id);
             $location.path('ticket/'+id);
 
         };
 
         $scope.tickets = getTickets.ticketContent;
 
-            getTickets.getTickets(20, this.page - 1, null, null, null, null);
+        getTickets.getTickets(20, this.page - 1, null, null, null, null);
         /*
         getTickets.makeCorsRequest(20, this.page - 1, null, null, null, null).then(function (result) {
             angular.forEach(result, function(value) {
@@ -35,14 +35,13 @@ angular.module('myApp')
         });
         */
 
-
         $scope.moreTickets = function () {
             $state.go('.', {page : self.page + 1});
         };
 
 
         $scope.sendValues = function() {
-            console.log("HI");
+            //console.log("HI");
             //console.log(document.forms("myForm").getElementByTagName("sel1"));
             //console.log($("#state").val());
             //console.log($("#topic").val());

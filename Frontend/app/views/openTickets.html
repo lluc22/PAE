@@ -2,7 +2,7 @@
     <div class="col-md-8">
         <div class="list-group">
             <div ng-repeat=" x in tickets">
-                <button class = "list-group-item" ng:click="selectTicket(x)">
+                <button class = "list-group-item" ng:click="selectTicket(x._id)">
                     {{x._id.title}}
                     <a ng-repeat="t1 in x.topicsgroup">
                         <span id = customSpan class="badge" style="float: right; background-color: {{MY_CONSTANTS.colores[t1]}}"> {{t1}}</span>

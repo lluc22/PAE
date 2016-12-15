@@ -60,9 +60,9 @@ angular.module('myApp')
             if (resp.bestAnswer != null) {
                 //console.log("best answer -> " + resp.bestAnswer);
                 document.getElementById('answers-header').innerHTML = "<h4>" + (resp.answers.length+1) + " Answers </h4>";
-                /*IMAGEN
-                 "<img src='https://www.shareicon.net/data/128x128/2016/08/20/817720_check_395x512.png'>" +
-                 */
+                //IMAGEN
+                 //"<img src='https://www.shareicon.net/data/128x128/2016/08/20/817720_check_395x512.png'>" +
+                 //
                 document.getElementById('bestAnswer').innerHTML =
                     "<table><tbody><tr>" +
                     "<td class='tickImage'> <img src='https://www.shareicon.net/data/128x128/2016/08/20/817720_check_395x512.png' " +
