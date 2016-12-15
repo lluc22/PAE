@@ -229,18 +229,19 @@ apiRoutes.get('/tickets', function(req, res) {
     //req.params.open -
     //req.params.dateinit -
     //req.params.dataend -
-    //req.params.topic -
+    //req.params.topicid -
     //req.params.orderdate -
     var errorMessage = "";
     var orderdate = 1;
     var open = false;
     var close = true;
-    console.log("topicinit " + req.query.skip + " topicend");
+    var dateinit = "2014-03-03T20:39:37.323";
+    var dataend = "2016-03-03T20:39:37.343";
     if (req.query.orderdate == "-1") {
         orderdate = parseInt("-1");
     }
     else if(req.query.orderdate != "1"){
-        errorMessage = "Invalid input format";
+        orderdate = "1";
     }
     if(req.query.open == true) {
         open = false;
@@ -268,35 +269,45 @@ apiRoutes.get('/tickets', function(req, res) {
                             $exists: close
                         }
                     }
-                ],
-                creationDate: {
-                    $gte: req.query.dateinit,
-                    $lt: req.query.dataend
-                }
+                ]
             }
         },
         {
             $unwind: '$topics'
         },
-        {
-            $sort: {creationDate: orderdate}
-        },
         { $group: {
                 _id: {
                     id: "$id",
-                    title: "$title"
+                    title: "$title",
+                    date: "$creationDate"
                 },
-                topics: { $push: "$topics" },
+                topicsgroup: { $push:"$topics.topicid"},
                 topicscount: {$sum: {$cond: [{$eq: ["$topics.topicid", parseInt(req.query.topicid)]},1,0]}}
             }
         },
         {
             $match: {
-                topicscount: {$gt: 0}
+                topicscount: {$gt: 0},
+                $and: [
+                    {
+                        "_id.date": {
+                            $gte: dateinit
+                        }
+                    },
+                    {
+                        "_id.date": {
+                            $lt: dataend
+                        }
+                    }
+                    ]
+
             }
         },
         {
-            $project : { topics: 1 }
+            $sort: { date: orderdate }
+        },
+        {
+            $project : { topicsgroup: 1}
         },
         { $skip : parseInt(req.query.skip)},
         { $limit : parseInt(req.query.limit) }

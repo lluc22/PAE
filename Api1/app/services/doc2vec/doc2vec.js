@@ -92,7 +92,7 @@ module.exports = {
     }
   },
   vectors: function(topn,fillVectorCallback){
-    if(!busy){
+    /*if(!busy){
       busy = true;
       pyshell.on('message',function(message){
         command = message['command'];
@@ -105,11 +105,11 @@ module.exports = {
         }
       });
       pyshell.send({command:"get_vectors",topn:topn});
-    }
+    }*/
   },
 
   topn_similar: function(id,topn,fillIdCallback){
-    if(!busy){
+    /*if(!busy){
       busy = true
       var pyCallBack = function(message){
         command = message['command']
@@ -122,13 +122,18 @@ module.exports = {
 
       pyshell.on('message',pyCallBack);
       pyshell.send({command:"topn",n:topn,id:id})
-
-
-    }
+        */
+    http.get({
+        hostname: 'localhost',
+        port: 8000,
+        path: '/vectors/' + id,
+        agent: false  // create a new agent just for this one request
+    }, function(res) {
+        // Do stuff with response
+        console.log(res);
+    });
   }
-
-
-}
+};
 
 /*
 Commands used:
