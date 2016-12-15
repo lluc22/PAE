@@ -7,9 +7,14 @@
                     <div id="question-header">
                         <h1 class="page-header">
                             {{title}}
+                            <a id="questionTopics">
+
+                            </a>
+                            <!--
                             <a ng-repeat=" t in topics">
                                 <span class="badge"> {{t.topicid}}</span>
                             </a>
+                            -->
                         </h1>
                     </div>
                     <div id="question" >
@@ -30,7 +35,7 @@
                         <tr>
                             <td class="relatedTiquets">
                                 <h1 class="page-header" align="center"> <small>Related tickets</small></h1>
-                                <div class="list-group" ng-controller="ticketController">
+                                <div class="list-group">
                                     <div ng-repeat="x in relateds">
                                         <button class = "list-group-item" ng:click="selectTicket(x)">
                                             {{x.title}}
