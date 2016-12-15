@@ -17,7 +17,6 @@ if not os.path.exists(pathCorpus):
     
 T = 10								# Number Of Topics to extract
 lda = None							# LDA model Global variable
-count = 0
 
 dataJson = json.loads(raw_input())
 command= dataJson['command']
