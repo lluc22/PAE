@@ -71,7 +71,7 @@ angular.module('myApp')
                     "</td></tr></tbody></table>";
                 document.getElementsByClassName('bestAnswer')[0].innerHTML = resp.bestAnswer.body;
                 getUser.getUserInfo(resp.bestAnswer.ownerId).then(function (resp2) {
-                    console.log(resp2);
+                    //console.log(resp2);
                     //answer_users.push(resp2.displayName);
                     bestAnswerFromUser.push(resp2.displayName);
                     //getAnswersUser();
@@ -96,7 +96,7 @@ angular.module('myApp')
             }
         });
 
-        /*
+
         getRelateds.getRelateds(id).then(function (resp) {
             console.log(resp);
             for (var i = 0; i<10; ++i) {
@@ -106,12 +106,11 @@ angular.module('myApp')
 
 
         getBestUsers.getRelatedsUsers(id).then(function (resp) {
-            console.log(resp);
-            for (var i = 0; i < resp.length; ++i) {
+            //console.log(resp);
+            for (var i = 0; i < 10; ++i) {
                 $scope.bestUsers.push(resp[i]);
             }
         });
-        */
 
         $scope.selectTicket = function (ticket) {
             var id = ticket['id'];
