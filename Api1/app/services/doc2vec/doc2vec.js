@@ -130,8 +130,17 @@ module.exports = {
         path: '/vectors/' + id,
         agent: false  // create a new agent just for this one request
     }, function(res) {
-        // Do stuff with response
-        console.log(res);
+        res.setEncoding('utf8');
+        var rawData = '';
+        res.on('data', function(chunk){ rawData += chunk});
+        res.on('end', function() {
+            try {
+                var parsedData = JSON.parse(rawData);
+                console.log(parsedData);
+        } catch (e) {
+                console.log(e.message);
+            }
+        });
     });
   }
 };
