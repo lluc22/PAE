@@ -1,6 +1,6 @@
-<div ng-controller="openTicketsController" >
+<div>
     <div class="col-md-8">
-        <div class="list-group" ng-controller="openTicketsController" >
+        <div class="list-group">
             <div ng-repeat=" x in tickets">
                 <button class = "list-group-item" ng:click="selectTicket(x)">
                     {{x._id.title}}
@@ -10,7 +10,6 @@
                 </button>
             </div>
         </div>
-
 
         <footer>
             <div class="container">

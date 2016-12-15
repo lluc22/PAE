@@ -14,12 +14,6 @@ angular.module('myApp')
                 'dataend' : dataend,
                 'topicid' : topicid
             } };
-            /*
-            if (type == "open") {
-                return restService.get('/tickets', headers);
-            }
-            else if (type == "closed") return restService.get('/ticketsclosed', headers);
-            */
             return restService.get('/tickets', params);
         };
         return this;

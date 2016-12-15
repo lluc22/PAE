@@ -9,10 +9,11 @@ angular.module('myApp')
             //$scope.dates4 = { startDate: moment().subtract(1, 'day'), endDate: moment().subtract(1, 'day') };
             //$scope.datePicker.date = {startDate: null, endDate: null};
         //console.log("Initial -> " + $stateParams.page);
-        var self = this;
-        self.page = parseInt($stateParams.page);
-        $scope.tickets = [];
-        var clicks = 0;
+            var self = this;
+            self.page = parseInt($stateParams.page);
+
+            $scope.tickets = [];
+            var clicks = 0;
 
         $scope.selectTicket = function (ticket) {
             var id = ticket['id'];
@@ -31,10 +32,11 @@ angular.module('myApp')
         });
 
         $scope.moreTickets = function () {
+            ++num;
             $state.go('.', {page : self.page + 1});
         };
 
-        /*
+
         $scope.sendValues = function() {
             console.log("HI");
             //console.log(document.forms("myForm").getElementByTagName("sel1"));
@@ -48,15 +50,14 @@ angular.module('myApp')
             var iniDay = ($("#iniDay").text());
             var endDay = ($("#endDay").text());
             getTickets.makeCorsRequest(20, this.page - 1, state, iniDay, endDay, topic).then(function (result) {
-                console.log("RESPONSE");
-                console.log(result);
                 angular.forEach(result, function(value) {
+                    //console.log(value);
                     $scope.tickets.push(value);
                 })
             });
 
         }
-        */
+
     }]).run(function ($rootScope, MY_CONSTANTS) {
         $rootScope.MY_CONSTANTS = MY_CONSTANTS;
     });
