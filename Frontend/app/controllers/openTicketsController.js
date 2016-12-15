@@ -22,7 +22,10 @@ angular.module('myApp')
 
         };
 
+        $scope.tickets = getTickets.ticketContent;
 
+            getTickets.getTickets(20, this.page - 1, null, null, null, null);
+        /*
         getTickets.makeCorsRequest(20, this.page - 1, null, null, null, null).then(function (result) {
             angular.forEach(result, function(value) {
                 //console.log(value);
@@ -30,9 +33,10 @@ angular.module('myApp')
 
             })
         });
+        */
+
 
         $scope.moreTickets = function () {
-            ++num;
             $state.go('.', {page : self.page + 1});
         };
 
@@ -49,12 +53,7 @@ angular.module('myApp')
             var topic = $("#topic").val();
             var iniDay = ($("#iniDay").text());
             var endDay = ($("#endDay").text());
-            getTickets.makeCorsRequest(20, this.page - 1, state, iniDay, endDay, topic).then(function (result) {
-                angular.forEach(result, function(value) {
-                    //console.log(value);
-                    $scope.tickets.push(value);
-                })
-            });
+            getTickets.getTickets(20, this.page - 1, state, iniDay, endDay, topic);
 
         }
 

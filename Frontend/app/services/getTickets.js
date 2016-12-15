@@ -5,6 +5,23 @@
 
 angular.module('myApp')
     .service('getTickets', ['restService' , function (restService) {
+        var tickets = {};
+        tickets.ticketContent = [];
+        tickets.getTickets = function (limit, skip, type, dateinit, dataend, topicid) {
+            var params = {params: {
+                'limit' : limit,
+                'skip' : skip,
+                'type' : type,
+                'dateinit' : dateinit,
+                'dataend' : dataend,
+                'topicid' : topicid
+            } };
+            return restService.get('/tickets', params).then(function (data) {
+                angular.copy(data, tickets.ticketContent);
+            });
+        };
+        return tickets;
+        /*
         this.makeCorsRequest = function (limit, skip, type, dateinit, dataend, topicid) {
             var params = {params: {
                 'limit' : limit,
@@ -17,6 +34,7 @@ angular.module('myApp')
             return restService.get('/tickets', params);
         };
         return this;
+        */
     }]);
 
 /*
