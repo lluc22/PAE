@@ -31,11 +31,9 @@ if(typeof(LDAvis) !== "undefined"){
       });
     });
 }else{
-    // require.js not available: dynamically load d3 & LDAvis
-    LDAvis_load_lib("https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js", function(){
-         LDAvis_load_lib("https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.js", function(){
-                 new LDAvis("#" + "ldavis_el92481397036306960169707736025", ldavis_el92481397036306960169707736025_data);
-            })
-         });
+    // require.js not available: dynamically LDAvis
+     LDAvis_load_lib("https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.js", function(){
+             new LDAvis("#" + "ldavis_el92481397036306960169707736025", ldavis_el92481397036306960169707736025_data);
+        });
 }
 </script>

@@ -38,8 +38,7 @@ function config($stateProvider, $urlRouterProvider) {
         })
         .state('topics', {
             url : '/topics',
-            templateUrl : 'views/filter.html',
-            controller  : 'filterController'
+            templateUrl : 'views/htmLDA.html'
         })
         .state('ticket', {
             url : '/ticket/:id',

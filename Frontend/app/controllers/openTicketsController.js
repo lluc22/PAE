@@ -3,8 +3,8 @@
  */
 
 angular.module('myApp')
-    .controller('openTicketsController', ['$scope', '$location', '$stateParams', '$state', 'getTickets',
-        function ($scope, $location, $stateParams, $state, getTickets) {
+    .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets',
+        function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets) {
 
             //$scope.dates4 = { startDate: moment().subtract(1, 'day'), endDate: moment().subtract(1, 'day') };
             //$scope.datePicker.date = {startDate: null, endDate: null};
@@ -21,9 +21,12 @@ angular.module('myApp')
 
         };
 
-        getTickets.makeCorsRequest(20, this.page - 1, "open").then(function (result) {
+
+        getTickets.makeCorsRequest(20, this.page - 1, null, null, null, null).then(function (result) {
             angular.forEach(result, function(value) {
+                //console.log(value);
                 $scope.tickets.push(value);
+
             })
         });
 
@@ -32,23 +35,29 @@ angular.module('myApp')
         };
 
         /*
-            $scope.myDate = new Date();
+        $scope.sendValues = function() {
+            console.log("HI");
+            //console.log(document.forms("myForm").getElementByTagName("sel1"));
+            //console.log($("#state").val());
+            //console.log($("#topic").val());
+            //console.log($("#usr").val());
+            //console.log($("#iniDay").text());
+            //console.log($("#endDay").text());
+            var state = $("#state").val();
+            var topic = $("#topic").val();
+            var iniDay = ($("#iniDay").text());
+            var endDay = ($("#endDay").text());
+            getTickets.makeCorsRequest(20, this.page - 1, state, iniDay, endDay, topic).then(function (result) {
+                console.log("RESPONSE");
+                console.log(result);
+                angular.forEach(result, function(value) {
+                    $scope.tickets.push(value);
+                })
+            });
 
-            $scope.minDate = new Date(
-                $scope.myDate.getFullYear(),
-                $scope.myDate.getMonth() - 2,
-                $scope.myDate.getDate());
-
-            $scope.maxDate = new Date(
-                $scope.myDate.getFullYear(),
-                $scope.myDate.getMonth() + 2,
-                $scope.myDate.getDate());
-
-            $scope.onlyWeekendsPredicate = function(date) {
-                var day = date.getDay();
-                return day === 0 || day === 6;
-            };
+        }
         */
-
-    }]);
+    }]).run(function ($rootScope, MY_CONSTANTS) {
+        $rootScope.MY_CONSTANTS = MY_CONSTANTS;
+    });
 

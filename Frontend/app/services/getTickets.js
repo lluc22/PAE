@@ -5,15 +5,22 @@
 
 angular.module('myApp')
     .service('getTickets', ['restService' , function (restService) {
-        this.makeCorsRequest = function (limit, skip, type) {
-            var headers = {headers: {
+        this.makeCorsRequest = function (limit, skip, type, dateinit, dataend, topicid) {
+            var params = {params: {
                 'limit' : limit,
-                'skip' : skip
+                'skip' : skip,
+                'type' : type,
+                'dateinit' : dateinit,
+                'dataend' : dataend,
+                'topicid' : topicid
             } };
+            /*
             if (type == "open") {
                 return restService.get('/tickets', headers);
             }
             else if (type == "closed") return restService.get('/ticketsclosed', headers);
+            */
+            return restService.get('/tickets', params);
         };
         return this;
     }]);
