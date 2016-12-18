@@ -136,7 +136,7 @@ module.exports = {
         res.on('end', function() {
             try {
                 var parsedData = JSON.parse(rawData);
-                console.log(parsedData);
+                fillIdCallback(parsedData['related']);
         } catch (e) {
                 console.log(e.message);
             }

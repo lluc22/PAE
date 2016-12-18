@@ -223,26 +223,51 @@ apiRoutes.get('/fillingusers', function(req, res) {
 
 //tiquets
 apiRoutes.get('/tickets', function(req, res) {
-    //req.params.limit -
-    //req.params.skip -
+    //req.params.limit
+    //req.params.skip
     //req.params.close -
     //req.params.open -
-    //req.params.dateinit -
-    //req.params.dataend -
-    //req.params.topicid -
-    //req.params.orderdate -
+    //req.params.dateinit
+    //req.params.dataend
+    //req.params.topicid
+    ////req.params.orderdate -
     var errorMessage = "";
-    var orderdate = 1;
+    var orderdate = parseInt("1");
     var open = false;
     var close = true;
     var dateinit = "2014-03-03T20:39:37.323";
     var dataend = "2016-03-03T20:39:37.343";
-    if (req.query.orderdate == "-1") {
+    var topicid = parseInt("1");
+    var limit = parseInt("10");
+    var skip = parseInt("0");
+    console.log(skip + " " + limit + " " + orderdate);
+
+    //OrderDate
+    if(typeof req.query === 'undefined' && typeof req.query.orderdate === 'undefined'){
+        orderdate = parseInt("1");
+    }
+    else if (req.query.orderdate == "-1") {
         orderdate = parseInt("-1");
     }
     else if(req.query.orderdate != "1"){
-        orderdate = "1";
+        orderdate = parseInt("1");
     }
+
+    //Limit, Skip
+    if(isNaN(parseInt(req.query.skip))){
+        skip = parseInt("0");
+    }
+    else {
+        skip = parseInt(req.query.limit);
+    }
+    if(isNaN(parseInt(req.query.limit))){
+        limit = parseInt("10");
+    }
+    else {
+        limit = parseInt(req.query.limit);
+    }
+
+    //Open, Close
     if(req.query.open == true) {
         open = false;
     }
@@ -256,7 +281,31 @@ apiRoutes.get('/tickets', function(req, res) {
         close = false;
     }
 
-    Post.aggregate([
+    //TopicId
+    if(isNaN(parseInt(req.query.topicid))){
+        topicid = parseInt("5");
+    }
+    else {
+        topicid = parseInt(req.query.topicid);
+    }
+
+    console.log(skip + " " + limit + " " + orderdate + " " + topicid);
+
+    var query = "acceptedAnswerId: {$or: [{ $exists: true}, { $exists: false} ]";
+
+    var qstr1="{ \"acceptedAnswerId\": {\"$exists\":true} }";
+    var query = JSON.parse(qstr1);
+
+    Post.find(
+        {
+        acceptedAnswerId: {$or: [{ $exists: true}, { $exists: false} ] }
+    }
+    , {id: 1, title: 1, _id: 0}, function(err, posts) {
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": posts}});
+    }).limit(parseInt(req.headers.limit)).skip(parseInt(req.headers.skip));
+
+    /*Post.aggregate([
         {
             $match: {
                 $or: [
@@ -282,7 +331,7 @@ apiRoutes.get('/tickets', function(req, res) {
                     date: "$creationDate"
                 },
                 topicsgroup: { $push:"$topics.topicid"},
-                topicscount: {$sum: {$cond: [{$eq: ["$topics.topicid", parseInt(req.query.topicid)]},1,0]}}
+                topicscount: {$sum: {$cond: [{$eq: ["$topics.topicid", topicid]},1,0]}}
             }
         },
         {
@@ -308,11 +357,13 @@ apiRoutes.get('/tickets', function(req, res) {
         {
             $project : { topicsgroup: 1}
         },
-        { $skip : parseInt(req.query.skip)},
-        { $limit : parseInt(req.query.limit) }
+        { $skip : parseInt(skip)},
+        { $limit : parseInt(limit) }
         ], function(err, posts) {
         res.json({success: 200, msg: {"data": posts}});
-    });
+    });*/
+
+
 });
 
 
