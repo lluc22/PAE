@@ -1,11 +1,15 @@
 <div>
     <div class="col-md-8">
-        <div class="list-group" ng-controller="openTicketsController" >
+        <div class="list-group">
             <div ng-repeat=" x in tickets">
-                <button class = "list-group-item" ng:click="selectTicket(x)"> {{x.title}} </button>
+                <button class = "list-group-item" ng:click="selectTicket(x._id)">
+                    {{x._id.title}}
+                    <a ng-repeat="t1 in x.topicsgroup">
+                        <span id = customSpan class="badge" style="float: right; background-color: {{MY_CONSTANTS.colores[t1]}}"> {{t1}}</span>
+                    </a>
+                </button>
             </div>
         </div>
-
 
         <footer>
             <div class="container">
@@ -20,18 +24,18 @@
     </div>
 
     <div class="col-md-4">
-        <form class="form">
+        <form name="myForm" class="form">
             <div class="form-group">
-                <label for="sel1">State</label>
-                <select class="form-control" id="sel1">
+                <label for="state">State</label>
+                <select class="form-control" id="state">
                     <option> </option>
                     <option>Open</option>
                     <option>Closed</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="sel2">Topic</label>
-                <select class="form-control" id="sel2">
+                <label for="topic">Topic</label>
+                <select class="form-control" id="topic">
                     <option> </option>
                     <option>0</option>
                     <option>1</option>
@@ -53,17 +57,21 @@
             </div>
             -->
 
+            <!--
             <div class="form-group">
                 <label for="usr">Username:</label>
                 <input type="text" class="form-control" id="usr">
             </div>
+            -->
 
             <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                 <span></span> <b class="caret"></b>
             </div>
+            <p id="iniDay" style="visibility: hidden; height: 0px; width: 0px">  </p>
+            <p id="endDay" style="visibility: hidden; height: 0px; width: 0px">  </p>
 
-            <button id="boton" type="submit" class="btn btn-default" style="margin-top: 5%">Submit</button>
+            <button id="button" ng-click="sendValues()" type="submit" class="btn btn-default" style="margin-top: 5%">Filter</button>
 
         </form>
     </div>
@@ -79,6 +87,9 @@
 
         function cb(start, end) {
             $('#reportrange span').html(start.format('YYYY MMMM D') + ' - ' + end.format('YYYY MMMM D'));
+            $("#iniDay").text(start.format('YYYY-MM-D'))
+            $("#endDay").text(end.format('YYYY-MM-D'))
+
         }
 
         $('#reportrange').daterangepicker({

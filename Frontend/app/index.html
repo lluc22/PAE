@@ -59,9 +59,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
     <script src="app.js"></script>
     <script src="controllers/topicsController.js"></script>
-    <script src="controllers/filterController.js"></script>
     <script src="controllers/openTicketsController.js"></script>
-    <script src="controllers/closedTicketsController.js"></script>
     <script src="controllers/ticketController.js"></script>
     <script src="services/getTicket.js"></script>
     <script src="services/getUser.js"></script>
@@ -71,6 +69,7 @@
     <script src="services/getBestUsers.js"></script>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <!-- Angular nvd3 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.9/angular-nvd3.min.js"></script>
 
@@ -98,16 +97,13 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
                 <li class="sidebar-brand">
-                    <a ui-sref="topics">Dashboard</a>
+                    <a ui-sref="dashboard">Dashboard</a>
                 </li>
                 <li>
                     <a ui-sref="openTickets({ page : 1 })">Tickets</a>
                 </li>
                 <li>
-                    <a ui-sref="closedTickets({ page : 1 })">Closed tickets</a>
-                </li>
-                <li>
-                    <a ui-sref="filter">Filter</a>
+                    <a ui-sref="topics">Topics</a>
                 </li>
             </ul>
         </div>
