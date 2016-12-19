@@ -419,7 +419,7 @@ apiRoutes.get('/tickets/doctopic', function (req, res) {
 });
 
 
-apiRoutes.get('/tickets/topics', function (req, res) {
+apiRoutes.get('/tickets/topics/save', function (req, res) {
     var lda = require('./app/services/lda/lda');
 
     var ldaCallback = function(resp){
@@ -453,6 +453,23 @@ apiRoutes.get('/tickets/topics', function (req, res) {
     lda.getTopicsModel(ldaCallback);
     res.json({success: 200, msg: {"data": "ok"}});
 
+});
+
+apiRoutes.get('/tickets/topics', function (req, res) {
+    Topic.find({
+    }, function(err, user) {
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": user}});
+    });
+});
+
+apiRoutes.get('/tickets/topics/:id', function (req, res) {
+    Topic.find({
+        id: req.params.id
+    }, function(err, user) {
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": user}});
+    });
 });
 
 apiRoutes.get('/tickets/deletetopics', function (req, res) {
