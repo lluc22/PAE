@@ -99,14 +99,14 @@ while command != 'finish':
 			# Loads the LDA model
 			lda = models.ldamulticore.LdaMulticore.load(pathLDAModel, mmap='r')
 			# For each topics create a json string
-			output = '{'		
+			output = '{ topics: ['		
 			for t in range(T):
 				topic = lda.show_topic(t)
 				topicString = str(topic).replace('(u', '[')
 				topicString = str(topicString).replace(')', ']').replace('\'', '"')
-				output += ' "topic' + str(t) + '" : ' + topicString + ' ,'
+				output += '{ topicName:"topic' + str(t) + '", words:'+ topicString + ' },'
 			# Print the topics in json format
-			print (output[:-1] + ' "}')
+			print (output[:-1] + ' }')
 
 		
 	elif command == 'topicsOf':
