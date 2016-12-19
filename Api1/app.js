@@ -9,6 +9,7 @@ var config      = require('./config/database'); // get db config file
 var User        = require('./app/models/user'); // get the mongoose model
 var UserPost    = require('./app/models/userPost'); // get the mongoose model
 var Post        = require('./app/models/post'); // get the mongoose model
+var Topic        = require('./app/models/topic'); // get the mongoose model
 var port        = process.env.PORT || 8080;
 var jwt         = require('jwt-simple');
 
@@ -223,96 +224,48 @@ apiRoutes.get('/fillingusers', function(req, res) {
 
 //tiquets
 apiRoutes.get('/tickets', function(req, res) {
-    //req.params.limit -
-    //req.params.skip -
-    //req.params.close -
-    //req.params.open -
-    //req.params.dateinit -
-    //req.params.dataend -
-    //req.params.topicid -
-    //req.params.orderdate -
-    var errorMessage = "";
-    var orderdate = 1;
-    var open = false;
-    var close = true;
-    var dateinit = "2014-03-03T20:39:37.323";
-    var dataend = "2016-03-03T20:39:37.343";
-    if (req.query.orderdate == "-1") {
-        orderdate = parseInt("-1");
-    }
-    else if(req.query.orderdate != "1"){
-        orderdate = "1";
-    }
-    if(req.query.open == true) {
-        open = false;
-    }
-    else {
-        open = true;
-    }
-    if (req.query.close == true) {
-        close = true;
-    }
-    else{
-        close = false;
+
+    //req.params.limit //req.params.skip //req.params.close //req.params.open //req.params.dateinit //req.params.dataend //req.params.topicid //req.params.orderdate
+    var limit = parseInt("10");
+    var skip = parseInt("0");
+
+    var orderdate = parseInt("1");
+
+    var dateinit = "{}";
+    var dataend = "{}";
+    var topicId = "{}";
+    var finalQueryString = "{}";
+
+    //Open, Close
+    if((req.query.open == "true") && ((req.query.close == "false") || !req.query.close)) finalQueryString ='{\"acceptedAnswerId\": { \"$exists\": false }}';
+    else if((req.query.open == "false" || !req.query.open) && (req.query.close == "true")) finalQueryString ='{\"acceptedAnswerId\": { \"$exists\": true }}';
+
+    //limit, skip
+    if(!isNaN(parseInt(req.query.skip))) skip = parseInt(req.query.skip);
+    if(!isNaN(parseInt(req.query.limit))) limit = parseInt(req.query.limit);
+
+    //Date
+    if(req.query.dateinit) dateinit = "{ \"creationDate\": { \"$gt\": \""+ req.query.dateinit + "\" }}";
+    if(req.query.dataend) dataend = "{ \"creationDate\": { \"$lt\": \""+ req.query.dataend + "\" }}";
+
+    //OrderDate
+    if(req.query.orderdate && !isNaN(parseInt(req.query.orderdate))) {
+        if(parseInt(req.query.orderdate) == -1)  orderdate = -1;
     }
 
-    Post.aggregate([
-        {
-            $match: {
-                $or: [
-                    {
-                        acceptedAnswerId: {
-                            $exists: open
-                        }
-                    }, {
-                        acceptedAnswerId: {
-                            $exists: close
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            $unwind: '$topics'
-        },
-        { $group: {
-                _id: {
-                    id: "$id",
-                    title: "$title",
-                    date: "$creationDate"
-                },
-                topicsgroup: { $push:"$topics.topicid"},
-                topicscount: {$sum: {$cond: [{$eq: ["$topics.topicid", parseInt(req.query.topicid)]},1,0]}}
-            }
-        },
-        {
-            $match: {
-                topicscount: {$gt: 0},
-                $and: [
-                    {
-                        "_id.date": {
-                            $gte: dateinit
-                        }
-                    },
-                    {
-                        "_id.date": {
-                            $lt: dataend
-                        }
-                    }
-                    ]
-            }
-        },
-        {
-            $sort: { date: orderdate }
-        },
-        {
-            $project : { topicsgroup: 1}
-        },
-        { $skip : parseInt(req.query.skip)},
-        { $limit : parseInt(req.query.limit) }
-        ], function(err, posts) {
-        res.json({success: 200, msg: {"data": posts}});
-    });
+    //TopicId
+    if (req.query.topicid) topicId = "{ \"topics\": { \"$elemMatch\": { \"topicid\": " + req.query.topicid + "}}}";
+
+    //ParserFinal
+    finalQueryString = "{\"$and\": [" + finalQueryString + ", "+ dateinit +", " + dataend + ", " + topicId + "]}";
+    var queryFinal = JSON.parse(finalQueryString);
+
+    Post.find(
+        queryFinal
+        , {id: 1, title: 1, _id: 0, topics: 1}, function(err, posts) {
+            if (err) throw err;
+            res.json({success: 200, msg: {"data": posts}});
+        }).limit(limit).skip(skip).sort( { creationDate: orderdate } );
 });
 
 
@@ -343,7 +296,7 @@ apiRoutes.get('/ticket/:id/related', function(req, res) {
         data.forEach(function(postId) {
             json.push(postId);
         });
-        Post.find({ id: {$in: data }},{id: 1, title: 1, _id: 0}, function(err, post) {
+        Post.find({ id: {$in: data }},{id: 1, title: 1, _id: 0, topics: 1}, function(err, post) {
             if(post.length > 0) {
                 res.json({success: 200, msg: {"data": post }});
                 res.end();
@@ -466,16 +419,57 @@ apiRoutes.get('/tickets/doctopic', function (req, res) {
 });
 
 
-apiRoutes.get('/tickets/topics', function (req, res) {
+apiRoutes.get('/tickets/topics/save', function (req, res) {
     var lda = require('./app/services/lda/lda');
 
     var ldaCallback = function(resp){
         // get topics data
-        actualitzaDB(resp);
+        /*resp[0].forEach(function(item) {
+            console.log("---------------");
+            console.log(item);
+            console.log("---------------");
+        });*/
+        /*var newTopic = new Topic({
+            id: data['id'],
+            name: data['displayName'],
+            palabras: data['palabras']
+        });
+        newTopic.save(function(err) {
+            if (err) {
+            }
+        });*/
+        /*console.log(resp['topic0']);
+        console.log(resp['topic1']);
+        console.log(resp['topic2']);
+        console.log(resp['topic3']);
+        console.log(resp['topic4']);
+        console.log(resp['topic5']);
+        console.log(resp['topic6']);
+        console.log(resp['topic7']);
+        console.log(resp['topic8']);
+        console.log(resp['topic9']);*/
+        console.log(resp);
     };
     lda.getTopicsModel(ldaCallback);
     res.json({success: 200, msg: {"data": "ok"}});
 
+});
+
+apiRoutes.get('/tickets/topics', function (req, res) {
+    Topic.find({
+    }, function(err, user) {
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": user}});
+    });
+});
+
+apiRoutes.get('/tickets/topics/:id', function (req, res) {
+    Topic.find({
+        id: req.params.id
+    }, function(err, user) {
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": user}});
+    });
 });
 
 apiRoutes.get('/tickets/deletetopics', function (req, res) {
