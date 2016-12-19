@@ -9,6 +9,7 @@ var config      = require('./config/database'); // get db config file
 var User        = require('./app/models/user'); // get the mongoose model
 var UserPost    = require('./app/models/userPost'); // get the mongoose model
 var Post        = require('./app/models/post'); // get the mongoose model
+var Topic        = require('./app/models/topic'); // get the mongoose model
 var port        = process.env.PORT || 8080;
 var jwt         = require('jwt-simple');
 
@@ -423,11 +424,30 @@ apiRoutes.get('/tickets/topics', function (req, res) {
 
     var ldaCallback = function(resp){
         // get topics data
-        resp.forEach(function(item) {
+        /*resp[0].forEach(function(item) {
             console.log("---------------");
             console.log(item);
             console.log("---------------");
+        });*/
+        /*var newTopic = new Topic({
+            id: data['id'],
+            name: data['displayName'],
+            palabras: data['palabras']
         });
+        newTopic.save(function(err) {
+            if (err) {
+            }
+        });*/
+        console.log(resp['topic0']);
+        console.log(resp['topic1']);
+        console.log(resp['topic2']);
+        console.log(resp['topic3']);
+        console.log(resp['topic4']);
+        console.log(resp['topic5']);
+        console.log(resp['topic6']);
+        console.log(resp['topic7']);
+        console.log(resp['topic8']);
+        console.log(resp['topic9']);
         console.log(resp);
     };
     lda.getTopicsModel(ldaCallback);
