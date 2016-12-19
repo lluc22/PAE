@@ -7,10 +7,9 @@ import sys;
 import os.path
 import json
 from gensim import corpora, models, parsing
-
-pathLDAModel = "./app/services/lda/LDAModel.lda"		# The LDA Model to save or load
-pathDictionary = "./app/services/lda/Dictionary.dict"	# The dictionary of the data
-pathCorpus = './app/services/lda/corpus'
+pathLDAModel = "LDAModel.lda"		# The LDA Model to save or load
+pathDictionary = "Dictionary.dict"	# The dictionary of the data
+pathCorpus = 'corpus'
 
 if not os.path.exists(pathCorpus):
     os.makedirs(pathCorpus)
@@ -98,17 +97,41 @@ while command != 'finish':
 		else: 
 			# Loads the LDA model
 			lda = models.ldamulticore.LdaMulticore.load(pathLDAModel, mmap='r')
+
+			# Topics terms frecnuency, in all topics
+			frecuency = dict()
+			for t in range(T):
+				topic = lda.show_topic(t)
+				for (key, value) in topic:
+					if key in frecuency: frecuency[key] += 1
+					else: frecuency[key] = 1
+
+			# topics names
+			maxWords = 2	# Number of words for label
+			maxFrec = 4		# max frecuency to filter term
+			topicsNames = []
+			for t in range(T):
+				topic = lda.show_topic(t)
+				label = []
+				for (key, value) in topic:
+					if (frecuency[key] < maxFrec):
+						label.append(key)
+						if len(label) > (maxWords - 1):
+							break
+				labelString = ""			
+				for word in label:
+					labelString += word + " "
+				topicsNames.append(labelString)
+
 			# For each topics create a json string
 			output = '{ "topics": ['		
 			for t in range(T):
 				topic = lda.show_topic(t)
-				topicString = str(topic).replace('(u', '[')
-				topicString = str(topicString).replace(')', ']').replace('\'', '"')
 				topicString = '['
 				for word in topic:
 					topicString += ' {"word":"' + str(word[0]) + '", "value":"' + str(word[1]) + '"},'
 				topicString = topicString[:-1] + ']'
-				output += '{ "topicName":"topic' + str(t) + '", "words":'+ topicString + ' },'
+				output += '{ "topicName":"' + topicsNames[t] + '", "words":'+ topicString + ' },'
 			# Print the topics in json format
 			print (output[:-1] + '] }')
 
@@ -156,3 +179,5 @@ while command != 'finish':
 	sys.stdout.flush()
 	dataJson = json.loads(raw_input())
 	command= dataJson['command']
+
+
