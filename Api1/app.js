@@ -265,30 +265,6 @@ apiRoutes.get('/tickets', function(req, res) {
             if (err) throw err;
             res.json({success: 200, msg: {"data": posts}});
         }).limit(limit).skip(skip).sort( { creationDate: orderdate } );
-
-
-
-
-    //OrderDate
-    if(typeof req.query === 'undefined' && typeof req.query.orderdate === 'undefined'){
-        orderdate = parseInt("1");
-    }
-    else if (req.query.orderdate == "-1") {
-        orderdate = parseInt("-1");
-    }
-    else if(req.query.orderdate != "1"){
-        orderdate = parseInt("1");
-    }
-
-
-
-    //TopicId
-    if(isNaN(parseInt(req.query.topicid))){
-        topicid = parseInt("5");
-    }
-    else {
-        topicid = parseInt(req.query.topicid);
-    }
 });
 
 
@@ -447,7 +423,12 @@ apiRoutes.get('/tickets/topics', function (req, res) {
 
     var ldaCallback = function(resp){
         // get topics data
-        actualitzaDB(resp);
+        resp.forEach(function(item) {
+            console.log("---------------");
+            console.log(item);
+            console.log("---------------");
+        });
+        console.log(resp);
     };
     lda.getTopicsModel(ldaCallback);
     res.json({success: 200, msg: {"data": "ok"}});
