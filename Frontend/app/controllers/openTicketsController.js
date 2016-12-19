@@ -24,7 +24,7 @@ angular.module('myApp')
 
         $scope.tickets = getTickets.ticketContent;
 
-        getTickets.getTickets(20, this.page - 1, null, null, null, null);
+        getTickets.getTickets(20, this.page - 1, null, null,  null, null, null);
         /*
         getTickets.makeCorsRequest(20, this.page - 1, null, null, null, null).then(function (result) {
             angular.forEach(result, function(value) {
@@ -52,7 +52,19 @@ angular.module('myApp')
             var topic = $("#topic").val();
             var iniDay = ($("#iniDay").text());
             var endDay = ($("#endDay").text());
-            getTickets.getTickets(20, this.page - 1, state, iniDay, endDay, topic);
+            var open = null;
+            var closed = null;
+            if (state == "Open") {
+                open = true;
+                closed = false;
+            }
+            else if (state == "Closed") {
+                open = false;
+                closed = false;
+            }
+            else state = null;
+            if(topic == " ") topic = null;
+            getTickets.getTickets(20, self.page - 1, open, closed, iniDay, endDay, topic);
 
         }
 
