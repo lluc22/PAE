@@ -7,9 +7,10 @@ import sys;
 import os.path
 import json
 from gensim import corpora, models, parsing
-pathLDAModel = "LDAModel.lda"		# The LDA Model to save or load
-pathDictionary = "Dictionary.dict"	# The dictionary of the data
-pathCorpus = 'corpus'
+
+pathLDAModel = "./app/services/lda/LDAModel.lda"		# The LDA Model to save or load
+pathDictionary = "./app/services/lda/Dictionary.dict"	# The dictionary of the data
+pathCorpus = './app/services/lda/corpus'
 
 if not os.path.exists(pathCorpus):
     os.makedirs(pathCorpus)
