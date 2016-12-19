@@ -7,16 +7,19 @@ angular.module('myApp')
     .service('getTickets', ['restService' , function (restService) {
         var tickets = {};
         tickets.ticketContent = [];
-        tickets.getTickets = function (limit, skip, type, dateinit, dataend, topicid) {
+        tickets.getTickets = function (limit, skip, open, close, dateinit, dataend, topicid) {
             var params = {params: {
                 'limit' : limit,
                 'skip' : skip,
-                'type' : type,
+                'open' : open,
+                'close' : close,
                 'dateinit' : dateinit,
                 'dataend' : dataend,
                 'topicid' : topicid
             } };
+            console.log(params);
             return restService.get('/tickets', params).then(function (data) {
+                //console.log(data);
                 angular.copy(data, tickets.ticketContent);
             });
         };
