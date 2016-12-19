@@ -106,7 +106,7 @@ while command != 'finish':
 				topicString = str(topicString).replace(')', ']').replace('\'', '"')
 				output += '{ topicName:"topic' + str(t) + '", words:'+ topicString + ' },'
 			# Print the topics in json format
-			print (output[:-1] + ' }')
+			print (output[:-1] + '] }')
 
 		
 	elif command == 'topicsOf':
