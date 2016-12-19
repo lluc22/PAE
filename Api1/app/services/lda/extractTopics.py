@@ -122,7 +122,7 @@ while command != 'finish':
 				labelString = ""			
 				for word in label:
 					labelString += word + " "
-				topicsNames.append(labelString)
+				topicsNames.append(labelString[:-1])
 
 			# For each topics create a json string
 			output = '{ "topics": ['		
