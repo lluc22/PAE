@@ -106,7 +106,7 @@ while command != 'finish':
 				topicString = str(topicString).replace(')', ']').replace('\'', '"')
 				output += ' "topic' + str(t) + '" : ' + topicString + ' ,'
 			# Print the topics in json format
-			print (output + ' "message":"Topics of model"}')
+			print (output[:-1] + ' "}')
 
 		
 	elif command == 'topicsOf':
