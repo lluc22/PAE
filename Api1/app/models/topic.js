@@ -16,8 +16,8 @@ var TopciSchema = new Schema({
             type: String
         },
         palabras: [{
-            name: string,
-            valor: string
+            name: String,
+            valor: String
         }]
     }, { strict: false }
 );

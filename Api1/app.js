@@ -438,7 +438,7 @@ apiRoutes.get('/tickets/topics', function (req, res) {
             if (err) {
             }
         });*/
-        console.log(resp['topic0']);
+        /*console.log(resp['topic0']);
         console.log(resp['topic1']);
         console.log(resp['topic2']);
         console.log(resp['topic3']);
@@ -447,7 +447,7 @@ apiRoutes.get('/tickets/topics', function (req, res) {
         console.log(resp['topic6']);
         console.log(resp['topic7']);
         console.log(resp['topic8']);
-        console.log(resp['topic9']);
+        console.log(resp['topic9']);*/
         console.log(resp);
     };
     lda.getTopicsModel(ldaCallback);
