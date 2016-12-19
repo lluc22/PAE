@@ -424,31 +424,22 @@ apiRoutes.get('/tickets/topics/save', function (req, res) {
 
     var ldaCallback = function(resp){
         // get topics data
-        /*resp[0].forEach(function(item) {
-            console.log("---------------");
-            console.log(item);
-            console.log("---------------");
-        });*/
-        /*var newTopic = new Topic({
-            id: data['id'],
-            name: data['displayName'],
-            palabras: data['palabras']
+        resp['topics'].forEach(function(item) {
+            var words = [];
+            item['words'].forEach(function(item2){
+                words.push(item2);
+                console.log(item2);
+            })
+            var newTopic = new Topic({
+                id: item['topicName'],
+                name: item['topicName'],
+                palabras: words
+            });
+            newTopic.save(function(err) {
+                if (err) {
+                }
+            });
         });
-        newTopic.save(function(err) {
-            if (err) {
-            }
-        });*/
-        /*console.log(resp['topic0']);
-        console.log(resp['topic1']);
-        console.log(resp['topic2']);
-        console.log(resp['topic3']);
-        console.log(resp['topic4']);
-        console.log(resp['topic5']);
-        console.log(resp['topic6']);
-        console.log(resp['topic7']);
-        console.log(resp['topic8']);
-        console.log(resp['topic9']);*/
-        console.log(resp);
     };
     lda.getTopicsModel(ldaCallback);
     res.json({success: 200, msg: {"data": "ok"}});
@@ -457,7 +448,7 @@ apiRoutes.get('/tickets/topics/save', function (req, res) {
 
 apiRoutes.get('/tickets/topics', function (req, res) {
     Topic.find({
-    }, function(err, user) {
+    },{_id: 0, __v: 0}, function(err, user) {
         if (err) throw err;
         res.json({success: 200, msg: {"data": user}});
     });
@@ -466,7 +457,7 @@ apiRoutes.get('/tickets/topics', function (req, res) {
 apiRoutes.get('/tickets/topics/:id', function (req, res) {
     Topic.find({
         id: req.params.id
-    }, function(err, user) {
+    },{_id: 0, __v: 0}, function(err, user) {
         if (err) throw err;
         res.json({success: 200, msg: {"data": user}});
     });
