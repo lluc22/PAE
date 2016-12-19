@@ -104,6 +104,10 @@ while command != 'finish':
 				topic = lda.show_topic(t)
 				topicString = str(topic).replace('(u', '[')
 				topicString = str(topicString).replace(')', ']').replace('\'', '"')
+				topicString = '['
+				for word in topic:
+					topicString += ' {word:"' + str(word[0]) + '", value:"' + str(word[1]) + '"},'
+				topicString = topicString[:-1] + ']'
 				output += '{ topicName:"topic' + str(t) + '", words:'+ topicString + ' },'
 			# Print the topics in json format
 			print (output[:-1] + '] }')
