@@ -91,6 +91,18 @@ angular.module('myApp')
                     legendPosition: 'top',
                     valueFormat: function(d) {
                         return d + " words";
+                    },
+                    callback: function(chart) {
+                        chart.pie.dispatch.on('elementClick', function(e){
+                            console.log('elementClick in callback', e.data);
+                            topicID = e.data.label;
+                            ngDialog.open({
+                                templateUrl: 'views/word_cloud.html',
+                                controller : 'topicsController',
+                                width : $window.innerWidth - 125,
+                                height : $window.innerHeight
+                            });
+                        });
                     }
                 }
             };

@@ -65,7 +65,6 @@ angular.module('myApp')
             else state = null;
             if(topic == " ") topic = null;
             getTickets.getTickets(20, self.page - 1, open, closed, iniDay, endDay, topic);
-
         }
 
     }]).run(function ($rootScope, MY_CONSTANTS) {
