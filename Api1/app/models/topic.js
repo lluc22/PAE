@@ -12,6 +12,9 @@ var TopciSchema = new Schema({
             required: true,
             index: true
         },
+    number: {
+        type: String
+    },
         name: {
             type: String
         },

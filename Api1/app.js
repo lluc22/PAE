@@ -424,6 +424,7 @@ apiRoutes.get('/tickets/topics/save', function (req, res) {
 
     var ldaCallback = function(resp){
         // get topics data
+        var count = 0;
         resp['topics'].forEach(function(item) {
             var words = [];
             item['words'].forEach(function(item2){
@@ -433,12 +434,14 @@ apiRoutes.get('/tickets/topics/save', function (req, res) {
             var newTopic = new Topic({
                 id: item['topicName'],
                 name: item['topicName'],
+                number: count + "",
                 palabras: words
             });
             newTopic.save(function(err) {
                 if (err) {
                 }
             });
+            count++;
         });
     };
     lda.getTopicsModel(ldaCallback);
@@ -454,9 +457,27 @@ apiRoutes.get('/tickets/topics', function (req, res) {
     });
 });
 
-apiRoutes.get('/tickets/topics/:id', function (req, res) {
+apiRoutes.get('/tickets/topics/count', function (req, res) {
+    Post.aggregate( [
+        { $unwind: "$topics" },
+        { $group: {
+            _id: '$topics.topicid',
+            count: { $sum: 1 }
+        } }
+    ] , function(err, user) {
+        res.json({success: 200, msg: {"data": user}});
+    });
+
+    /*Post.find({
+    },{_id: 0, __v: 0}, function(err, user) {
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": user}});
+    });*/
+});
+
+apiRoutes.get('/tickets/topics/:number', function (req, res) {
     Topic.find({
-        id: req.params.id
+        number: req.params.number
     },{_id: 0, __v: 0}, function(err, user) {
         if (err) throw err;
         res.json({success: 200, msg: {"data": user}});
