@@ -135,7 +135,8 @@ while command != 'finish':
 				topicString = topicString[:-1] + ']'
 				output += '{ "topicName":"' + topicsNames[t] + '", "words":'+ topicString + ' },'
 			# Print the topics in json format
-			print (output[:-1] + '] }')
+			output = output[:-1] + '] }'
+			print (output.replace("@", ""))
 
 		
 	elif command == 'topicsOf':
