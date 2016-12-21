@@ -29,7 +29,14 @@ function config($stateProvider, $urlRouterProvider) {
         .state('openTickets', {
             url : '/openTickets?page',
             templateUrl : "views/openTickets.html",
-            controller  : 'openTicketsController'
+            controller  : 'openTicketsController',
+            params: {
+                open : null,
+                closed : null,
+                iniDay : null,
+                endDay : null,
+                topic : null
+            }
         })
         .state('topics', {
             url : '/topics',

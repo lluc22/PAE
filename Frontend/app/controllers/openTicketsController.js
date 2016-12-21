@@ -5,15 +5,22 @@
 angular.module('myApp')
     .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets',
         function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets) {
-
-            //$scope.dates4 = { startDate: moment().subtract(1, 'day'), endDate: moment().subtract(1, 'day') };
-            //$scope.datePicker.date = {startDate: null, endDate: null};
-        //console.log("Initial -> " + $stateParams.page);
+            console.log($stateParams);
             var self = this;
             self.page = parseInt($stateParams.page);
+            self.open = $stateParams.open;
+            self.closed = $stateParams.closed;
+            self.iniDay = $stateParams.iniDay;
+            self.endDay = $stateParams.endDay;
+            self.topic = $stateParams.topic;
+
+            var startDay = self.iniDay;
+            var lastDay = self.endDay;
+            var selectedTopic = self.topic;
+            var openSelected = self.open;
+            var closeSelected = self.closed;
 
             $scope.tickets = [];
-            var clicks = 0;
 
         $scope.selectTicket = function (ticket) {
             var id = ticket['id'];
@@ -24,47 +31,50 @@ angular.module('myApp')
 
         $scope.tickets = getTickets.ticketContent;
 
-        getTickets.getTickets(20, this.page - 1, null, null,  null, null, null);
-        /*
-        getTickets.makeCorsRequest(20, this.page - 1, null, null, null, null).then(function (result) {
-            angular.forEach(result, function(value) {
-                //console.log(value);
-                $scope.tickets.push(value);
-
-            })
-        });
-        */
+        getTickets.getTickets(20, this.page - 1, self.open, self.closed,  self.iniDay, self.endDay, self.topic);
 
         $scope.moreTickets = function () {
-            $state.go('.', {page : self.page + 1});
+            console.log(openSelected);
+            console.log(closeSelected);
+            console.log(startDay);
+            console.log(lastDay);
+            console.log(selectedTopic);
+
+
+            $state.go('.', {page : self.page + 1,
+                            open: openSelected ,
+                            closed : closeSelected,
+                            iniDay : startDay,
+                            endDay : lastDay,
+                            topic : selectedTopic
+                            });
+
+
         };
 
 
         $scope.sendValues = function() {
-            //console.log("HI");
-            //console.log(document.forms("myForm").getElementByTagName("sel1"));
             //console.log($("#state").val());
             //console.log($("#topic").val());
             //console.log($("#usr").val());
             //console.log($("#iniDay").text());
             //console.log($("#endDay").text());
             var state = $("#state").val();
-            var topic = $("#topic").val();
-            var iniDay = ($("#iniDay").text());
-            var endDay = ($("#endDay").text());
-            var open = null;
-            var closed = null;
+            selectedTopic = $("#topic").val();
+            startDay = ($("#iniDay").text());
+            lastDay = ($("#endDay").text());
             if (state == "Open") {
-                open = true;
-                closed = false;
+                openSelected = true;
+                closeSelected = false;
             }
             else if (state == "Closed") {
-                open = false;
-                closed = false;
+                openSelected = false;
+                closeSelected = false;
             }
             else state = null;
             if(topic == " ") topic = null;
-            getTickets.getTickets(20, self.page - 1, open, closed, iniDay, endDay, topic);
+            getTickets.getTickets(20, self.page - 1, openSelected, closeSelected, startDay, lastDay, selectedTopic);
+
         }
 
     }]).run(function ($rootScope, MY_CONSTANTS) {
