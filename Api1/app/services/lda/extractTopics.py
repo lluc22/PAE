@@ -131,12 +131,13 @@ while command != 'finish':
 				topic = lda.show_topic(t, topn=NW)
 				topicString = '['
 				for word in topic:
-					topicString += ' {"word":"' + str(word[0]) + '", "value":"' + str(word[1]) + '"},'
+					topicString += ' {"word":"' + unicode(word[0]).encode("utf-8") + '", "value":"' + unicode(word[1]).encode("utf-8")  + '"},'
 				topicString = topicString[:-1] + ']'
-				output += '{ "topicName":"' + topicsNames[t] + '", "words":'+ topicString + ' },'
+				output += '{ "topicName":"' + unicode(topicsNames[t]).encode("utf-8") + '", "words":'+ topicString + ' },'
 			# Print the topics in json format
-			output = output[:-1] + '] }'
-			print (output.replace("@", ""))
+			print (output[:-1] + '] }')
+			#output = output[:-1] + '] }'
+			#print (output.replace("@", ""))
 
 		
 	elif command == 'topicsOf':
