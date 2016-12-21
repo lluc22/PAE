@@ -16,7 +16,7 @@ angular.module('myApp')
                     }
 
                 }, function errorCallback(response) {
-
+                        return "Error getting data";
                 });
         };
     }]);

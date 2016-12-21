@@ -7,6 +7,15 @@ angular.module('myApp')
     .controller('topicsController', ['MY_CONSTANTS', '$scope', 'ngDialog', '$window', 'getTopics', function (MY_CONSTANTS, $scope,
                                                                                                 ngDialog, $window, getTopics) {
             getTopics.getTopics();
+            var i = 0;
+
+            /*
+            for (i; i<10; ++i) {
+                getTopics.getTopicWords(i);
+            }
+            */
+
+
             var topicID = null;
             $scope .options = {
                 chart: {
@@ -96,21 +105,21 @@ angular.module('myApp')
                     },
                     callback: function(chart) {
                         chart.pie.dispatch.on('elementClick', function(e){
-                            //console.log('elementClick in callback', e.data);
-                            getTopics.getTopicWords(e.data.key);
-                            /*
-                            ngDialog.open({
-                                templateUrl: 'views/word_cloud.html',
-                                controller : 'topicsController',
-                                width : $window.innerWidth - 125,
-                                height : $window.innerHeight
-                            });
-                            */
+                            console.log('elementClick in callback', e.data);
+                            var customCallback = function () {
+                                ngDialog.open({
+                                    templateUrl: 'views/word_cloud.html',
+                                    controller : 'topicsController',
+                                    width : $window.innerWidth - 125,
+                                    height : $window.innerHeight
+                                });
+                            };
+                            getTopics.getTopicWords(e.data.key, customCallback);
+
                         });
                     }
                 }
             };
-
             //console.log(getTopics.topicsContent);
             $scope.data2 = getTopics.topicsContent;
 
@@ -131,10 +140,9 @@ angular.module('myApp')
             */
 
            //console.log(getTopics.words);
+           $scope.tags = getTopics.words;
 
-           $scope.tags2 = getTopics.words;
-
-
+        /*
         $scope.tags = [
             {"key": "Cat", "value": 26},
             {"key": "fish", "value": 19},
@@ -302,6 +310,7 @@ angular.module('myApp')
             {"key": "Well", "value": 1},
             {"key": "lit", "value": 1}
         ];
+        */
 
 
         }]);

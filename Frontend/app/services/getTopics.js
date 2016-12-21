@@ -19,26 +19,26 @@ angular.module('myApp')
                     correctData.push({key: data[x]._id , y: data[x].count ,color: MY_CONSTANTS.colores[data[x]._id]});
                     //if (x!= 9) correctData.push(",")
                 }
-                //console.log(correctData);
                 angular.copy(correctData, topics.topicsContent);
             });
         };
-        topics.getTopicWords = function (id) {
+        topics.getTopicWords = function (id, customCallback) {
             var params = {params: {
 
             } };
             return restService.get('/tickets/topics/' + id, params).then(function (data) {
-                //console.log(data[0]);
+                console.log(data);
                 var correctData = [];
 
                 for(x in data[0].palabras) {
                     //console.log(data[0].palabras[x]);
                     var palabra = data[0].palabras[x];
-                    correctData.push({"key":  palabra.word , "value": Math.round(palabra.value*100)});
+                    correctData.push({"key":  palabra.word , "value": Math.round(palabra.value*100)*2.5});
                     //if (x!= 9) correctData.push(",")
                 }
-                //console.log(correctData);
+                //console.log(topics.words[id]);
                 angular.copy(correctData, topics.words);
+                customCallback();
 
             });
         };

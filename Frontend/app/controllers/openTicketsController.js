@@ -5,7 +5,7 @@
 angular.module('myApp')
     .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets',
         function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets) {
-            console.log($stateParams);
+            //console.log($stateParams);
             var self = this;
             self.page = parseInt($stateParams.page);
             self.open = $stateParams.open;
