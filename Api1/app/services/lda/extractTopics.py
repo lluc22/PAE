@@ -16,6 +16,7 @@ if not os.path.exists(pathCorpus):
     os.makedirs(pathCorpus)
     
 T = 10								# Number Of Topics to extract
+NW = 50								# Number Of word for Topics to show
 lda = None							# LDA model Global variable
 
 dataJson = json.loads(raw_input())
@@ -127,7 +128,7 @@ while command != 'finish':
 			# For each topics create a json string
 			output = '{ "topics": ['		
 			for t in range(T):
-				topic = lda.show_topic(t)
+				topic = lda.show_topic(t, topn=NW)
 				topicString = '['
 				for word in topic:
 					topicString += ' {"word":"' + str(word[0]) + '", "value":"' + str(word[1]) + '"},'
