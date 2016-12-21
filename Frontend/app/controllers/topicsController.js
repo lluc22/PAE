@@ -4,8 +4,9 @@
 'use strict';
 
 angular.module('myApp')
-    .controller('topicsController', ['MY_CONSTANTS', '$scope', 'ngDialog', '$window', function (MY_CONSTANTS, $scope,
-                                                                                                ngDialog, $window) {
+    .controller('topicsController', ['MY_CONSTANTS', '$scope', 'ngDialog', '$window', 'getTopics', function (MY_CONSTANTS, $scope,
+                                                                                                ngDialog, $window, getTopics) {
+            getTopics.getTopics();
             var topicID = null;
             $scope .options = {
                 chart: {
@@ -48,6 +49,7 @@ angular.module('myApp')
                 }
             };
 
+            // Se tendria que coger los datos
             $scope.data = [{
                 key: "Cumulative Return",
                 values: [
@@ -94,19 +96,25 @@ angular.module('myApp')
                     },
                     callback: function(chart) {
                         chart.pie.dispatch.on('elementClick', function(e){
-                            console.log('elementClick in callback', e.data);
-                            topicID = e.data.label;
+                            //console.log('elementClick in callback', e.data);
+                            getTopics.getTopicWords(e.data.key);
+                            /*
                             ngDialog.open({
                                 templateUrl: 'views/word_cloud.html',
                                 controller : 'topicsController',
                                 width : $window.innerWidth - 125,
                                 height : $window.innerHeight
                             });
+                            */
                         });
                     }
                 }
             };
 
+            //console.log(getTopics.topicsContent);
+            $scope.data2 = getTopics.topicsContent;
+
+            /*
             $scope.data2 = [
                 { key : "Python" , y : 29, "color" : MY_CONSTANTS.colores[0]},
                 { key : "Smalltalk" , y : 0, "color" : MY_CONSTANTS.colores[1] },
@@ -119,6 +127,13 @@ angular.module('myApp')
                 { key : "Perl", y : 20, "color" : MY_CONSTANTS.colores[8]},
                 { key : "HTML", y : 102, "color" : MY_CONSTANTS.colores[9]}
             ];
+            console.log($scope.data2);
+            */
+
+           //console.log(getTopics.words);
+
+           $scope.tags2 = getTopics.words;
+
 
         $scope.tags = [
             {"key": "Cat", "value": 26},
@@ -287,6 +302,8 @@ angular.module('myApp')
             {"key": "Well", "value": 1},
             {"key": "lit", "value": 1}
         ];
+
+
         }]);
 
 

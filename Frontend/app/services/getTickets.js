@@ -32,7 +32,7 @@ angular.module('myApp')
                 'topicid' : topicid
             } };
             return restService.get('/tickets', params).then(function (data) {
-                console.log(data);
+                //console.log(data);
                 angular.copy(data, tickets.ticketContent);
             });
         };
