@@ -56,7 +56,6 @@ angular.module('myApp')
         $scope.sendValues = function() {
             //console.log($("#state").val());
             //console.log($("#topic").val());
-            //console.log($("#usr").val());
             //console.log($("#iniDay").text());
             //console.log($("#endDay").text());
             var state = $("#state").val();
@@ -72,7 +71,7 @@ angular.module('myApp')
                 closeSelected = false;
             }
             else state = null;
-            if(topic == " ") topic = null;
+            if(selectedTopic == " ") selectedTopic = null;
             getTickets.getTickets(20, self.page - 1, openSelected, closeSelected, startDay, lastDay, selectedTopic);
 
         }
