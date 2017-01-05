@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<!-- define angular app -->
+<html ng-app='myApp'>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dockets</title>
+
+
+    <!-- Include Required Prerequisites -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+    <!-- Angular Material CSS now available via Google CDN; version 1.0.7 used here -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 1.0.7 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.js"></script>
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../assets/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <!-- SPELLS -->
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script> -->
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script> <!-- Insert after main angular.js file -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <script src="../app.js"></script>
+    <script src="../controllers/topicsController.js"></script>
+    <script src="../controllers/openTicketsController.js"></script>
+    <script src="../controllers/ticketController.js"></script>
+    <script src="../services/getTicket.js"></script>
+    <script src="../services/getUser.js"></script>
+    <script src="../services/getTickets.js"></script>
+    <script src="../services/restService.js"></script>
+    <script src="../services/getRelateds.js"></script>
+    <script src="../services/getBestUsers.js"></script>
+    <script src="../services/getTopics.js"></script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <!--d3-->
+
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/d3-cloud/build/d3.layout.cloud.js"></script>
+    <script src="../d3_word_cloud.js"></script>
+
+    <!-- Angular nvd3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.9/angular-nvd3.min.js"></script>
+
+    <!--<script src="bower_components/angular/angular.js"></script>-->
+    <script src="../bower_components/nvd3/build/nv.d3.js"></script> <!-- or use another assembly -->
+    <script src="../bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+    <link rel="stylesheet" href="../bower_components/nvd3/build/nv.d3.css">
+    <link rel="stylesheet" href="../assets/css/app.css">
+
+
+    <!-- ng-dialog -->
+    <link rel="stylesheet" href="../bower_components/ng-dialog/css/ngDialog.min.css">
+    <link rel="stylesheet" href="../bower_components/ng-dialog/css/ngDialog-theme-default.min.css">
+    <script src="../bower_components/ng-dialog/js/ngDialog.min.js"></script>
+
+    <link rel='stylesheet' href='../bower_components/angular-loading-bar/build/loading-bar.min.css' type='text/css' media='all' />
+    <script type='text/javascript' src='../bower_components/angular-loading-bar/build/loading-bar.min.js'></script>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand"ui-sref="dashboard">Dockets</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="page-scroll" href="../index.html">Log out</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li class="sidebar-brand">
+                    <a ui-sref="dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a ui-sref="openTickets({ page : 1 })">Tickets</a>
+                </li>
+                <li>
+                    <a ui-sref="topics">Topics</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </nav>
+
+    <div class="customContainer">
+        <div ui-view> </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../components/bootstrap.min.js"></script>
+
+</body>
+
+</html>

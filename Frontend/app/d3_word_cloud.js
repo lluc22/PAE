@@ -1,5 +1,5 @@
 (function (angular) {
-    'use strict';
+    'use googletrict';
 
     angular.module('wc', [])
         .directive('wordCloud', ['$window', function ($window) {

@@ -14,21 +14,17 @@ function config($stateProvider, $urlRouterProvider) {
     //['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
 
     // HAY QUE INSTALAR BOWER COMPONENTS UI-ROUTER
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/dashboard');
 
     $stateProvider
-        .state('home' , {
-            url : '/home',
-            templateUrl : 'views/home.html'
-        })
         .state('dashboard', {
             url : '/dashboard',
-            templateUrl : 'views/topics.html',
+            templateUrl : 'topics.html',
             controller  : 'topicsController'
         })
         .state('openTickets', {
             url : '/openTickets?page',
-            templateUrl : "views/openTickets.html",
+            templateUrl : "openTickets.html",
             controller  : 'openTicketsController',
             params: {
                 open : null,
@@ -40,11 +36,11 @@ function config($stateProvider, $urlRouterProvider) {
         })
         .state('topics', {
             url : '/topics',
-            templateUrl : 'views/htmLDA.html'
+            templateUrl : 'htmLDA.html'
         })
         .state('ticket', {
             url : '/ticket/:id',
-            templateUrl : "views/ticket.html",
+            templateUrl : "ticket.html",
             controller  : 'ticketController'
         });
 
