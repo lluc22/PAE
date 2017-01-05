@@ -1,31 +1,7 @@
-<div>
-    <div class="col-md-8">
-        <div class="list-group">
-            <div ng-repeat=" x in tickets">
-                <button class = "list-group-item" ng:click="selectTicket(x)">
-                    {{x.title}}
-                    <a ng-repeat="t1 in x.topics">
-                        <span id = customSpan class="badge" style="float: right; background-color: {{MY_CONSTANTS.colores[t1.topicid]}}"> {{t1.topicid}}</span>
-                    </a>
-                </button>
-            </div>
-        </div>
-
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 col-lg-offset-1 text-center">
-                        <a href="" ng-click="moreTickets()"> More tickets</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-    </div>
-
-    <div class="col-md-4">
+<div class="container">
+    <div>
         <form name="myForm" class="form">
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="state">State</label>
                 <select class="form-control" id="state">
                     <option> </option>
@@ -33,7 +9,7 @@
                     <option>Closed</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="topic">Topic</label>
                 <select class="form-control" id="topic">
                     <option> </option>
@@ -50,31 +26,52 @@
                 </select>
             </div>
 
-            <!--
-            <div class="form-group" flex-gt-xs>
-                <label> StartDate </label>
-                <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+            <div class="col-md-9">
+                <div  id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                    <span></span> <b class="caret"></b>
+                </div>
+                <p id="iniDay" style="visibility: hidden; height: 0px; width: 0px">  </p>
+                <p id="endDay" style="visibility: hidden; height: 0px; width: 0px">  </p>
             </div>
-            -->
+            <div class="col-md-3">
+                <button id="button" ng-click="sendValues()" type="submit" class="btn btn-default">Filter</button>
 
-            <!--
-            <div class="form-group">
-                <label for="usr">Username:</label>
-                <input type="text" class="form-control" id="usr">
             </div>
-            -->
-
-            <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                <span></span> <b class="caret"></b>
-            </div>
-            <p id="iniDay" style="visibility: hidden; height: 0px; width: 0px">  </p>
-            <p id="endDay" style="visibility: hidden; height: 0px; width: 0px">  </p>
-
-            <button id="button" ng-click="sendValues()" type="submit" class="btn btn-default" style="margin-top: 5%">Filter</button>
 
         </form>
     </div>
+
+    <hr width="100%">
+
+    <p> leyenda de los colores</p>
+
+    <hr width="100%">
+
+    <div>
+        <div class="list-group">
+            <div ng-repeat=" x in tickets">
+                <button class = "list-group-item" ng:click="selectTicket(x)">
+                    {{x.title}}
+                    <a ng-repeat="t1 in x.topics">
+                        <span id = customSpan class="badge" style="float: right; background-color: {{MY_CONSTANTS.colores[t1.topicid]}}"> {{t1.topicid}}</span>
+                    </a>
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class=" text-center">
+                        <a href="" ng-click="moreTickets()"> More tickets</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
 </div>
 
 
