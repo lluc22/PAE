@@ -475,6 +475,19 @@ apiRoutes.get('/tickets/topics/count', function (req, res) {
     });*/
 });
 
+apiRoutes.get('/tickets/topics/count/lastmonth', function (req, res) {
+    Post.aggregate( [
+        { $match: { "creationDate": { $lt: "2010-08-28" }}},
+        { $unwind: "$topics" },
+        { $group: {
+            _id: '$topics.topicid',
+            count: { $sum: 1 }
+        } }
+    ] , function(err, user) {
+        res.json({success: 200, msg: {"data": user}});
+    });
+});
+
 apiRoutes.get('/tickets/topics/:number', function (req, res) {
     Topic.find({
         number: req.params.number
