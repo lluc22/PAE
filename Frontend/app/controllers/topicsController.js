@@ -8,6 +8,7 @@ angular.module('myApp')
                                                                                                 ngDialog, $window, getTopics) {
             getTopics.getTopics();
             getTopics.lastMonthTopics();
+            getTopics.getLegend();
 
             var i = 0;
 
@@ -40,13 +41,15 @@ angular.module('myApp')
                     callback: function(chart) {
                         chart.discretebar.dispatch.on('elementClick', function(e){
                             console.log('elementClick in callback', e.data);
-                            topicID = e.data.label;
-                            ngDialog.open({
-                                templateUrl: 'word_cloud.html',
-                                controller : 'topicsController',
-                                width : $window.innerWidth - 125,
-                                height : $window.innerHeight
-                            });
+                            var customCallback = function () {
+                                ngDialog.open({
+                                    templateUrl: 'word_cloud.html',
+                                    controller : 'topicsController',
+                                    width : $window.innerWidth - 125,
+                                    height : $window.innerHeight
+                                });
+                            };
+                            getTopics.getTopicWords(e.data.label, customCallback);
                         });
                     }
 
@@ -55,8 +58,6 @@ angular.module('myApp')
 
 
             $scope.data = getTopics.barCharContent;
-
-
 
             $scope.options2 = {
                 chart: {
@@ -71,18 +72,10 @@ angular.module('myApp')
                     x: function(d){return d.key;},
                     y: function(d){return d.y;},
                     showLabels: true,
+                    showLegend: false,
                     duration: 500,
                     labelThreshold: 0.01,
                     labelSunbeamLayout: true,
-                    legend: {
-                        margin: {
-                            top: 5,
-                            right: 0,
-                            bottom: 5,
-                            left: 0
-                        }
-                    },
-                    legendPosition: 'top',
                     valueFormat: function(d) {
                         return d + " words";
                     },
@@ -110,6 +103,8 @@ angular.module('myApp')
 
            //console.log(getTopics.words);
            $scope.tags = getTopics.words;
+
+            $scope.legend = getTopics.legend;
 
         }]);
 

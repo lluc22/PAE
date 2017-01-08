@@ -8,6 +8,7 @@ angular.module('myApp')
         topics.topicsContent = [];
         topics.words = [];
         topics.barCharContent = [];
+        topics.legend = [];
         topics.getTopics = function () {
             var params = {params: {
 
@@ -15,7 +16,9 @@ angular.module('myApp')
             return restService.get('/tickets/topics/count', params).then(function (data) {
                 //console.log(data);
                 var correctData = [];
+                var max = 0;
                 for(x in data) {
+                    max += data[x].count;
                     //console.log(data[x])
                     correctData.push({key: data[x]._id , y: data[x].count ,color: MY_CONSTANTS.colores[data[x]._id]});
                     //if (x!= 9) correctData.push(",")
@@ -59,6 +62,22 @@ angular.module('myApp')
 
             });
 
+        };
+        topics.getLegend = function () {
+            var params = {params: {
+
+            } };
+            return restService.get('/tickets/topics/legend', params).then(function (data) {
+                //console.log(data);
+                var correctData = [];
+                for(x in data) {
+                    //console.log(data[x]);
+                    correctData.push({id: data[x].number , name: data[x].name ,color: MY_CONSTANTS.colores[data[x].number]});
+                    //if (x!= 9) correctData.push(",")
+                }
+                //console.log(correctData);
+                angular.copy(correctData, topics.legend);
+            });
         };
         return topics;
     }]);
