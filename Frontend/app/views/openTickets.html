@@ -42,13 +42,13 @@
         </form>
     </div>
 
-    <hr width="100%">
+    <hr width="0%">
 
-    <p> leyenda de los colores</p>
 
-    <hr width="100%">
 
-    <div>
+    <hr width="0%">
+
+    <div class="col-lg-9">
         <div class="list-group">
             <div ng-repeat=" x in tickets">
                 <button class = "list-group-item" ng:click="selectTicket(x)">
@@ -61,7 +61,7 @@
         </div>
 
         <footer>
-            <div class="container">
+            <div class="col-md-10 text-center">
                 <div class="row">
                     <div class=" text-center">
                         <a href="" ng-click="moreTickets()"> More tickets</a>
@@ -70,6 +70,12 @@
             </div>
         </footer>
 
+    </div>
+
+    <div class="col-md-9 affix text-right">
+        <ul ng-repeat="t1 in legend">
+            <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.id]}}"> {{t1.name}}</span>
+        </ul>
     </div>
 
 </div>

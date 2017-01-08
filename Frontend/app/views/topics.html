@@ -1,24 +1,27 @@
 <div>
-    <table class="table">
-        <tbody>
-            <tr>
-                <td width="50%" height="0px">
-                    <div>
-                        <h3 class="page-header"> Last month topics </h3>
-                        <nvd3 options="options" data="data"></nvd3>
-                    </div>
-                </td>
 
-                <td width="50%" height="0px">
-                    <div>
-                        <h3 class="page-header"> Topics history </h3>
-                        <nvd3 options="options2" data="data2" ></nvd3>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="col-md-6">
+        <div class="text-center">
+            <h3 class="section-heading text-center"> Last month topics </h3>
+            <small class="text-center"> Click one topic to see more details</small>
+        </div>
+        <nvd3 options="options" data="data"></nvd3>
+    </div>
+    <div class="col-md-6">
+        <div class="text-center">
+            <h3 class="section-heading text-center"> Topics history </h3>
+            <small class="text-center"> Click one topic to see more details</small>
+        </div>
+        <nvd3 options="options2" data="data2" ></nvd3>
+    </div>
 
+    <footer class="text-center">
+        <div>
+            <a ng-repeat="t1 in legend">
+                <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.id]}}"> {{t1.name}}</span>
+            </a>
+        </div>
+    </footer>
 </div>
 
 
