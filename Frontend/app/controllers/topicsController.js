@@ -47,7 +47,7 @@ angular.module('myApp')
                             console.log('elementClick in callback', e.data);
                             topicID = e.data.label;
                             ngDialog.open({
-                                templateUrl: 'views/word_cloud.html',
+                                templateUrl: 'word_cloud.html',
                                 controller : 'topicsController',
                                 width : $window.innerWidth - 125,
                                 height : $window.innerHeight
@@ -108,7 +108,7 @@ angular.module('myApp')
                             console.log('elementClick in callback', e.data);
                             var customCallback = function () {
                                 ngDialog.open({
-                                    templateUrl: 'views/word_cloud.html',
+                                    templateUrl: 'word_cloud.html',
                                     controller : 'topicsController',
                                     width : $window.innerWidth - 125,
                                     height : $window.innerHeight
