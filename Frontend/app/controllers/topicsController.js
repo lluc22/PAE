@@ -30,13 +30,6 @@ angular.module('myApp')
                         return d3.format(',')(d); //'.4f' 4 decimales
                     },
                     duration: 500,
-                    xAxis: {
-                        axisLabel: 'Topic'
-                    },
-                    yAxis: {
-                        axisLabel: 'Quantity',
-                        axisLabelDistance: -10
-                    },
                     showAxis: true,
                     callback: function(chart) {
                         chart.discretebar.dispatch.on('elementClick', function(e){
