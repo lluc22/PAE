@@ -298,6 +298,9 @@ apiRoutes.get('/ticket/:id/related', function(req, res) {
         });
         Post.find({ id: {$in: data }},{id: 1, title: 1, _id: 0, topics: 1}, function(err, post) {
             if(post.length > 0) {
+                post.sort(function(a,b){
+                    return data.findIndex(function(o){return o == a.id}) - data.findIndex(function(o){return o == b.id})
+                });
                 res.json({success: 200, msg: {"data": post }});
                 res.end();
             }
