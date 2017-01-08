@@ -7,6 +7,7 @@ angular.module('myApp')
         var topics = {};
         topics.topicsContent = [];
         topics.words = [];
+        topics.barCharContent = [];
         topics.getTopics = function () {
             var params = {params: {
 
@@ -41,6 +42,23 @@ angular.module('myApp')
                 customCallback();
 
             });
+        };
+        topics.lastMonthTopics = function () {
+            var params = {params: {
+
+            } };
+            return restService.get('/tickets/topics/count/lastmonth', params).then(function (data) {
+                var correctData = [{ key: "Cumulative Return", values: []}];
+                for(x in data) {
+                    //console.log(data[x]);
+                    correctData[0].values.push({label: data[x]._id , value: data[x].count ,color: MY_CONSTANTS.colores[data[x]._id]});
+                    //if (x!= 9) correctData.push(",")
+                }
+                //console.log(correctData);
+                angular.copy(correctData, topics.barCharContent);
+
+            });
+
         };
         return topics;
     }]);

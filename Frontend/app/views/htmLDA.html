@@ -19,7 +19,7 @@ function LDAvis_load_lib(url, callback){
 if(typeof(LDAvis) !== "undefined"){
    // already loaded: just create the visualization
    !function(LDAvis){
-       new htmLDA("#" + "ldavis_el103181401448987856168870984324", ldavis_el103181401448987856168870984324_data);
+       new LDAvis("#" + "ldavis_el103181401448987856168870984324", ldavis_el103181401448987856168870984324_data);
    }(LDAvis);
 }else if(typeof define === "function" && define.amd){
    // require.js is available: use it to load d3/LDAvis
@@ -32,10 +32,8 @@ if(typeof(LDAvis) !== "undefined"){
     });
 }else{
     // require.js not available: dynamically load d3 & LDAvis
-    LDAvis_load_lib("https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js", function(){
          LDAvis_load_lib("https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.js", function(){
                  new LDAvis("#" + "ldavis_el103181401448987856168870984324", ldavis_el103181401448987856168870984324_data);
-            })
-         });
+            });
 }
 </script>
