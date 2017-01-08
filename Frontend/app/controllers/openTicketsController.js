@@ -3,8 +3,11 @@
  */
 
 angular.module('myApp')
-    .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets',
-        function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets) {
+    .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets', 'getTopics',
+        function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets, getTopics) {
+            getTopics.getLegend();
+            $scope.legend = getTopics.legend;
+
             //console.log($stateParams);
             var self = this;
             self.page = parseInt($stateParams.page);
