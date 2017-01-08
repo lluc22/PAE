@@ -156,3 +156,19 @@ img {
     margin-left: 13%;
 }
 
+.float-bottom-right {
+    position: fixed;
+    bottom: 0%;
+    right: 0%;
+}
+
+.float-right {
+    position: fixed;
+    right: 10%;
+}
+
+.custom-btn-info {
+    color: #fff;
+    background-color: #6b6b6b;
+    border-color: #000;
+}
