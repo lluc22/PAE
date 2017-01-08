@@ -484,6 +484,18 @@ apiRoutes.get('/tickets/topics/:number', function (req, res) {
     });
 });
 
+
+apiRoutes.post('/tickets/topics/:number', function (req, res) {
+    Topic.findOne({
+        number: req.params.number
+    }, function(err, user) {
+        user.set('name', req.body.newname);
+        user.save();
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": user}});
+    });
+});
+
 apiRoutes.get('/tickets/deletetopics', function (req, res) {
     var lda = require('./app/services/lda/lda');
 
