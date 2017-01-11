@@ -98,7 +98,7 @@ angular.module('myApp')
 
 
         getRelateds.getRelateds(id).then(function (resp) {
-            console.log(resp);
+            //console.log(resp);
             for (var i = 0; i<10; ++i) {
                 $scope.relateds.push(resp[i]);
             }

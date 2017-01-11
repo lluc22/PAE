@@ -37,21 +37,23 @@ angular.module('myApp')
 
         $scope.selectTicket = function (ticket) {
             var id = ticket['id'];
-            console.log(id);
+            //console.log(id);
             $location.path('ticket/'+id);
 
         };
 
         $scope.tickets = getTickets.ticketContent;
 
-        getTickets.getTickets(20, this.page - 1, self.open, self.closed,  self.iniDay, self.endDay, self.topic);
+        getTickets.getTickets(20, (this.page - 1) * 20, self.open, self.closed,  self.iniDay, self.endDay, self.topic);
 
         $scope.moreTickets = function () {
+            /*
             console.log(openSelected);
             console.log(closeSelected);
             console.log(startDay);
             console.log(lastDay);
             console.log(selectedTopic);
+            */
 
 
             $state.go('.', {page : self.page + 1,
