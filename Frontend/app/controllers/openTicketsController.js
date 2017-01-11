@@ -3,8 +3,8 @@
  */
 
 angular.module('myApp')
-    .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets', 'getTopics',
-        function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets, getTopics) {
+    .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets', 'getTopics', 'configService',
+        function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets, getTopics, configService) {
 
             var legendCallback = function () {
                 document.getElementById('topic').innerHTML = "<option> </option>";
@@ -17,16 +17,29 @@ angular.module('myApp')
             getTopics.getLegend(legendCallback);
             $scope.legend = getTopics.legend;
 
-
-            //console.log($stateParams);
             var self = this;
-            self.page = parseInt($stateParams.page);
-            self.open = $stateParams.open;
-            self.closed = $stateParams.closed;
-            self.iniDay = $stateParams.iniDay;
-            self.endDay = $stateParams.endDay;
-            self.topic = $stateParams.topic;
+            console.log(configService.read)
+            if(!configService.read) {
+                //console.log($stateParams);
+                self.page = parseInt($stateParams.page);
+                self.open = $stateParams.open;
+                self.closed = $stateParams.closed;
+                self.iniDay = $stateParams.iniDay;
+                self.endDay = $stateParams.endDay;
+                self.topic = $stateParams.topic;
+            }
 
+            else{
+                console.log("hola")
+                self.page = configService.config.page;
+                self.open = configService.config.open;
+                self.closed = configService.config.closed;
+                self.iniDay = configService.config.iniDay;
+                self.endDay = configService.config.endDay;
+                self.topic = configService.config.topic;
+            }
+
+            var page = self.page;
             var startDay = self.iniDay;
             var lastDay = self.endDay;
             var selectedTopic = self.topic;
@@ -39,7 +52,15 @@ angular.module('myApp')
             var id = ticket['id'];
             //console.log(id);
             $location.path('ticket/'+id);
-
+            var config = {};
+            config.page = page;
+            config.open = openSelected;
+            config.closed = closeSelected;
+            config.iniDay = startDay;
+            config.endDay = lastDay;
+            config.topic = selectedTopic;
+            configService.setRead(false);
+            configService.setConfig(config);
         };
 
         $scope.tickets = getTickets.ticketContent;

@@ -1,19 +1,19 @@
 
 angular.module('myApp')
     .service('configService',function(){
-        var config = {}
+        var options = {}
+        options.config = []
+        options.read = false
 
-        var setConfig = function(conf) {
-            config = conf;
+        options.setConfig = function(conf) {
+            angular.copy(conf,options.config);
         };
 
-        var getConfig = function(){
-            return config;
-        };
+        options.setRead = function(r) {
+            angular.copy(r,options.read);
+        }
 
-        return {
-            setConfig: setConfig,
-            getConfig: getConfig
-        };
+
+        return options
     })
 
