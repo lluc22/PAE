@@ -55,7 +55,6 @@ angular.module('myApp')
             console.log(selectedTopic);
             */
 
-
             $state.go('.', {page : self.page + 1,
                             open: openSelected ,
                             closed : closeSelected,
