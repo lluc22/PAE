@@ -5,8 +5,18 @@
 angular.module('myApp')
     .controller('openTicketsController', ['MY_CONSTANTS', '$scope', '$location', '$stateParams', '$state', 'getTickets', 'getTopics',
         function (MY_CONSTANTS, $scope, $location, $stateParams, $state, getTickets, getTopics) {
-            getTopics.getLegend();
+
+            var legendCallback = function () {
+                document.getElementById('topic').innerHTML = "<option> </option>";
+                //console.log($scope.legend);
+                for (x in $scope.legend) {
+                    document.getElementById('topic').innerHTML += "<option>"+ $scope.legend[x].name +"</option>";
+                }
+            };
+
+            getTopics.getLegend(legendCallback);
             $scope.legend = getTopics.legend;
+
 
             //console.log($stateParams);
             var self = this;
@@ -75,6 +85,13 @@ angular.module('myApp')
             }
             else state = null;
             if(selectedTopic == " ") selectedTopic = null;
+            else {
+                for (x in $scope.legend) {
+                    if ($scope.legend[x].name == selectedTopic) {
+                        selectedTopic = $scope.legend[x].id;
+                    }
+                }
+            }
             getTickets.getTickets(20, self.page - 1, openSelected, closeSelected, startDay, lastDay, selectedTopic);
 
         }
