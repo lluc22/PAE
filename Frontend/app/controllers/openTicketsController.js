@@ -18,11 +18,12 @@ angular.module('myApp')
             $scope.legend = getTopics.legend;
 
             var self = this;
-            console.log(configService.getProperty());
-            //console.log(configService.config);
-            if(!configService.read) {
+            console.log(configService.config);
+
+            self.page = parseInt($stateParams.page);
+
+            if(!configService.read.value) {
                 //console.log($stateParams);
-                self.page = parseInt($stateParams.page);
                 self.open = $stateParams.open;
                 self.closed = $stateParams.closed;
                 self.iniDay = $stateParams.iniDay;
@@ -31,17 +32,13 @@ angular.module('myApp')
             }
 
             else{
-                /*
-                self.page = configService.config.page;
                 self.open = configService.config.open;
                 self.closed = configService.config.closed;
                 self.iniDay = configService.config.iniDay;
                 self.endDay = configService.config.endDay;
                 self.topic = configService.config.topic;
-                */
             }
 
-            var page = self.page;
             var startDay = self.iniDay;
             var lastDay = self.endDay;
             var selectedTopic = self.topic;
@@ -55,13 +52,12 @@ angular.module('myApp')
             //console.log(id);
             $location.path('ticket/'+id);
             var config = {};
-            config.page = page;
             config.open = openSelected;
             config.closed = closeSelected;
             config.iniDay = startDay;
             config.endDay = lastDay;
             config.topic = selectedTopic;
-            configService.setProperty(false);
+            configService.setRead(false);
             configService.setConfig(config);
         };
 
