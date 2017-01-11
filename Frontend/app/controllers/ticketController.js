@@ -119,12 +119,8 @@ angular.module('myApp')
 
         };
 
-
-        $rootScope.$watch(function () {return $location.path()}, function (newLocation, oldLocation) {
-            if(newLocation == '/openTickets') {
-                configService.setRead(true);
-            }
-
+        $scope.$on("$locationChangeStart",function(){
+            configService.setRead(true);
         });
 
 
