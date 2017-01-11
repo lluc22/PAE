@@ -200,3 +200,8 @@ img {
     color: #fff;
     opacity: 1;
 }
+
+.help-img {
+    margin: auto;display: block;
+}
+
