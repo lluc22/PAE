@@ -18,7 +18,8 @@ angular.module('myApp')
             $scope.legend = getTopics.legend;
 
             var self = this;
-            console.log(configService.read)
+            console.log(configService.getProperty());
+            //console.log(configService.config);
             if(!configService.read) {
                 //console.log($stateParams);
                 self.page = parseInt($stateParams.page);
@@ -30,13 +31,14 @@ angular.module('myApp')
             }
 
             else{
-                console.log("hola")
+                /*
                 self.page = configService.config.page;
                 self.open = configService.config.open;
                 self.closed = configService.config.closed;
                 self.iniDay = configService.config.iniDay;
                 self.endDay = configService.config.endDay;
                 self.topic = configService.config.topic;
+                */
             }
 
             var page = self.page;
@@ -59,7 +61,7 @@ angular.module('myApp')
             config.iniDay = startDay;
             config.endDay = lastDay;
             config.topic = selectedTopic;
-            configService.setRead(false);
+            configService.setProperty(false);
             configService.setConfig(config);
         };
 

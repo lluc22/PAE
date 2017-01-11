@@ -122,7 +122,8 @@ angular.module('myApp')
 
         $rootScope.$watch(function () {return $location.path()}, function (newLocation, oldLocation) {
             if(newLocation == '/openTickets') {
-                configService.setRead(true);
+                configService.setProperty(true);
+
             }
 
         });
