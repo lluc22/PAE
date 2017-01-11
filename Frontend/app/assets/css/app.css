@@ -205,3 +205,9 @@ img {
     margin: auto;display: block;
 }
 
+.div-with-color {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    background-color: #a0a0a0;
+}
+
