@@ -172,3 +172,31 @@ img {
     background-color: #6b6b6b;
     border-color: #FFFFFF;
 }
+
+.close-btn-info {
+    color: #fff;
+    background-color: #5b5b5b;
+    border-color: #FFFFFF;
+}
+
+.modal-header {
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #a0a0a0;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal-header h4 {
+    color: white;
+    font-weight: bold;
+}
+
+.close {
+    color: #fff;
+    opacity: 1;
+}
