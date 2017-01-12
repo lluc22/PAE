@@ -47,8 +47,7 @@ angular.module('myApp')
             for (x in topics) {
                 var numTopic = topics[x].topicid;
                 document.getElementById('questionTopics').innerHTML += "<span class='badge' style='background-color:" +
-                    MY_CONSTANTS.colores[numTopic] + "'>" +
-                    topics[x].topicid + "</span>";
+                    MY_CONSTANTS.colores[numTopic] + "'> &nbsp; </span>";
             }
             $scope.title = resp.title;
             document.getElementById('question').innerHTML = "<table><tbody><tr><td>" + resp.body + "</td></tr>" +

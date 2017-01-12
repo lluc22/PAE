@@ -1,71 +1,3 @@
-<!--
-<body>
-    <table class="table">
-        <tbody>
-            <tr>
-                <td id="question-info">
-                    <div id="question-header">
-                        <h1 class="section-heading text-center">
-                            {{title}}
-                            <a id="questionTopics">
-
-                            </a>
-
-                        </h1>
-                    </div>
-                    <div id="question" >
-
-                    </div>
-                    <div id="answers">
-                        <div id="answers-header"></div>
-                        <div id="bestAnswer"> </div>
-                        <div id="answers-content">
-
-                        </div>
-                    </div>
-                </td>
-
-                <td>
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td class="relatedTiquets text-center">
-                                <h3 class="section-heading text-center"> Related tickets</h3>
-                                    <small>List of similar tickets, ordered by similarity</small>
-                                <div class="list-group">
-                                    <div ng-repeat="x in relateds">
-                                        <button class = "list-group-item" ng:click="selectTicket(x)">
-                                            {{x.title}}
-                                            <a ng-repeat="t1 in x.topics">
-                                                <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.topicid]}}"> {{t1.topicid}}</span>
-                                            </a>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="relatedTiquets">
-                                <h1 class="page-header" align="center"> <small>Best Users</small></h1>
-                                <div ng-repeat="u in bestUsers">
-                                    <li class = "list-group-item">
-                                        {{u.displayName}}
-                                    </li>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </td>
-
-            </tr>
-        </tbody>
-    </table>
-
-</body>
-
--->
-
 <body>
     <div class="col-md-8">
         <div id="question-header">
@@ -99,7 +31,7 @@
                     <button class = "list-group-item" ng:click="selectTicket(x)">
                         {{x.title}}
                         <a ng-repeat="t1 in x.topics">
-                            <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.topicid]}}"> {{t1.topicid}}</span>
+                            <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.topicid]}}"> &nbsp; </span>
                         </a>
                     </button>
                 </div>

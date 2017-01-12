@@ -12,6 +12,7 @@ angular.module('myApp')
 
             var i = 0;
 
+            $scope.legend = getTopics.legend;
             var topicID = null;
             $scope .options = {
                 chart: {
@@ -34,15 +35,19 @@ angular.module('myApp')
                     callback: function(chart) {
                         chart.discretebar.dispatch.on('elementClick', function(e){
                             console.log('elementClick in callback', e.data);
+                            for (var x in $scope.legend) {
+                                if ($scope.legend[x].id == e.data.label) {
+                                    $scope.name = {name : $scope.legend[x].name,
+                                                   id : $scope.legend[x].id };
+                                }
+                            }
                             var customCallback = function () {
                                 ngDialog.open({
                                     templateUrl: 'word_cloud.html',
                                     controller : 'topicsController',
+                                    scope: $scope,
                                     width : $window.innerWidth - 125,
-                                    height : $window.innerHeight,
-                                    updateTopicName : function(name) {
-                                        console.log(name + " " + e.data.label);
-                                    }
+                                    height : $window.innerHeight
                                 });
                             };
                             getTopics.getTopicWords(e.data.label, customCallback);
@@ -50,6 +55,17 @@ angular.module('myApp')
                     }
 
                 }
+            };
+
+
+            $scope.changeName = function () {
+                console.log(document.getElementById("newName").value);
+                console.log($scope.name.id);
+                var data = {
+                    name : document.getElementById("newName").value,
+                    id : $scope.name.id
+                };
+                getTopics.changeName(data);
             };
 
 
@@ -100,7 +116,7 @@ angular.module('myApp')
            //console.log(getTopics.words);
            $scope.tags = getTopics.words;
 
-            $scope.legend = getTopics.legend;
+
 
         }]);
 

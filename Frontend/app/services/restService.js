@@ -19,4 +19,12 @@ angular.module('myApp')
                         return "Error getting data";
                 });
         };
+        this.post = function (url, data) {
+            return $http.post(MY_CONSTANTS.SERVER_IP + url, data)
+                .then(function successCallback(response) {
+                    return response['data']['msg']['data'];
+                }, function errorCallback(response) {
+                    return "Error getting data";
+                });
+        }
     }]);
