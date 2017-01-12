@@ -7,21 +7,7 @@ angular.module('myApp')
     .service('getTickets', ['restService' , function (restService) {
         var tickets = {};
         tickets.ticketContent = [];
-        /*
-        tickets.closed = null;
-        tickets.open = null;
-        tickets.dateini = null;
-        tickets.datefi = null;
-        tickets.topicid = null;
-        */
         tickets.getTickets = function (limit, skip, open, close, dateinit, dataend, topicid) {
-            /*
-            tickets.closed = close;
-            tickets.open = open;
-            tickets.dateini = dateinit;
-            tickets.datefi = dataend;
-            tickets.topicid = topicid;7
-            */
             var params = {params: {
                 'limit' : limit,
                 'skip' : skip,

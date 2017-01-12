@@ -3,8 +3,8 @@
  */
 
 angular.module('myApp')
-    .controller('ticketController', ['MY_CONSTANTS', '$scope', '$location', 'getTicket', 'getUser', 'getRelateds', 'getBestUsers',
-        function (MY_CONSTANTS, $scope, $location, getTicket, getUser, getRelateds, getBestUsers) {
+    .controller('ticketController', ['MY_CONSTANTS', '$scope', '$location', '$rootScope', 'getTicket', 'getUser', 'getRelateds', 'getBestUsers', 'configService',
+        function (MY_CONSTANTS, $scope, $location, $rootScope, getTicket, getUser, getRelateds, getBestUsers, configService) {
 
         var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
         var lastUrlPart = string.split('/');
@@ -98,7 +98,7 @@ angular.module('myApp')
 
 
         getRelateds.getRelateds(id).then(function (resp) {
-            console.log(resp);
+            //console.log(resp);
             for (var i = 0; i<10; ++i) {
                 $scope.relateds.push(resp[i]);
             }
@@ -119,5 +119,9 @@ angular.module('myApp')
 
         };
 
+        $scope.$on("$locationChangeStart",function(){
+            configService.setRead(true);
+        });
 
-    }]);
+
+        }]);

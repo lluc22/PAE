@@ -156,3 +156,85 @@ img {
     margin-left: 13%;
 }
 
+.float-bottom-right {
+    position: fixed;
+    bottom: 0%;
+    right: 0%;
+}
+
+.float-right {
+    position: fixed;
+    right: 10%;
+}
+
+.custom-btn-info {
+    color: #fff;
+    background-color: #6b6b6b;
+    border-color: #FFFFFF;
+}
+
+.close-btn-info {
+    color: #fff;
+    background-color: #a0a0a0;
+    border-color: #FFFFFF;
+}
+
+.modal-header {
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #a0a0a0;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal-header h4 {
+    color: white;
+    font-weight: bold;
+}
+
+.close {
+    color: #fff;
+    opacity: 1;
+}
+
+.help-img {
+    margin: auto;display: block;
+}
+
+.div-with-color {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    background-color: #a0a0a0;
+}
+
+.btn-social {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    border: 2px solid white;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 45px;
+}
+
+.btn-outline {
+    color: white;
+    font-size: 20px;
+    border: solid 2px white;
+    background: transparent;
+    transition: all 0.3s ease-in-out;
+    margin-top: 15px;
+}
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline.active {
+    color: #0044CC;
+    background: white;
+    border: solid 2px white;
+}
+

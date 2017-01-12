@@ -63,7 +63,7 @@ angular.module('myApp')
             });
 
         };
-        topics.getLegend = function () {
+        topics.getLegend = function (legendCallback) {
             var params = {params: {
 
             } };
@@ -77,6 +77,7 @@ angular.module('myApp')
                 }
                 //console.log(correctData);
                 angular.copy(correctData, topics.legend);
+                legendCallback();
             });
         };
         return topics;
