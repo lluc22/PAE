@@ -460,6 +460,14 @@ apiRoutes.get('/tickets/topics', function (req, res) {
     });
 });
 
+apiRoutes.get('/tickets/topics/legend', function (req, res) {
+    Topic.find({
+    },{_id: 0, __v: 0, id: 0, palabras: 0}, function(err, user) {
+        if (err) throw err;
+        res.json({success: 200, msg: {"data": user}});
+    });
+});
+
 apiRoutes.get('/tickets/topics/count', function (req, res) {
     Post.aggregate( [
         { $unwind: "$topics" },
@@ -476,6 +484,19 @@ apiRoutes.get('/tickets/topics/count', function (req, res) {
         if (err) throw err;
         res.json({success: 200, msg: {"data": user}});
     });*/
+});
+
+apiRoutes.get('/tickets/topics/count/lastmonth', function (req, res) {
+    Post.aggregate( [
+        { $match: { "creationDate": { $lt: "2010-08-28" }}},
+        { $unwind: "$topics" },
+        { $group: {
+            _id: '$topics.topicid',
+            count: { $sum: 1 }
+        } }
+    ] , function(err, user) {
+        res.json({success: 200, msg: {"data": user}});
+    });
 });
 
 apiRoutes.get('/tickets/topics/:number', function (req, res) {

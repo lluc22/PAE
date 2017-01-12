@@ -35,7 +35,7 @@ angular.module('myApp')
                 var correctData = [];
 
                 for(x in data[0].palabras) {
-                    //console.log(data[0].palabras[x]);
+                    console.log(data[0].palabras[x]);
                     var palabra = data[0].palabras[x];
                     correctData.push({"key":  palabra.word , "value": Math.round(palabra.value*100)*2.5});
                     //if (x!= 9) correctData.push(",")
