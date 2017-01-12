@@ -70,7 +70,7 @@ angular.module('myApp')
                     labelThreshold: 0.01,
                     labelSunbeamLayout: true,
                     valueFormat: function(d) {
-                        return d + " words";
+                        return d + " tickets ";
                     },
                     callback: function(chart) {
                         chart.pie.dispatch.on('elementClick', function(e){
