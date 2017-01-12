@@ -12,19 +12,7 @@
             <div class="form-group col-md-6">
                 <label for="topic">Topic</label>
                 <select class="form-control" id="topic">
-                    <!--
-                    <option> </option>
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    -->
+
                 </select>
             </div>
 
@@ -117,14 +105,14 @@
 <script type="text/javascript">
     $(function() {
 
-        var start = moment().subtract(29, 'days');
+        var start = moment().subtract(10, 'year').startOf('year');
         var end = moment();
 
 
         function cb(start, end) {
             $('#reportrange span').html(start.format('YYYY MMMM D') + ' - ' + end.format('YYYY MMMM D'));
-            $("#iniDay").text(start.format('YYYY-MM-D'))
-            $("#endDay").text(end.format('YYYY-MM-D'))
+            $("#iniDay").text(start.format('YYYY-MM-D'));
+            $("#endDay").text(end.format('YYYY-MM-D'));
 
         }
 

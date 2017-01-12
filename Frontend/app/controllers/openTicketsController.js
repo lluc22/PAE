@@ -12,6 +12,7 @@ angular.module('myApp')
                 for (x in $scope.legend) {
                     document.getElementById('topic').innerHTML += "<option>"+ $scope.legend[x].name +"</option>";
                 }
+                topicsCallback();
             };
 
             getTopics.getLegend(legendCallback);
@@ -39,11 +40,52 @@ angular.module('myApp')
                 self.topic = configService.config.topic;
             }
 
+
             var startDay = self.iniDay;
             var lastDay = self.endDay;
             var selectedTopic = self.topic;
             var openSelected = self.open;
             var closeSelected = self.closed;
+
+
+            var filterSelectedState, filterSelectedTopic;
+
+            if (openSelected) {
+                filterSelectedState = "Open";
+            }
+            else if (closeSelected) {
+                filterSelectedState = "Closed"
+            }
+            else filterSelectedState = " ";
+
+
+            if (selectedTopic != null) {
+                for (x in $scope.legend) {
+                    if ($scope.legend[x].id == selectedTopic) {
+                        filterSelectedTopic = $scope.legend[x].name;
+                    }
+                }
+
+            }
+            else filterSelectedTopic = " ";
+
+            var filterState = document.getElementById("state");
+            for(var i, j = 0; i = filterState.options[j]; j++) {
+                if(i.value == filterSelectedState) {
+                    filterState.selectedIndex = j;
+                    break;
+                }
+            }
+
+            var topicsCallback = function () {
+                var filterTopic = document.getElementById("topic");
+                for(var m, n = 0; m = filterTopic.options[n]; n++) {
+                    if(m.value == filterSelectedTopic) {
+                        filterTopic.selectedIndex = n;
+                        break;
+                    }
+                }
+            };
 
             $scope.tickets = [];
 
@@ -101,9 +143,12 @@ angular.module('myApp')
             }
             else if (state == "Closed") {
                 openSelected = false;
+                closeSelected = true;
+            }
+            else {
+                openSelected = false;
                 closeSelected = false;
             }
-            else state = null;
             if(selectedTopic == " ") selectedTopic = null;
             else {
                 for (x in $scope.legend) {
