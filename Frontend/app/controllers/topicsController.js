@@ -39,7 +39,10 @@ angular.module('myApp')
                                     templateUrl: 'word_cloud.html',
                                     controller : 'topicsController',
                                     width : $window.innerWidth - 125,
-                                    height : $window.innerHeight
+                                    height : $window.innerHeight,
+                                    updateTopicName : function(name) {
+                                        console.log(name + " " + e.data.label);
+                                    }
                                 });
                             };
                             getTopics.getTopicWords(e.data.label, customCallback);
