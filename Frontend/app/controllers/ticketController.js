@@ -3,8 +3,23 @@
  */
 
 angular.module('myApp')
-    .controller('ticketController', ['MY_CONSTANTS', '$scope', '$location', '$rootScope', 'getTicket', 'getUser', 'getRelateds', 'getBestUsers', 'configService',
-        function (MY_CONSTANTS, $scope, $location, $rootScope, getTicket, getUser, getRelateds, getBestUsers, configService) {
+    .controller('ticketController', ['MY_CONSTANTS', '$scope', '$location', '$rootScope', 'getTicket', 'getUser', 'getRelateds',
+        'getBestUsers', 'configService', 'getTopics',
+        function (MY_CONSTANTS, $scope, $location, $rootScope, getTicket, getUser, getRelateds, getBestUsers,
+                  configService, getTopics) {
+
+
+        var legendCallback = function () {
+            document.getElementById('topic').innerHTML = "<option> </option>";
+            //console.log($scope.legend);
+            for (x in $scope.legend) {
+                document.getElementById('topic').innerHTML += "<option>"+ $scope.legend[x].name +"</option>";
+            }
+            topicsCallback();
+        };
+
+        getTopics.getLegend(legendCallback);
+        $scope.legend = getTopics.legend;
 
         var string = window.location.href; // con esto cojo la url, solo me interesa quedarme el ultimo numero de esta
         var lastUrlPart = string.split('/');

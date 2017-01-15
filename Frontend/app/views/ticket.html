@@ -22,6 +22,12 @@
     </div>
 
     <div class="col-md-4 text-center" style="margin-top: 2.5%">
+        <div class=" float-left">
+            <a ng-repeat="t1 in legend">
+                <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.id]}}"> {{t1.name}}</span>
+            </a>
+        </div>
+        <hr width="0%">
         <div>
             <h4 class="section-heading text-center"> Related tickets</h4>
             <small>List of similar tickets, ordered by the most similar</small>
