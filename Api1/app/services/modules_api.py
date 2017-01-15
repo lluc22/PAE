@@ -62,6 +62,10 @@ def only_one(function=None, key="", timeout=None):
     return _dec(function) if function is not None else _dec
 
 @only_one
+def train():
+    doc2vec.train_model()
+
+@only_one
 def post_vector(id,body):
     if not (db.vectors.find_one({'id':id}) is None) : return
     f = open('workfile', 'w')
@@ -240,13 +244,24 @@ class vectorListAPI(Resource):
         async_post_vector.apply_async(args=[id,body])
         return {'result': True}
 
+class trainAPI(Resource):
+    def post(self):
+        '''
+        Trains vectors with contents of database
+        '''
+        if db.vectors.count() > 0:
+            abort(404)
+        async_train.apply_async()
+        return {'result': True}
+
 
 
 #Api endpoints
 #/vector/<int:id>&topn=<int>  topn optional, default=50
 api.add_resource(vectorAPI, '/vectors/<int:id>',endpoint="vector")
 api.add_resource(vectorListAPI, '/vectors')
+api.add_resource(trainAPI,'/vectors/train')
 if __name__ == '__main__':
     #For the moment I run the API with native threaded module,
     #next thing to do: celery to process background tasks(post,delete)
-    app.run(debug=True,threaded=True)
+    app.run(debug=False,threaded=False)
