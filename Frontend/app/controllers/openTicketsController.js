@@ -129,7 +129,7 @@ angular.module('myApp')
 
 
         $scope.sendValues = function() {
-            //console.log($("#state").val());
+            console.log($("#state").val());
             //console.log($("#topic").val());
             //console.log($("#iniDay").text());
             //console.log($("#endDay").text());
