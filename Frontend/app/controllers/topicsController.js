@@ -66,6 +66,8 @@ angular.module('myApp')
                     id : $scope.name.id
                 };
                 getTopics.changeName(data);
+                $scope.closeThisDialog();
+                $scope.legend = getTopics.legend;
             };
 
 
