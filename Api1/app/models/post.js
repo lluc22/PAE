@@ -48,6 +48,7 @@ var PostSchema = new Schema({
     vector: [{
         number: String
     }]
-});
+}, { strict: false }
+);
 
 module.exports = mongoose.model('Post', PostSchema);

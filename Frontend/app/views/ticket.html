@@ -1,33 +1,107 @@
-
 <body>
-    <table>
-        <tbody>
-            <tr>
-                <td id="question-info">
-                    <div id="question-header">
-                        <h1> {{title}}</h1>
-                    </div>
-                    <div id="question" >
-                        <!-- se añade dinamicamente el body -->
-                    </div>
-                    <div id="answers">
-                        <div id="answers-header"></div>
-                        <div id="answers-content">
+    <div class="col-md-8">
+        <div id="question-header">
+            <h1 class="section-heading text-center">
+                {{title}}
+                <a id="questionTopics">
 
-                        </div>
-                    </div>
-                </td>
-                <td class="relatedTiquets">
-                    <h2 align="center"> Related tickets</h2>
-                    <div class="list-group" ng-controller="ticketController">
-                        <div ng-repeat=" x in relateds">
-                            <button class = "list-group-item"> <!--ng:click="selectTicket(x)"-->{{x}} </button>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </a>
 
+            </h1>
+        </div>
+        <div id="question" >
+
+        </div>
+        <div id="answers">
+            <div id="answers-header"></div>
+            <div id="bestAnswer"> </div>
+            <div id="answers-content">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 text-center" style="margin-top: 2.5%">
+        <div class=" float-left">
+            <a ng-repeat="t1 in legend">
+                <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.id]}}"> {{t1.name}}</span>
+            </a>
+        </div>
+        <hr width="0%">
+        <div>
+            <h4 class="section-heading text-center"> Related tickets</h4>
+            <small>List of similar tickets, ordered by the most similar</small>
+            <hr width="0%">
+            <div class="list-group">
+                <div ng-repeat="x in relateds">
+                    <button class = "list-group-item" ng:click="selectTicket(x)">
+                        {{x.title}}
+                        <a ng-repeat="t1 in x.topics">
+                            <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.topicid]}}"> &nbsp; </span>
+                        </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h4 class="section-heading"> Best users </h4>
+            <small>Best users capable to solve this ticket.
+                This list has been made based on the tickets similar to this one
+                that each user has solved</small>
+            <hr width="0%">
+            <div ng-repeat="u in bestUsers">
+                <li class = "list-group-item">
+                    {{u.displayName}}
+                </li>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn custom-btn-info btn-lg float-bottom-right" data-toggle="modal"
+            data-target="#myModal">Help</button>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">Description</h4>
+                </div>
+                <div class="modal-body">
+                    <p>In this view we can see the content of the selected ticket filtered by the options we have choosed.
+                        We are going to explain everything from this question, but it will be the same for all the questions:
+                        <div class="div-with-color ">
+                            <img src='../assets/images/Question.png' class="help-img" style='width: inherit'>
+                        </div>
+                    <p> If the ticket is opened there will bo no accepted answers but in the case that the ticket is closed
+                        we will see the best answer like this:
+                        <div class="div-with-color ">
+                            <img src='../assets/images/AcceptedAnswer.png' class="help-img" style='width: inherit'>
+                        </div>
+                    </p>
+                    <p> On the right part of the view we can see the 10 most related tickets
+                        to the one we are seeing, ordered by similarity.
+                        <div class="div-with-color ">
+                            <img src='../assets/images/RelatedTickets.png' class="help-img"style='width: inherit'>
+                        </div>
+                    </p>
+                    <p> And below these list there's also the list of the best users
+                        capable to solve the ticket, this list has been made considering the number of similar tickets solved
+                        by the user.
+                        <div class="div-with-color ">
+                            <img src='../assets/images/BestUsers.png' class="help-img" style='width: inherit' >
+                        </div>
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn close-btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
-</html>

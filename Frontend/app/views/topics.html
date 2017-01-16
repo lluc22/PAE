@@ -1,29 +1,61 @@
 <div>
-    <table class="mainTable">
-        <tbod>
-            <tr>
-                <td width="50%" height="0px">
-                    <div ng-controller="topicsController" >
-                        <h3> Last month topics </h3>
-                        <nvd3 options="options" data="data"></nvd3>
-                    </div>
-                </td>
 
-                <td width="50%" height="0px">
-                    <div ng-controller="topicsController2">
-                        <h3> Topics history </h3>
-                        <nvd3 options="options2" data="data2"></nvd3>
-                    </div>
-                </td>
+    <div class="col-md-6">
+        <div class="text-center">
+            <h3 class="section-heading text-center"> Last month topics </h3>
+            <small class="text-center"> Click one topic to see more details</small>
+        </div>
+        <nvd3 options="options" data="data"></nvd3>
+    </div>
+    <div class="col-md-6">
+        <div class="text-center">
+            <h3 class="section-heading text-center"> Topics history </h3>
+            <small class="text-center"> Click one topic to see more details</small>
+        </div>
+        <nvd3 options="options2" data="data2" ></nvd3>
+    </div>
 
-            </tr>
-            <tr>
+    <footer class="text-center">
+        <div>
+            <a ng-repeat="t1 in legend">
+                <span class="badge" style="background-color: {{MY_CONSTANTS.colores[t1.id]}}"> {{t1.name}}</span>
+            </a>
+        </div>
+    </footer>
 
-            </tr>
-        </tbod>
-    </table>
+    <button type="button" class="btn custom-btn-info btn-lg float-bottom-right" data-toggle="modal"
+            data-target="#myModal">Help</button>
 
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">Description</h4>
+                </div>
+                <div class="modal-body">
+                    <p>In this section you can visualize an overview of tickets and its topics. It is divided in two main plots: </p>
+                    <ul>
+                        <li> <strong>Bar plot of last topics:</strong> In this plot you can observe the topics that the last tickets talk about.
+                        You can have a snapshot of the main issues of your system at this moment.</li>
+                        <img src="../assets/images/barplot.png" alt="barplot last month" class="help-img" style="width:80%;height:80%;">
+                        <li> <strong>Pie Chart of topics history:</strong> This chart shows you all the topics of your system and how important they are
+                        in your system. Place your mouse over each one and see how many words form it.</li>
+                        <img src="../assets/images/piechart.png" alt="barplot last month" class="help-img" style="width:35%;height:35%;">
+                    </ul>
+                    <p>With both charts you can click a topic and you will see a cloud of words that will help you to describe the topic, see which words compose it
+                        and how relevant they are. You can also change the default name of the topic in order to identify it better.</p>
+                    <img src="../assets/images/cloud.png" alt="barplot last month" class="help-img" style="width:400px;height:250px;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn close-btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 
